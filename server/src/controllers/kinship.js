@@ -2,7 +2,7 @@
 // 亲戚称呼控制器
 
 const zhipuService = require('../services/zhipu');
-const logger = require('../utils/logger');
+const logger = require('../../utils/logger');
 
 class KinshipController {
   /**

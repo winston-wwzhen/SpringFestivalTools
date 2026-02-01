@@ -2,27 +2,22 @@
 // 智谱AI服务
 
 const axios = require('axios');
-const logger = require('../utils/logger');
+const logger = require('../../utils/logger');
 
 /**
  * 获取系统提示词
  */
 function getKinshipSystemPrompt() {
-  return `你是一个专业的中国亲戚称呼计算助手。你的任务是根据用户输入的关系，准确计算出对应的称呼。
+  return `计算亲戚称呼。
 
-规则：
-1. 只返回称呼结果，格式简洁，不要有多余解释
-2. 如果关系太复杂无法确定，返回"关系太复杂，建议具体咨询"
-3. 使用中国传统称呼，如：爷爷、奶奶、外公、外婆、伯父、叔叔、姑姑、舅舅、姨妈、堂哥、表妹等
-4. 对于不明确的关系，可以给出最可能的称呼
-5. 回复格式：直接返回称呼，不要有其他文字
+输入：爸爸的哥哥
+输出：伯父
 
-示例：
-输入：爸爸 的 爸爸
-输出：爷爷
+输入：妈妈的爸爸
+输出：外公
 
-输入：妈妈 的 哥哥
-输出：舅舅`;
+输入：爸爸的弟弟
+输出：叔叔`;
 }
 
 /**
@@ -40,10 +35,10 @@ async function callZhipuAI(messages) {
     const response = await axios.post(
       apiUrl,
       {
-        model: 'glm-4-flash',
+        model: 'glm-4.5-airx',
         messages: messages,
         temperature: 0.3,
-        max_tokens: 50,
+        max_tokens: 200,
         top_p: 0.7
       },
       {
@@ -56,7 +51,10 @@ async function callZhipuAI(messages) {
     );
 
     if (response.data && response.data.choices && response.data.choices[0]) {
-      return response.data.choices[0].message.content.trim();
+      const choice = response.data.choices[0];
+      // GLM-4.5-airx 推理模型使用 reasoning_content 字段
+      const content = choice.message.reasoning_content || choice.message.content;
+      return content ? content.trim() : '';
     }
 
     throw new Error('Invalid API response');
@@ -89,7 +87,35 @@ async function calculateKinship(input) {
   try {
     const result = await callZhipuAI(messages);
     logger.info('Kinship calculation result:', { input, result });
-    return result;
+
+    // 后处理：提取最终的称呼（去除推理过程）
+    let finalResult = result;
+
+    // 查找常见模式，提取最终答案
+    const patterns = [
+      /应该称呼为[\""]([^\""]+)[\""]/,
+      /对应的输出是[\""]([^\""]+)[\""]/,
+      /是[\""]?([伯叔姑舅爷奶妈爸外][^，。\n]{0,3})/,
+      /输出[\""]([^\""]+)[\""]/
+    ];
+
+    for (const pattern of patterns) {
+      const match = result.match(pattern);
+      if (match && match[1]) {
+        finalResult = match[1];
+        break;
+      }
+    }
+
+    // 如果结果过长，尝试提取最后2-4个字的答案
+    if (finalResult.length > 10) {
+      const shortMatch = finalResult.match(/([伯叔姑舅爷奶妈爸外][^，。\n]{1,3})/);
+      if (shortMatch) {
+        finalResult = shortMatch[1];
+      }
+    }
+
+    return finalResult;
   } catch (error) {
     logger.error('Kinship calculation failed:', error);
     throw new Error('计算失败，请稍后重试');
