@@ -8,7 +8,7 @@ const app = getApp()
  */
 function request(options) {
   return new Promise((resolve, reject) => {
-    const { url, method = 'GET', data = {}, header = {} } = options
+    const { url, method = 'GET', data = {}, header = {}, timeout = 30000 } = options
 
     // 获取token
     const token = wx.getStorageSync('token') || ''
@@ -17,7 +17,7 @@ function request(options) {
       url: app.globalData.serverUrl + url,
       method,
       data,
-      timeout: 10000, // 10秒超时
+      timeout, // 默认30秒，可在调用时自定义
       header: {
         'content-type': 'application/json',
         'Authorization': token ? `Bearer ${token}` : '',
