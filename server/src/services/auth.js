@@ -9,7 +9,7 @@ class AuthService {
    */
   async login(username, password, ip) {
     // 查询管理员
-    const [admins] = await db.query(
+    const admins = await db.query(
       'SELECT * FROM admin_users WHERE username = ?',
       [username]
     )
@@ -57,7 +57,7 @@ class AuthService {
    * 获取当前用户信息
    */
   async getProfile(adminId) {
-    const [admins] = await db.query(
+    const admins = await db.query(
       'SELECT id, username, real_name, role, status, last_login_at, created_at FROM admin_users WHERE id = ?',
       [adminId]
     )
@@ -74,7 +74,7 @@ class AuthService {
    */
   async changePassword(adminId, oldPassword, newPassword) {
     // 获取管理员信息
-    const [admins] = await db.query(
+    const admins = await db.query(
       'SELECT password FROM admin_users WHERE id = ?',
       [adminId]
     )
@@ -107,7 +107,7 @@ class AuthService {
   async getList(page = 1, pageSize = 20) {
     const offset = (page - 1) * pageSize
 
-    const [list] = await db.query(
+    const list = await db.query(
       `SELECT id, username, real_name, role, status, last_login_at, created_at
        FROM admin_users
        ORDER BY created_at DESC
@@ -115,7 +115,7 @@ class AuthService {
       [pageSize, offset]
     )
 
-    const [countResult] = await db.query('SELECT COUNT(*) as total FROM admin_users')
+    const countResult = await db.query('SELECT COUNT(*) as total FROM admin_users')
 
     return {
       list,
@@ -132,7 +132,7 @@ class AuthService {
     const { username, password, realName, role = 'admin' } = data
 
     // 检查用户名是否已存在
-    const [existing] = await db.query('SELECT id FROM admin_users WHERE username = ?', [username])
+    const existing = await db.query('SELECT id FROM admin_users WHERE username = ?', [username])
     if (existing.length > 0) {
       throw new Error('用户名已存在')
     }
@@ -141,7 +141,7 @@ class AuthService {
     const hashedPassword = await bcrypt.hash(password, 10)
 
     // 创建管理员
-    const [result] = await db.query(
+    const result = await db.query(
       'INSERT INTO admin_users (username, password, real_name, role) VALUES (?, ?, ?, ?)',
       [username, hashedPassword, realName, role]
     )

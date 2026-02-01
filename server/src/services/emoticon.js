@@ -5,7 +5,7 @@ class EmoticonService {
   // 获取分类列表
   async getCategories() {
     const sql = 'SELECT * FROM emoticon_categories ORDER BY sort ASC'
-    const [rows] = await db.query(sql)
+    const rows = await db.query(sql)
     return rows
   }
 
@@ -25,7 +25,7 @@ class EmoticonService {
     sql += ' ORDER BY created_at DESC LIMIT ? OFFSET ?'
     queryParams.push(pageSize, offset)
 
-    const [rows] = await db.query(sql, queryParams)
+    const rows = await db.query(sql, queryParams)
 
     // 获取总数
     let countSql = 'SELECT COUNT(*) as total FROM emoticons WHERE review_status = "approved"'
@@ -36,7 +36,7 @@ class EmoticonService {
       countParams.push(category)
     }
 
-    const [countResult] = await db.query(countSql, countParams)
+    const countResult = await db.query(countSql, countParams)
 
     return {
       list: rows,
@@ -49,7 +49,7 @@ class EmoticonService {
   // 获取表情包详情（小程序端，仅返回已审核数据）
   async getDetail(id) {
     const sql = 'SELECT * FROM emoticons WHERE id = ? AND review_status = "approved"'
-    const [rows] = await db.query(sql, [id])
+    const rows = await db.query(sql, [id])
 
     if (rows.length === 0) {
       throw new Error('表情包不存在')
@@ -64,7 +64,7 @@ class EmoticonService {
   // 获取表情包数量（小程序端，仅统计已审核数据）
   async getCount() {
     const sql = 'SELECT COUNT(*) as count FROM emoticons WHERE review_status = "approved"'
-    const [rows] = await db.query(sql)
+    const rows = await db.query(sql)
     return rows[0].count
   }
 
@@ -93,7 +93,7 @@ class EmoticonService {
     sql += ' ORDER BY created_at DESC LIMIT ? OFFSET ?'
     queryParams.push(pageSize, offset)
 
-    const [rows] = await db.query(sql, queryParams)
+    const rows = await db.query(sql, queryParams)
 
     // 获取总数
     let countSql = 'SELECT COUNT(*) as total FROM emoticons WHERE 1=1'
@@ -109,7 +109,7 @@ class EmoticonService {
       countParams.push(reviewStatus)
     }
 
-    const [countResult] = await db.query(countSql, countParams)
+    const countResult = await db.query(countSql, countParams)
 
     return {
       list: rows,
@@ -123,7 +123,7 @@ class EmoticonService {
   async create(data) {
     const { category_id, title, image_url, tags } = data
 
-    const [result] = await db.query(
+    const result = await db.query(
       `INSERT INTO emoticons (category_id, title, image_url, tags, review_status)
        VALUES (?, ?, ?, ?, 'pending')`,
       [category_id, title, image_url, tags]
@@ -156,7 +156,7 @@ class EmoticonService {
   async createCategory(data) {
     const { name, icon, sort } = data
 
-    const [result] = await db.query(
+    const result = await db.query(
       'INSERT INTO emoticon_categories (name, icon, sort) VALUES (?, ?, ?)',
       [name, icon, sort || 0]
     )

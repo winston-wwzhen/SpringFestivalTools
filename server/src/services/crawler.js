@@ -25,7 +25,7 @@ class CrawlerService {
    * 获取活跃任务
    */
   async getActiveTasks() {
-    const [tasks] = await db.query(
+    const tasks = await db.query(
       'SELECT * FROM crawler_tasks WHERE status = "active"'
     )
     return tasks
@@ -68,7 +68,7 @@ class CrawlerService {
 
     try {
       // 获取任务信息
-      const [tasks] = await db.query(
+      const tasks = await db.query(
         'SELECT * FROM crawler_tasks WHERE id = ?',
         [taskId]
       )
@@ -162,14 +162,14 @@ class CrawlerService {
   async getList(page = 1, pageSize = 20) {
     const offset = (page - 1) * pageSize
 
-    const [list] = await db.query(
+    const list = await db.query(
       `SELECT * FROM crawler_tasks
        ORDER BY created_at DESC
        LIMIT ? OFFSET ?`,
       [pageSize, offset]
     )
 
-    const [countResult] = await db.query('SELECT COUNT(*) as total FROM crawler_tasks')
+    const countResult = await db.query('SELECT COUNT(*) as total FROM crawler_tasks')
 
     return {
       list,
@@ -183,7 +183,7 @@ class CrawlerService {
    * 获取任务详情
    */
   async getDetail(id) {
-    const [tasks] = await db.query('SELECT * FROM crawler_tasks WHERE id = ?', [id])
+    const tasks = await db.query('SELECT * FROM crawler_tasks WHERE id = ?', [id])
 
     if (tasks.length === 0) {
       throw new Error('任务不存在')
@@ -203,14 +203,14 @@ class CrawlerService {
       throw new Error('Cron 表达式无效')
     }
 
-    const [result] = await db.query(
+    const result = await db.query(
       `INSERT INTO crawler_tasks (name, type, source_url, cron_expression, config)
        VALUES (?, ?, ?, ?, ?)`,
       [name, type, sourceUrl, cronExpression, JSON.stringify(config || {})]
     )
 
     // 获取创建的任务
-    const [tasks] = await db.query('SELECT * FROM crawler_tasks WHERE id = ?', [result.insertId])
+    const tasks = await db.query('SELECT * FROM crawler_tasks WHERE id = ?', [result.insertId])
 
     // 如果状态是 active，立即调度
     if (tasks[0].status === 'active') {
@@ -266,7 +266,7 @@ class CrawlerService {
     )
 
     // 获取更新后的任务
-    const [tasks] = await db.query('SELECT * FROM crawler_tasks WHERE id = ?', [id])
+    const tasks = await db.query('SELECT * FROM crawler_tasks WHERE id = ?', [id])
 
     // 如果状态是 active，重新调度
     if (tasks[0].status === 'active') {
@@ -314,7 +314,7 @@ class CrawlerService {
    * 恢复任务
    */
   async resumeTask(id) {
-    const [tasks] = await db.query('SELECT * FROM crawler_tasks WHERE id = ?', [id])
+    const tasks = await db.query('SELECT * FROM crawler_tasks WHERE id = ?', [id])
 
     if (tasks.length > 0 && tasks[0].status === 'active') {
       this.scheduleTask(tasks[0])
@@ -327,7 +327,7 @@ class CrawlerService {
   async getLogs(taskId, page = 1, pageSize = 20) {
     const offset = (page - 1) * pageSize
 
-    const [list] = await db.query(
+    const list = await db.query(
       `SELECT * FROM crawler_logs
        WHERE task_id = ?
        ORDER BY start_time DESC
@@ -335,7 +335,7 @@ class CrawlerService {
       [taskId, pageSize, offset]
     )
 
-    const [countResult] = await db.query(
+    const countResult = await db.query(
       'SELECT COUNT(*) as total FROM crawler_logs WHERE task_id = ?',
       [taskId]
     )

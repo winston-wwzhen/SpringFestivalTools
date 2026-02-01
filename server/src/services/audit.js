@@ -29,9 +29,9 @@ class AuditService {
       ORDER BY created_at DESC
       LIMIT ? OFFSET ?
     `
-    const [list] = await db.query(sql, [pageSize, offset])
+    const list = await db.query(sql, [pageSize, offset])
 
-    const [countResult] = await db.query(
+    const countResult = await db.query(
       `SELECT COUNT(*) as total FROM ${tableName} WHERE review_status = 'pending'`
     )
 
@@ -52,7 +52,7 @@ class AuditService {
 
     for (const type of types) {
       const tableName = this.getTableName(type)
-      const [result] = await db.query(
+      const result = await db.query(
         `SELECT COUNT(*) as count FROM ${tableName} WHERE review_status = 'pending'`
       )
       stats[type] = result[0].count
@@ -66,7 +66,7 @@ class AuditService {
    */
   async getDetail(type, id) {
     const tableName = this.getTableName(type)
-    const [rows] = await db.query(`SELECT * FROM ${tableName} WHERE id = ?`, [id])
+    const rows = await db.query(`SELECT * FROM ${tableName} WHERE id = ?`, [id])
 
     if (rows.length === 0) {
       throw new Error('内容不存在')
@@ -244,7 +244,7 @@ class AuditService {
     sql += ' ORDER BY al.created_at DESC LIMIT ? OFFSET ?'
     params.push(pageSize, offset)
 
-    const [list] = await db.query(sql, params)
+    const list = await db.query(sql, params)
 
     // 获取总数
     let countSql = 'SELECT COUNT(*) as total FROM audit_logs WHERE 1=1'
@@ -260,7 +260,7 @@ class AuditService {
       countParams.push(resourceId)
     }
 
-    const [countResult] = await db.query(countSql, countParams)
+    const countResult = await db.query(countSql, countParams)
 
     return {
       list,
@@ -278,7 +278,7 @@ class AuditService {
 
     for (const type of ['redpack', 'gala_platform', 'gala_program', 'emoticon', 'kinship']) {
       const tableName = this.getTableName(type)
-      const [rows] = await db.query(
+      const rows = await db.query(
         `SELECT review_status, COUNT(*) as count FROM ${tableName} GROUP BY review_status`
       )
 

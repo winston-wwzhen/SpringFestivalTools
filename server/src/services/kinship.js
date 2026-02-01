@@ -68,7 +68,7 @@ class KinshipService {
   async search(keyword) {
     const sql = 'SELECT * FROM kinship_terms WHERE review_status = "approved" AND (title LIKE ? OR pinyin LIKE ?)'
     const searchTerm = `%${keyword}%`
-    const [rows] = await db.query(sql, [searchTerm, searchTerm])
+    const rows = await db.query(sql, [searchTerm, searchTerm])
     return rows
   }
 
@@ -105,7 +105,7 @@ class KinshipService {
     sql += ' ORDER BY created_at DESC LIMIT ? OFFSET ?'
     queryParams.push(pageSize, offset)
 
-    const [rows] = await db.query(sql, queryParams)
+    const rows = await db.query(sql, queryParams)
 
     // 获取总数
     let countSql = 'SELECT COUNT(*) as total FROM kinship_terms WHERE 1=1'
@@ -116,7 +116,7 @@ class KinshipService {
       countParams.push(reviewStatus)
     }
 
-    const [countResult] = await db.query(countSql, countParams)
+    const countResult = await db.query(countSql, countParams)
 
     return {
       list: rows,
@@ -130,7 +130,7 @@ class KinshipService {
   async create(data) {
     const { title, pinyin, relation, description } = data
 
-    const [result] = await db.query(
+    const result = await db.query(
       `INSERT INTO kinship_terms (title, pinyin, relation, description, review_status)
        VALUES (?, ?, ?, ?, 'pending')`,
       [title, pinyin, relation, description]

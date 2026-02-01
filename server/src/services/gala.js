@@ -5,7 +5,7 @@ class GalaService {
   // 获取春晚平台列表（小程序端，仅返回已审核数据）
   async getPlatforms() {
     const sql = 'SELECT * FROM gala_platforms WHERE review_status = "approved" ORDER BY sort ASC'
-    const [rows] = await db.query(sql)
+    const rows = await db.query(sql)
     return rows
   }
 
@@ -16,11 +16,11 @@ class GalaService {
       WHERE platform_id = ? AND review_status = "approved"
       ORDER BY order_num ASC
     `
-    const [rows] = await db.query(sql, [platformId])
+    const rows = await db.query(sql, [platformId])
 
     // 获取平台信息（仅返回已审核的平台）
     const platformSql = 'SELECT * FROM gala_platforms WHERE id = ? AND review_status = "approved"'
-    const [platformRows] = await db.query(platformSql, [platformId])
+    const platformRows = await db.query(platformSql, [platformId])
 
     return {
       platform: platformRows[0] || {},
@@ -31,7 +31,7 @@ class GalaService {
   // 获取春晚数量（小程序端，仅统计已审核数据）
   async getCount() {
     const sql = 'SELECT COUNT(*) as count FROM gala_platforms WHERE review_status = "approved"'
-    const [rows] = await db.query(sql)
+    const rows = await db.query(sql)
     return rows[0].count
   }
 
@@ -44,7 +44,7 @@ class GalaService {
       WHERE gp.air_date = ? AND gp.review_status = "approved" AND p.review_status = "approved"
       ORDER BY gp.air_time ASC
     `
-    const [rows] = await db.query(sql, [date])
+    const rows = await db.query(sql, [date])
     return rows
   }
 
@@ -66,7 +66,7 @@ class GalaService {
 
     sql += ' ORDER BY created_at DESC'
 
-    const [rows] = await db.query(sql, queryParams)
+    const rows = await db.query(sql, queryParams)
     return rows
   }
 
@@ -74,7 +74,7 @@ class GalaService {
   async createPlatform(data) {
     const { name, logo, air_date, air_time, channel, description, sort } = data
 
-    const [result] = await db.query(
+    const result = await db.query(
       `INSERT INTO gala_platforms (name, logo, air_date, air_time, channel, description, sort, review_status)
        VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')`,
       [name, logo, air_date, air_time, channel, description, sort || 0]
@@ -122,7 +122,7 @@ class GalaService {
 
     sql += ' ORDER BY order_num ASC'
 
-    const [rows] = await db.query(sql, queryParams)
+    const rows = await db.query(sql, queryParams)
     return rows
   }
 
@@ -130,7 +130,7 @@ class GalaService {
   async createProgram(data) {
     const { platform_id, title, type, performers, air_time, order_num } = data
 
-    const [result] = await db.query(
+    const result = await db.query(
       `INSERT INTO gala_programs (platform_id, title, type, performers, air_time, order_num, review_status)
        VALUES (?, ?, ?, ?, ?, ?, 'pending')`,
       [platform_id, title, type, performers, air_time, order_num || 0]

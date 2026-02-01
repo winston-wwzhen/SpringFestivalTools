@@ -23,7 +23,7 @@ class RedpackService {
     sql += ' ORDER BY start_time DESC LIMIT ? OFFSET ?'
     queryParams.push(pageSize, offset)
 
-    const [rows] = await db.query(sql, queryParams)
+    const rows = await db.query(sql, queryParams)
 
     // 获取总数
     let countSql = 'SELECT COUNT(*) as total FROM redpack_activities WHERE review_status = "approved"'
@@ -39,7 +39,7 @@ class RedpackService {
       countParams.push(status)
     }
 
-    const [countResult] = await db.query(countSql, countParams)
+    const countResult = await db.query(countSql, countParams)
 
     return {
       list: rows,
@@ -52,7 +52,7 @@ class RedpackService {
   // 获取红包活动详情（小程序端，仅返回已审核数据）
   async getDetail(id) {
     const sql = 'SELECT * FROM redpack_activities WHERE id = ? AND review_status = "approved"'
-    const [rows] = await db.query(sql, [id])
+    const rows = await db.query(sql, [id])
 
     if (rows.length === 0) {
       throw new Error('活动不存在')
@@ -64,7 +64,7 @@ class RedpackService {
   // 获取红包活动数量（小程序端，仅统计已审核数据）
   async getCount() {
     const sql = 'SELECT COUNT(*) as count FROM redpack_activities WHERE status = "active" AND review_status = "approved"'
-    const [rows] = await db.query(sql)
+    const rows = await db.query(sql)
     return rows[0].count
   }
 
@@ -76,7 +76,7 @@ class RedpackService {
         AND (DATE(start_time) = ? OR DATE(end_time) = ?)
       ORDER BY start_time ASC
     `
-    const [rows] = await db.query(sql, [date, date])
+    const rows = await db.query(sql, [date, date])
     return rows
   }
 
@@ -110,7 +110,7 @@ class RedpackService {
     sql += ' ORDER BY created_at DESC LIMIT ? OFFSET ?'
     queryParams.push(pageSize, offset)
 
-    const [rows] = await db.query(sql, queryParams)
+    const rows = await db.query(sql, queryParams)
 
     // 获取总数
     let countSql = 'SELECT COUNT(*) as total FROM redpack_activities WHERE 1=1'
@@ -131,7 +131,7 @@ class RedpackService {
       countParams.push(reviewStatus)
     }
 
-    const [countResult] = await db.query(countSql, countParams)
+    const countResult = await db.query(countSql, countParams)
 
     return {
       list: rows,
@@ -145,7 +145,7 @@ class RedpackService {
   async create(data) {
     const { platform, title, description, rules, start_time, end_time, status } = data
 
-    const [result] = await db.query(
+    const result = await db.query(
       `INSERT INTO redpack_activities (platform, title, description, rules, start_time, end_time, status, review_status)
        VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')`,
       [platform, title, description, rules, start_time, end_time, status || 'active']
