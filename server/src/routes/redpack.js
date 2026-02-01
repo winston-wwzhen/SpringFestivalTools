@@ -15,14 +15,6 @@ const redpackController = require('../controllers/redpack')
 router.get('/list', redpackController.getList)
 
 /**
- * @api {GET} /api/redpack/:id 获取红包活动详情
- * @apiName GetRedpackDetail
- * @apiGroup Redpack
- * @apiParam {Number} id 活动ID
- */
-router.get('/:id', redpackController.getDetail)
-
-/**
  * @api {GET} /api/redpack/count 获取红包活动数量
  * @apiName GetRedpackCount
  * @apiGroup Redpack
@@ -36,5 +28,13 @@ router.get('/count', redpackController.getCount)
  * @apiQuery {String} date 日期 YYYY-MM-DD
  */
 router.get('/by-date', redpackController.getByDate)
+
+/**
+ * @api {GET} /api/redpack/:id 获取红包活动详情
+ * @apiName GetRedpackDetail
+ * @apiGroup Redpack
+ * @apiParam {Number} id 活动ID
+ */
+router.get('/:id', redpackController.getDetail)
 
 module.exports = router
