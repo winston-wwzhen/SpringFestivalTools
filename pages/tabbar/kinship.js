@@ -1,7 +1,7 @@
 // pages/tabbar/kinship.js
 Page({
   onLoad() {
-    wx.redirectTo({
+    wx.navigateTo({
       url: '/pages-kinship/index/index'
     })
   }

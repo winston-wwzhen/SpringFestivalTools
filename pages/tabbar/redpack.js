@@ -2,7 +2,7 @@
 Page({
   onLoad() {
     // 跳转到分包页面
-    wx.redirectTo({
+    wx.navigateTo({
       url: '/pages-redpack/list/index'
     })
   }
