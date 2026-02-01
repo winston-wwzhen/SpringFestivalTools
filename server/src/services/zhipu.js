@@ -8,16 +8,46 @@ const logger = require('../../utils/logger');
  * 获取系统提示词
  */
 function getKinshipSystemPrompt() {
-  return `计算亲戚称呼。
+  return `你是一个中国亲戚称呼专家。请根据用户输入的亲戚关系，直接给出对应的称呼。
 
+【重要规则】
+1. 只输出称呼本身，2-4个汉字
+2. 不要输出推理过程、解释或说明
+3. 不要输出"答案是"、"结果是"等前缀
+4. 对于复杂关系，给出最接近的常见称呼
+5. 必须在最后一句明确写出："输出：XXX"（XXX是具体称呼）
+
+【称呼示例】
+- 爸爸的爸爸 → 爷爷
+- 妈妈的爸爸 → 外公
+- 爸爸的哥哥 → 伯父
+- 爸爸的弟弟 → 叔叔
+- 爸爸的姐妹 → 姑姑
+- 妈妈的兄弟 → 舅舅
+- 妈妈的姐妹 → 姨妈
+- 爸爸的哥哥的老婆 → 伯母
+- 爸爸的弟弟的老婆 → 婶婶
+- 妈妈的哥哥的老婆 → 舅妈
+- 妈妈的姐姐的老公 → 姨父
+- 爸爸的哥哥的儿子 → 堂哥/堂弟
+- 爸爸的哥哥的儿子的老婆 → 堂嫂
+- 妈妈的姐妹的儿子 → 表哥/表弟
+- 老婆的姑姑 → 大姑/小姑
+- 老公的兄弟 → 大伯/小叔
+
+【输出格式】
+最后一行必须是：输出：XXX（XXX是具体称呼，如"输出：伯父"）
+
+例如：
 输入：爸爸的哥哥
+推理过程：（在心中完成）
 输出：伯父
 
-输入：妈妈的爸爸
-输出：外公
+输入：老婆的姑姑的儿子的老婆
+推理过程：（在心中完成）
+输出：表嫂
 
-输入：爸爸的弟弟
-输出：叔叔`;
+现在，请处理用户的输入，最后一行必须是"输出："格式：`;
 }
 
 /**
@@ -91,31 +121,89 @@ async function calculateKinship(input) {
     // 后处理：提取最终的称呼（去除推理过程）
     let finalResult = result;
 
-    // 查找常见模式，提取最终答案
-    const patterns = [
-      /应该称呼为[\""]([^\""]+)[\""]/,
-      /对应的输出是[\""]([^\""]+)[\""]/,
-      /是[\""]?([伯叔姑舅爷奶妈爸外][^，。\n]{0,3})/,
-      /输出[\""]([^\""]+)[\""]/
+    // 优先级1：最明确的答案标记（按优先级排序）
+    const answerPatterns = [
+      // 最精确：明确说明输出内容的模式（支持换行）
+      /直接输出[\"'「【]([父伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳公]{2,5})/,
+      /我应该输出[\"'「【]([父伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳公]{2,5})/,
+      /所以，我应该输出[\"'「【]([父伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳公]{2,5})/,
+      /输出[\"'「【]([父伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳公]{2,5})/,
+      // 带冒号的答案格式（支持多行）
+      /因此，?(?:我的)?输出应该是[：:]\s*\n?[\"'「【]?([父伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳公]{2,5})/m,
+      /所以答案是[：:]\s*\n?[\"'「【]?([父伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳公]{2,5})/m,
+      /因此，我应该输出[：:]\s*\n?[\"'「【]?([父伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳公]{2,5})/m,
+      /输出[：:]\s*\n?([父伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳公]{2,5})/m,
+      // 其他格式
+      /答案是[：:]\s*[\"'「【]?([父伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳公]{2,5})/m,
+      /答案应该是[：:]\s*[\"'「【]?([父伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳公]{2,5})/m,
+      /应该称呼为[：:]\s*([^\n，。]{2,6})/m,
+      /应该称为[：:]\s*([^\n，。]{2,6})/m,
+      /称呼是[：:]\s*([^\n，。]{2,6})/m,
     ];
 
-    for (const pattern of patterns) {
+    for (const pattern of answerPatterns) {
       const match = result.match(pattern);
       if (match && match[1]) {
-        finalResult = match[1];
-        break;
+        let candidate = match[1].trim();
+        // 移除结尾的标点和引号
+        candidate = candidate
+          .replace(/[。,，\"'」】]$/, '')
+          .replace(/^[\"'「【]*/, '')
+          .trim();
+
+        // 验证是否包含常见的称呼字且长度合理（2-5字）
+        if (/[父伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳公]/.test(candidate) && candidate.length >= 2 && candidate.length <= 5) {
+          return candidate;
+        }
       }
     }
 
-    // 如果结果过长，尝试提取最后2-4个字的答案
-    if (finalResult.length > 10) {
-      const shortMatch = finalResult.match(/([伯叔姑舅爷奶妈爸外][^，。\n]{1,3})/);
-      if (shortMatch) {
-        finalResult = shortMatch[1];
+    // 优先级2：从最后几行提取可能的答案
+    const lines = result.split('\n').filter(l => l.trim());
+    const lastLines = lines.slice(-3).reverse();  // 取最后3行，倒序查找
+
+    for (const line of lastLines) {
+      // 匹配引号中的内容
+      const quoteMatch = line.match(/["'「【]([伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳]{1,4})/);
+      if (quoteMatch && quoteMatch[1]) {
+        return quoteMatch[1];
       }
     }
 
-    return finalResult;
+    // 优先级3：查找简短的称呼模式
+    const shortPatterns = [
+      /是[\"'「【]?([伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳]{1,3})/,
+      /称为[\"'「【]?([伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳]{1,3})/,
+      /叫[\"'「【]?([伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳]{1,3})/,
+    ];
+
+    for (const pattern of shortPatterns) {
+      const matches = result.matchAll(new RegExp(pattern, 'g'));
+      for (const match of matches) {
+        if (match[1]) {
+          return match[1];
+        }
+      }
+    }
+
+    // 优先级4：如果结果本身就很短（<8字），可能是直接答案
+    if (finalResult.length < 8 && /[伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳]/.test(finalResult)) {
+      return finalResult
+        .replace(/^[\"'「【]*/, '')
+        .replace(/[\"'」】]$/, '')
+        .trim();
+    }
+
+    // 优先级5：提取最后一句话中的称呼
+    const lastSentence = lines[lines.length - 1];
+    if (lastSentence) {
+      const relationMatch = lastSentence.match(/([伯叔姑舅爷奶妈爸外表堂兄弟姐妹姨哥弟嫂媳]{1,3})/);
+      if (relationMatch) {
+        return relationMatch[1];
+      }
+    }
+
+    return finalResult || '关系较远，建议具体询问';
   } catch (error) {
     logger.error('Kinship calculation failed:', error);
     throw new Error('计算失败，请稍后重试');
