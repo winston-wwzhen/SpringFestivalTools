@@ -135,7 +135,7 @@ Page({
    * 跳转到红包攻略
    */
   goToRedpack() {
-    wx.switchTab({
+    wx.navigateTo({
       url: '/pages-redpack/list/index'
     })
   },
@@ -144,7 +144,7 @@ Page({
    * 跳转到春晚节目单
    */
   goToGala() {
-    wx.switchTab({
+    wx.navigateTo({
       url: '/pages-gala/platforms/index'
     })
   },
@@ -153,7 +153,7 @@ Page({
    * 跳转到亲戚称呼
    */
   goToKinship() {
-    wx.switchTab({
+    wx.navigateTo({
       url: '/pages-kinship/index/index'
     })
   },
