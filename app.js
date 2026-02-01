@@ -58,40 +58,15 @@ App({
   },
 
   /**
-   * 获取春节日期（农历正月初一）
-   * 春节日期表（2025-2035）
-   * 注：精确的农历转换需要专门的算法库，这里使用预存日期表
+   * 获取春节日期
    */
   getSpringFestivalDate(year) {
-    // 春节日期表（农历正月初一对应的公历日期）
-    const springFestivalDates = {
-      2025: '2025-01-29', // 乙巳年正月初一
-      2026: '2026-02-17', // 丙午年正月初一
-      2027: '2027-02-06', // 丁未年正月初一
-      2028: '2028-01-26', // 戊申年正月初一
-      2029: '2029-02-13', // 己酉年正月初一
-      2030: '2030-02-03', // 庚戌年正月初一
-      2031: '2031-01-23', // 辛亥年正月初一
-      2032: '2032-02-11', // 壬子年正月初一
-      2033: '2033-01-31', // 癸丑年正月初一
-      2034: '2034-02-19', // 甲寅年正月初一
-      2035: '2035-02-08'  // 乙卯年正月初一
+    // 2025年和2026年春节日期
+    const dates = {
+      2025: '2025-01-29',
+      2026: '2026-02-17'
     }
-
-    // 如果年份超出范围，使用近似算法估算（春节一般在1月21日-2月20日之间）
-    if (!springFestivalDates[year]) {
-      // 简单估算：春节日期每年大约前移11天或后移19天（农历与公历的差值）
-      // 这里使用保守估算，设在2月初
-      const baseDate = new Date('2026-02-17')
-      const yearDiff = year - 2026
-      // 农历比公历短约11天，19年一个周期
-      const cycleOffset = (yearDiff % 19) * 11 - Math.floor((yearDiff % 19) / 2) * 30
-      const estimatedDate = new Date(baseDate.getTime() + cycleOffset * 24 * 60 * 60 * 1000)
-      console.warn(`春节日期未预存，使用估算日期: ${estimatedDate.toISOString().split('T')[0]}，年份: ${year}`)
-      return estimatedDate
-    }
-
-    return new Date(springFestivalDates[year])
+    return new Date(dates[year] || '2026-02-17')
   },
 
   /**
