@@ -46,7 +46,7 @@ async function callZhipuAI(messages) {
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json'
         },
-        timeout: 10000 // 10秒超时
+        timeout: 30000 // 30秒超时（GLM-4.5-airx推理模型需要更长时间）
       }
     );
 
