@@ -1,7 +1,10 @@
 // src/app.js - 后端服务入口
 const express = require('express')
 const cors = require('cors')
-require('dotenv').config()
+const path = require('path')
+
+// 加载环境变量（从server目录）
+require('dotenv').config({ path: path.join(__dirname, '../.env') })
 
 // 小程序端路由
 const redpackRoutes = require('./routes/redpack')
