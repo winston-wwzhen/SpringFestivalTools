@@ -47,19 +47,19 @@ class CommonService {
           id: 1,
           image: 'https://example.com/banner1.jpg',
           title: '春节红包攻略',
-          link: '/pages-redpack/list/index'
+          link: '/pages/redpack/list/index'
         },
         {
           id: 2,
           image: 'https://example.com/banner2.jpg',
           title: '春晚节目单',
-          link: '/pages-gala/platforms/index'
+          link: '/pages/gala/platforms/index'
         },
         {
           id: 3,
           image: 'https://example.com/banner3.jpg',
           title: '拜年称呼指南',
-          link: '/pages-kinship/index/index'
+          link: '/pages/kinship/index/index'
         }
       ]
     }

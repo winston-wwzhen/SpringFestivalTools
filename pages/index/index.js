@@ -136,13 +136,13 @@ Page({
    */
   goToRedpack() {
     console.log('[Index] goToRedpack called')
-    wx.navigateTo({
-      url: '/pages-redpack/list/index',
+    wx.switchTab({
+      url: '/pages/redpack/list/index',
       success: () => {
-        console.log('[Index] navigateTo redpack success')
+        console.log('[Index] switchTab redpack success')
       },
       fail: (err) => {
-        console.error('[Index] navigateTo redpack failed:', err)
+        console.error('[Index] switchTab redpack failed:', err)
       }
     })
   },
@@ -152,13 +152,13 @@ Page({
    */
   goToGala() {
     console.log('[Index] goToGala called')
-    wx.navigateTo({
-      url: '/pages-gala/platforms/index',
+    wx.switchTab({
+      url: '/pages/gala/platforms/index',
       success: () => {
-        console.log('[Index] navigateTo gala success')
+        console.log('[Index] switchTab gala success')
       },
       fail: (err) => {
-        console.error('[Index] navigateTo gala failed:', err)
+        console.error('[Index] switchTab gala failed:', err)
       }
     })
   },
@@ -168,13 +168,13 @@ Page({
    */
   goToKinship() {
     console.log('[Index] goToKinship called')
-    wx.navigateTo({
-      url: '/pages-kinship/index/index',
+    wx.switchTab({
+      url: '/pages/kinship/index/index',
       success: () => {
-        console.log('[Index] navigateTo kinship success')
+        console.log('[Index] switchTab kinship success')
       },
       fail: (err) => {
-        console.error('[Index] navigateTo kinship failed:', err)
+        console.error('[Index] switchTab kinship failed:', err)
       }
     })
   },
@@ -184,7 +184,7 @@ Page({
    */
   goToEmoticon() {
     wx.navigateTo({
-      url: '/pages-emoticon/categories/index'
+      url: '/pages/emoticon/categories/index'
     })
   },
 
@@ -196,11 +196,11 @@ Page({
     // 根据类型跳转到对应页面
     if (item.category === '红包活动') {
       wx.navigateTo({
-        url: `/pages-redpack/detail/index?id=${item.id}`
+        url: `/pages/redpack/detail/index?id=${item.id}`
       })
     } else if (item.category === '春晚') {
       wx.navigateTo({
-        url: `/pages-gala/programs/index?platformId=${item.id}`
+        url: `/pages/gala/programs/index?platformId=${item.id}`
       })
     }
   },

@@ -1,66 +1,26 @@
 {
+  "usingComponents": {
+    "nav-bar": "/components/nav-bar/nav-bar"
+  },
   "pages": [
     "pages/index/index",
-    "pages/webview/index",
-    "pages/tabbar/redpack",
-    "pages/tabbar/gala",
-    "pages/tabbar/kinship"
-  ],
-  "subpackages": [
-    {
-      "root": "pages-redpack",
-      "name": "redpack",
-      "pages": [
-        "list/index",
-        "detail/index",
-        "calendar/index"
-      ]
-    },
-    {
-      "root": "pages-gala",
-      "name": "gala",
-      "pages": [
-        "platforms/index",
-        "programs/index",
-        "timeline/index"
-      ]
-    },
-    {
-      "root": "pages-kinship",
-      "name": "kinship",
-      "pages": [
-        "index/index",
-        "calculator/index",
-        "chart/index"
-      ]
-    },
-    {
-      "root": "pages-emoticon",
-      "name": "emoticon",
-      "pages": [
-        "categories/index",
-        "gallery/index",
-        "detail/index"
-      ]
-    },
-    {
-      "root": "pages-about",
-      "name": "about",
-      "pages": [
-        "index/index"
-      ]
-    }
+    "pages/redpack/list/index",
+    "pages/redpack/detail/index",
+    "pages/gala/platforms/index",
+    "pages/gala/programs/index",
+    "pages/kinship/index/index",
+    "pages/emoticon/categories/index",
+    "pages/emoticon/gallery/index",
+    "pages/emoticon/detail/index"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#E63946",
-    "navigationBarTitleText": "春节攻略",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#F8F9FA",
+    "navigationStyle": "custom",
+    "backgroundColor": "#F5F7FA",
     "backgroundTextStyle": "dark"
   },
   "tabBar": {
     "color": "#666666",
-    "selectedColor": "#E63946",
+    "selectedColor": "#D32F2F",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [
@@ -71,19 +31,19 @@
         "selectedIconPath": "images/tabbar/home-active.png"
       },
       {
-        "pagePath": "pages/tabbar/redpack",
+        "pagePath": "pages/redpack/list/index",
         "text": "红包攻略",
         "iconPath": "images/tabbar/redpack.png",
         "selectedIconPath": "images/tabbar/redpack-active.png"
       },
       {
-        "pagePath": "pages/tabbar/gala",
+        "pagePath": "pages/gala/platforms/index",
         "text": "春晚",
         "iconPath": "images/tabbar/gala.png",
         "selectedIconPath": "images/tabbar/gala-active.png"
       },
       {
-        "pagePath": "pages/tabbar/kinship",
+        "pagePath": "pages/kinship/index/index",
         "text": "亲戚称呼",
         "iconPath": "images/tabbar/kinship.png",
         "selectedIconPath": "images/tabbar/kinship-active.png"

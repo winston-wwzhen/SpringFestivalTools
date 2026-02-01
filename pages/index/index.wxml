@@ -1,14 +1,31 @@
 <!--pages/index/index.wxml-->
 <view class="page">
+  <!-- 自定义导航栏 -->
+
+
   <!-- 头部区域 -->
   <view class="header">
-    <view class="header__bg"></view>
+    <view class="header__bg">
+      <view class="bg-circle bg-circle--1"></view>
+      <view class="bg-circle bg-circle--2"></view>
+      <view class="bg-circle bg-circle--3"></view>
+      <view class="bg-pattern"></view>
+    </view>
     <view class="header__content">
-      <view class="greeting">春节快乐</view>
+      <view class="header__top">
+        <view class="greeting">
+          <text class="greeting-text">🎊 春节快乐</text>
+        </view>
+        <view class="year-badge">2026</view>
+      </view>
       <view class="countdown">
-        <view class="countdown__label">距离春节还有</view>
+        <view class="countdown__label">距离马年春节还有</view>
         <view class="countdown__days">{{countdownDays}}</view>
         <view class="countdown__unit">天</view>
+      </view>
+      <view class="header__tip">
+        <text class="tip-icon">🧧</text>
+        <text class="tip-text">红包攻略已就位</text>
       </view>
     </view>
   </view>

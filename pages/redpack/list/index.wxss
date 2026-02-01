@@ -1,0 +1,326 @@
+/* pages-redpack/list/index.wxss */
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFF8E7 0%, #FFF5E6 100%);
+  padding-bottom: 120rpx;
+  padding-top: 220rpx;
+  background: linear-gradient(to bottom, #D32F2F 0, #D32F2F 220rpx, #FFF8E7 220rpx);
+  position: relative;
+}
+
+/* 装饰灯笼 */
+.lantern-left,
+.lantern-right {
+  position: fixed;
+  top: 260rpx;
+  font-size: 48rpx;
+  z-index: 10;
+  animation: swing 3s ease-in-out infinite;
+  filter: drop-shadow(0 4rpx 8rpx rgba(211, 47, 47, 0.3));
+}
+
+.lantern-left {
+  left: 16rpx;
+  animation-delay: 0s;
+}
+
+.lantern-right {
+  right: 16rpx;
+  animation-delay: 1.5s;
+}
+
+@keyframes swing {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+/* 搜索栏 */
+.search-bar {
+  padding: 24rpx 32rpx;
+  background: transparent;
+}
+
+.search-input {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 48rpx;
+  padding: 16rpx 32rpx;
+  border: 2rpx solid #FFD700;
+  box-shadow: 0 4rpx 16rpx rgba(211, 47, 47, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.search-input::before {
+  content: '🧧';
+  position: absolute;
+  right: -20rpx;
+  top: -20rpx;
+  font-size: 80rpx;
+  opacity: 0.05;
+}
+
+.search-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+}
+
+.search-input input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #D32F2F;
+}
+
+.search-input input::placeholder {
+  color: #999;
+}
+
+.search-decoration {
+  font-size: 32rpx;
+  margin-left: 8rpx;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* 筛选标签 - 优化版 */
+.filter-tabs {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 32rpx 32rpx;
+  gap: 20rpx;
+}
+
+.tab-item {
+  flex: 1;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #666;
+  background: #fff;
+  border-radius: 36rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+  font-weight: 500;
+  border: 1rpx solid transparent; /* 预留边框位置避免抖动 */
+}
+
+.tab-item:active {
+  transform: scale(0.96);
+}
+
+.tab-item.active {
+  color: #fff;
+  background: linear-gradient(135deg, #D32F2F 0%, #FF5252 100%);
+  box-shadow: 0 6rpx 16rpx rgba(211, 47, 47, 0.3);
+  font-weight: 600;
+  border: none;
+}
+
+/* 活动列表 */
+.activity-list {
+  padding: 0 32rpx 32rpx;
+}
+
+.activity-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  border: 2rpx solid #FFD700;
+  box-shadow: 0 4rpx 20rpx rgba(211, 47, 47, 0.12);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.activity-card::before {
+  content: '福';
+  position: absolute;
+  top: -20rpx;
+  right: -10rpx;
+  font-size: 120rpx;
+  color: #D32F2F;
+  opacity: 0.05;
+  font-weight: 700;
+}
+
+.activity-card:active {
+  transform: translateY(-4rpx);
+  box-shadow: 0 8rpx 24rpx rgba(211, 47, 47, 0.2);
+}
+
+/* 卡片头部 */
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.platform-icon {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+  border: 2rpx solid #FFD700;
+  padding: 4rpx;
+}
+
+.platform-emoji {
+  width: 52rpx;
+  height: 52rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  margin-right: 16rpx;
+  background: linear-gradient(135deg, #FFF8E7, #FFE4B5);
+  border-radius: 50%;
+  border: 2rpx solid #FFD700;
+}
+
+.platform-name {
+  flex: 1;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #D32F2F;
+}
+
+.status-tag {
+  padding: 10rpx 24rpx;
+  border-radius: 24rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+.status-ongoing {
+  background: linear-gradient(135deg, #FF6B6B, #EE5A5A);
+  color: #fff;
+  border: 1rpx solid #FFD700;
+  box-shadow: 0 2rpx 8rpx rgba(211, 47, 47, 0.3);
+}
+
+.status-upcoming {
+  background: linear-gradient(135deg, #4ECDC4, #44A08D);
+  color: #fff;
+  border: 1rpx solid #FFD700;
+  box-shadow: 0 2rpx 8rpx rgba(78, 205, 196, 0.3);
+}
+
+.status-ended {
+  background: linear-gradient(135deg, #95A5A6, #7F8C8D);
+  color: #fff;
+  border: 1rpx solid #BDC3C7;
+}
+
+/* 卡片内容 */
+.card-body {
+  margin-bottom: 24rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.activity-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #D32F2F;
+  margin-bottom: 12rpx;
+  line-height: 1.4;
+}
+
+.activity-desc {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 卡片底部 */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx dashed #FFD700;
+  position: relative;
+  z-index: 1;
+}
+
+.time-info,
+.reward-amount {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.time-info .icon,
+.reward-amount .icon {
+  margin-right: 8rpx;
+  font-size: 28rpx;
+}
+
+.reward-amount {
+  color: #D32F2F;
+  font-weight: 600;
+  font-size: 26rpx;
+}
+
+/* 标签 */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 20rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.tag {
+  padding: 8rpx 20rpx;
+  background: linear-gradient(135deg, #FFF8E7, #FFE4B5);
+  border-radius: 24rpx;
+  font-size: 22rpx;
+  color: #D32F2F;
+  border: 1rpx solid #FFD700;
+  font-weight: 500;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.empty-icon {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 32rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: var(--text-light);
+}
+
+/* 加载中 */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+  font-size: 28rpx;
+  color: var(--text-light);
+}

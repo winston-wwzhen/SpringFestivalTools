@@ -1,0 +1,52 @@
+/* components/nav-bar/nav-bar.wxss */
+.custom-nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+.status-bar {
+  width: 100%;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0 32rpx;
+}
+
+.nav-back {
+  position: absolute;
+  left: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64rpx;
+  height: 64rpx;
+}
+
+.back-icon {
+  font-size: 48rpx;
+  font-weight: 300;
+  color: #fff;
+  line-height: 1;
+}
+
+.nav-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  max-width: 400rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-title text {
+  display: block;
+}

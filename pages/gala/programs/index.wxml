@@ -1,0 +1,43 @@
+<!--pages-gala/programs/index.wxml-->
+<view class="container">
+  <nav-bar title="节目单" bgColor="#D32F2F" showBack="{{true}}"></nav-bar>
+
+  <!-- 装饰灯笼 -->
+  <view class="lantern-left">🏮</view>
+  <view class="lantern-right">🏮</view>
+
+  <!-- 平台信息 -->
+  <view class="platform-header" wx:if="{{platform}}">
+    <image class="platform-logo" src="{{platform.logo}}" mode="aspectFit"></image>
+    <view class="platform-info">
+      <view class="platform-name">{{platform.name}}</view>
+      <view class="platform-time">{{platform.broadcast_time}}</view>
+    </view>
+  </view>
+
+  <!-- 节目列表 -->
+  <view class="program-list">
+    <view class="program-card" wx:for="{{programs}}" wx:key="id">
+      <view class="program-order">{{item.order}}</view>
+      <view class="program-info">
+        <view class="program-name">{{item.name}}</view>
+        <view class="program-performers" wx:if="{{item.performers}}">
+          {{item.performers}}
+        </view>
+      </view>
+      <view class="program-type" wx:if="{{item.type}}">{{item.type}}</view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{programs.length === 0 && !loading}}">
+      <text class="empty-icon">📺</text>
+      <text class="empty-text">节目单暂未公布</text>
+      <text class="empty-hint">敬请期待...</text>
+    </view>
+
+    <!-- 加载中 -->
+    <view class="loading-state" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+</view>
