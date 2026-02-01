@@ -6,6 +6,25 @@
   <view class="lantern-left">🏮</view>
   <view class="lantern-right">🏮</view>
 
+  <!-- 搜索栏 -->
+  <view class="search-container">
+    <view class="search-box">
+      <image class="search-icon" src="/images/icon-search.png"></image>
+      <input
+        class="search-input"
+        type="text"
+        placeholder="搜索节目或表演者"
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        confirm-type="search"
+        bindconfirm="onSearchConfirm"
+      />
+      <view class="clear-icon" wx:if="{{searchKeyword}}" bindtap="onClearSearch">
+        <text>✕</text>
+      </view>
+    </view>
+  </view>
+
   <!-- 平台信息 -->
   <view class="platform-header" wx:if="{{platform}}">
     <image class="platform-logo" src="{{platform.logo}}" mode="aspectFit"></image>
@@ -17,7 +36,7 @@
 
   <!-- 节目列表 -->
   <view class="program-list">
-    <view class="program-card" wx:for="{{programs}}" wx:key="id">
+    <view class="program-card" wx:for="{{filteredPrograms}}" wx:key="id">
       <view class="program-order">{{item.order}}</view>
       <view class="program-info">
         <view class="program-name">{{item.name}}</view>
@@ -29,10 +48,10 @@
     </view>
 
     <!-- 空状态 -->
-    <view class="empty-state" wx:if="{{programs.length === 0 && !loading}}">
-      <text class="empty-icon">📺</text>
-      <text class="empty-text">节目单暂未公布</text>
-      <text class="empty-hint">敬请期待...</text>
+    <view class="empty-state" wx:if="{{filteredPrograms.length === 0 && !loading}}">
+      <text class="empty-icon">🔍</text>
+      <text class="empty-text">未找到相关节目</text>
+      <text class="empty-hint">试试搜索其他关键词</text>
     </view>
 
     <!-- 加载中 -->

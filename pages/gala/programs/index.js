@@ -6,7 +6,9 @@ Page({
     platformId: null,
     platform: null,
     programs: [],
-    loading: false
+    filteredPrograms: [],
+    loading: false,
+    searchKeyword: ''
   },
 
   onLoad(options) {
@@ -36,6 +38,7 @@ Page({
       this.setData({
         platform,
         programs: res.data || [],
+        filteredPrograms: res.data || [],
         loading: false
       })
     } catch (error) {
@@ -45,9 +48,54 @@ Page({
       this.setData({
         platform: this.getPlatformInfo(this.data.platformId),
         programs: mockPrograms,
+        filteredPrograms: mockPrograms,
         loading: false
       })
     }
+  },
+
+  /**
+   * 搜索输入
+   */
+  onSearchInput(e) {
+    const keyword = e.detail.value.trim()
+    this.setData({ searchKeyword: keyword })
+    this.filterPrograms(keyword)
+  },
+
+  /**
+   * 琜索确认
+   */
+  onSearchConfirm() {
+    const keyword = this.data.searchKeyword.trim()
+    this.filterPrograms(keyword)
+  },
+
+  /**
+   * 清空搜索
+   */
+  onClearSearch() {
+    this.setData({
+      searchKeyword: '',
+      filteredPrograms: this.data.programs
+    })
+  },
+
+  /**
+   * 过滤节目
+   */
+  filterPrograms(keyword) {
+    if (!keyword) {
+      this.setData({ filteredPrograms: this.data.programs })
+      return
+    }
+
+    const filtered = this.data.programs.filter(item => {
+      const searchText = `${item.name} ${item.performers || ''} ${item.type || ''}`
+      return searchText.toLowerCase().includes(keyword.toLowerCase())
+    })
+
+    this.setData({ filteredPrograms: filtered })
   },
 
   /**
@@ -103,7 +151,12 @@ Page({
       { id: 7, order: '07', name: '舞蹈《丝路花语》', performers: '中国东方演艺集团', type: '舞蹈' },
       { id: 8, order: '08', name: '歌曲《明天会更好》', performers: '周深', type: '歌曲' },
       { id: 9, order: '09', name: '杂技《勇攀高峰》', performers: '中国杂技团', type: '杂技' },
-      { id: 10, order: '10', name: '尾声《难忘今宵》', performers: '全体演员', type: '歌舞' }
+      { id: 10, order: '10', name: '尾声《难忘今宵》', performers: '全体演员', type: '歌舞' },
+      { id: 11, order: '11', name: '相声《我要上春晚》', performers: '岳云鹏 孙越', type: '相声' },
+      { id: 12, order: '12', name: '小品《投其所好》', performers: '艾伦 常远', type: '小品' },
+      { id: 13, order: '13', name: '魔术《见证奇迹》', performers: '刘谦', type: '魔术' },
+      { id: 14, order: '14', name: '歌曲《万疆》', performers: '迪丽热巴', type: '歌曲' },
+      { id: 15, order: '15', name: '歌曲《时代感》', performers: '王俊凯 王源', type: '歌曲' }
     ]
   },
 
@@ -117,3 +170,4 @@ Page({
     }
   }
 })
+
