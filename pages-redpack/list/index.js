@@ -1,5 +1,5 @@
 // pages-redpack/list/index.js
-const api = require('../../../api/index')
+const api = require('../../api/index')
 
 Page({
   data: {
