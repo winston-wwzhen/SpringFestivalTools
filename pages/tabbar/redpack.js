@@ -1,8 +1,8 @@
 // pages/tabbar/redpack.js
 Page({
-  onLoad() {
+  onShow() {
     // 跳转到分包页面
-    wx.navigateTo({
+    wx.reLaunch({
       url: '/pages-redpack/list/index'
     })
   }

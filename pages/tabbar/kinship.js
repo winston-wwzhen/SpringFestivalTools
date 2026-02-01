@@ -1,7 +1,7 @@
 // pages/tabbar/kinship.js
 Page({
-  onLoad() {
-    wx.navigateTo({
+  onShow() {
+    wx.reLaunch({
       url: '/pages-kinship/index/index'
     })
   }

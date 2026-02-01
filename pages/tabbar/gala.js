@@ -1,7 +1,7 @@
 // pages/tabbar/gala.js
 Page({
-  onLoad() {
-    wx.navigateTo({
+  onShow() {
+    wx.reLaunch({
       url: '/pages-gala/platforms/index'
     })
   }
