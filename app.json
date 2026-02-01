@@ -1,0 +1,94 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/webview/index",
+    "pages/tabbar/redpack",
+    "pages/tabbar/gala",
+    "pages/tabbar/kinship"
+  ],
+  "subpackages": [
+    {
+      "root": "pages-redpack",
+      "name": "redpack",
+      "pages": [
+        "list/index",
+        "detail/index",
+        "calendar/index"
+      ]
+    },
+    {
+      "root": "pages-gala",
+      "name": "gala",
+      "pages": [
+        "platforms/index",
+        "programs/index",
+        "timeline/index"
+      ]
+    },
+    {
+      "root": "pages-kinship",
+      "name": "kinship",
+      "pages": [
+        "index/index",
+        "calculator/index",
+        "chart/index"
+      ]
+    },
+    {
+      "root": "pages-emoticon",
+      "name": "emoticon",
+      "pages": [
+        "categories/index",
+        "gallery/index",
+        "detail/index"
+      ]
+    },
+    {
+      "root": "pages-about",
+      "name": "about",
+      "pages": [
+        "index/index"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#E63946",
+    "navigationBarTitleText": "春节攻略",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F8F9FA",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#E63946",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/tabbar/redpack",
+        "text": "红包攻略"
+      },
+      {
+        "pagePath": "pages/tabbar/gala",
+        "text": "春晚"
+      },
+      {
+        "pagePath": "pages/tabbar/kinship",
+        "text": "亲戚称呼"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置信息将用于推荐本地春晚信息"
+    }
+  },
+  "requiredBackgroundModes": ["audio"],
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

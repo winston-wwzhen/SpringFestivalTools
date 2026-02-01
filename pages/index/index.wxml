@@ -1,0 +1,83 @@
+<!--pages/index/index.wxml-->
+<view class="page">
+  <!-- 头部区域 -->
+  <view class="header">
+    <view class="header__bg"></view>
+    <view class="header__content">
+      <view class="greeting">春节快乐</view>
+      <view class="countdown">
+        <view class="countdown__label">距离春节还有</view>
+        <view class="countdown__days">{{countdownDays}}</view>
+        <view class="countdown__unit">天</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能入口 -->
+  <view class="features">
+    <view class="features__title">春节攻略</view>
+    <view class="features__grid">
+      <view class="feature-card" bindtap="goToRedpack">
+        <view class="feature-card__icon feature-card__icon--redpack">🧧</view>
+        <view class="feature-card__title">红包攻略</view>
+        <view class="feature-card__desc">各平台红包活动</view>
+        <view class="feature-card__badge" wx:if="{{redpackCount > 0}}">{{redpackCount}}个活动</view>
+      </view>
+
+      <view class="feature-card" bindtap="goToGala">
+        <view class="feature-card__icon feature-card__icon--gala">🎭</view>
+        <view class="feature-card__title">春晚节目单</view>
+        <view class="feature-card__desc">各地春晚精彩节目</view>
+        <view class="feature-card__badge" wx:if="{{galaCount > 0}}">{{galaCount}}台春晚</view>
+      </view>
+
+      <view class="feature-card" bindtap="goToKinship">
+        <view class="feature-card__icon feature-card__icon--kinship">👨‍👩‍👧‍👦</view>
+        <view class="feature-card__title">亲戚称呼</view>
+        <view class="feature-card__desc">拜年称呼不尴尬</view>
+      </view>
+
+      <view class="feature-card" bindtap="goToEmoticon">
+        <view class="feature-card__icon feature-card__icon--emoticon">😄</view>
+        <view class="feature-card__title">表情包</view>
+        <view class="feature-card__desc">马年专属表情</view>
+        <view class="feature-card__badge" wx:if="{{emoticonCount > 0}}">{{emoticonCount}}个表情</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 每日精选 -->
+  <view class="daily">
+    <view class="section-header">
+      <view class="section-header__title">每日精选</view>
+      <view class="section-header__more" bindtap="loadMore">
+        查看更多 <text class="icon">›</text>
+      </view>
+    </view>
+
+    <view class="daily-list">
+      <view class="daily-item" wx:for="{{dailyItems}}" wx:key="id" bindtap="goToDetail" data-item="{{item}}">
+        <view class="daily-item__icon">{{item.icon}}</view>
+        <view class="daily-item__content">
+          <view class="daily-item__title">{{item.title}}</view>
+          <view class="daily-item__desc">{{item.description}}</view>
+          <view class="daily-item__meta">
+            <text class="tag tag--{{item.type}}">{{item.category}}</text>
+            <text class="time">{{item.time}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 春节小知识 -->
+  <view class="tips">
+    <view class="tips__title">春节小知识</view>
+    <view class="tips__content">
+      <view class="tip-item" wx:for="{{tips}}" wx:key="index">
+        <text class="tip-item__icon">💡</text>
+        <text class="tip-item__text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+</view>
