@@ -54,22 +54,24 @@ function request(options) {
 /**
  * GET 请求
  */
-function get(url, data = {}) {
+function get(url, data = {}, timeout) {
   return request({
     url,
     method: 'GET',
-    data
+    data,
+    timeout
   })
 }
 
 /**
  * POST 请求
  */
-function post(url, data = {}) {
+function post(url, data = {}, timeout) {
   return request({
     url,
     method: 'POST',
-    data
+    data,
+    timeout
   })
 }
 

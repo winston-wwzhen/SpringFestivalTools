@@ -15,9 +15,9 @@ const redpack = {
     return request.get(`/redpack/${id}`)
   },
 
-  // 获取红包活动数量
+  // 获取红包活动数量（5秒超时）
   getCount() {
-    return request.get('/redpack/count')
+    return request.get('/redpack/count', {}, 5000)
   },
 
   // 按日期获取红包活动
@@ -40,9 +40,9 @@ const gala = {
     return request.get(`/gala/${platformId}/programs`)
   },
 
-  // 获取春晚数量
+  // 获取春晚数量（5秒超时）
   getCount() {
-    return request.get('/gala/count')
+    return request.get('/gala/count', {}, 5000)
   },
 
   // 获取时间轴
@@ -55,9 +55,9 @@ const gala = {
  * 亲戚称呼相关接口
  */
 const kinship = {
-  // 计算称呼
+  // 计算称呼（60秒超时，AI调用需要更长时间）
   calculate(params) {
-    return request.post('/kinship/calculate', params)
+    return request.post('/kinship/calculate', params, 60000)
   },
 
   // 搜索称呼
@@ -90,9 +90,9 @@ const emoticon = {
     return request.get(`/emoticon/${id}`)
   },
 
-  // 获取表情包数量
+  // 获取表情包数量（5秒超时）
   getCount() {
-    return request.get('/emoticon/count')
+    return request.get('/emoticon/count', {}, 5000)
   }
 }
 
