@@ -2,7 +2,7 @@
 App({
   globalData: {
     // 服务器配置
-    serverUrl: 'https://your-server.com/api',
+    serverUrl: 'http://49.234.120.81/api',
     // 用户信息
     userInfo: null,
     // 春节日期（当年）

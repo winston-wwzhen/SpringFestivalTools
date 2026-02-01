@@ -66,19 +66,27 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "images/tabbar/home.png",
+        "selectedIconPath": "images/tabbar/home-active.png"
       },
       {
         "pagePath": "pages/tabbar/redpack",
-        "text": "红包攻略"
+        "text": "红包攻略",
+        "iconPath": "images/tabbar/redpack.png",
+        "selectedIconPath": "images/tabbar/redpack-active.png"
       },
       {
         "pagePath": "pages/tabbar/gala",
-        "text": "春晚"
+        "text": "春晚",
+        "iconPath": "images/tabbar/gala.png",
+        "selectedIconPath": "images/tabbar/gala-active.png"
       },
       {
         "pagePath": "pages/tabbar/kinship",
-        "text": "亲戚称呼"
+        "text": "亲戚称呼",
+        "iconPath": "images/tabbar/kinship.png",
+        "selectedIconPath": "images/tabbar/kinship-active.png"
       }
     ]
   },
