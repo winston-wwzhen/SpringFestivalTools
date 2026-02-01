@@ -24,8 +24,8 @@ function request(options) {
       },
       success: (res) => {
         if (res.statusCode === 200) {
-          // 业务成功
-          if (res.data.code === 0) {
+          // 业务成功 - 支持 code: 0 或 success: true 两种格式
+          if (res.data.code === 0 || res.data.success === true) {
             resolve(res.data)
           } else {
             // 业务失败

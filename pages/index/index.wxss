@@ -89,8 +89,8 @@
 .greeting-text {
   font-size: 60rpx;
   font-weight: 800;
-  color: #fff;
-  text-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
+  color: #FFD700;
+  text-shadow: 0 4rpx 12rpx rgba(0,0,0,0.3);
   letter-spacing: 2rpx;
   line-height: 1.2;
 }
@@ -109,13 +109,13 @@
 
 /* 倒计时 */
 .countdown {
-  color: #fff;
+  color: #FFF8E7;
   margin-bottom: 32rpx;
 }
 
 .countdown__label {
   font-size: 28rpx;
-  opacity: 0.9;
+  opacity: 1;
   margin-bottom: 8rpx;
   display: block;
   letter-spacing: 1rpx;
@@ -131,11 +131,9 @@
   font-size: 100rpx;
   font-weight: 900;
   line-height: 0.9;
-  background: linear-gradient(to bottom, #fff, #FFECB3);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #FFD700;
   margin-right: 12rpx;
-  text-shadow: 0 4rpx 20rpx rgba(0,0,0,0.15); /* 用于增强可读性的后备阴影 */
+  text-shadow: 0 4rpx 20rpx rgba(0,0,0,0.3);
 }
 
 .countdown__unit {
@@ -155,7 +153,7 @@
 }
 
 .tip-icon { font-size: 28rpx; margin-right: 10rpx; }
-.tip-text { font-size: 24rpx; color: rgba(255,255,255,0.9); }
+.tip-text { font-size: 24rpx; color: #FFF8E7; }
 
 
 /* 功能入口 - 卡片上浮效果 */

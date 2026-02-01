@@ -351,7 +351,7 @@ Page({
       {
         id: 3,
         platform_name: '字节豆包',
-        platform_icon: '',
+        platform_icon: '/images/platform-doubao.png',
         platform_emoji: '🎭',
         title: '央视春晚互动',
         description: '2026央视春晚独家互动合作伙伴，春晚期间参与互动赢好礼',
@@ -460,7 +460,7 @@ Page({
       {
         id: 5,
         platform_name: '京东',
-        platform_icon: '',
+        platform_icon: '/images/platform-jd.png',
         platform_emoji: '🛒',
         title: '春节红包口令',
         description: '输入红包口令"福利500"或"红包500"，领取满减优惠券',
@@ -511,7 +511,7 @@ Page({
       {
         id: 6,
         platform_name: '淘宝/天猫',
-        platform_icon: '',
+        platform_icon: '/images/platform-taobao.png',
         platform_emoji: '🛍️',
         title: '年货节红包',
         description: '搜索口令"天降红包339"或"红包到手1717"领取红包，每日可领',
@@ -562,7 +562,7 @@ Page({
       {
         id: 7,
         platform_name: '拼多多',
-        platform_icon: '',
+        platform_icon: '/images/platform-pinduoduo.png',
         platform_emoji: '🍑',
         title: '春节不打烊',
         description: '2月7日-24日活动，188大促券、三单挑战、砸金蛋、整点抢券',
@@ -611,7 +611,7 @@ Page({
       {
         id: 8,
         platform_name: '美团',
-        platform_icon: '',
+        platform_icon: '/images/platform-meituan.png',
         platform_emoji: '🟡',
         title: '外卖闪购红包',
         description: '使用词令APP输入口令"8080"，领取美团外卖和闪购红包',
@@ -661,7 +661,7 @@ Page({
       {
         id: 9,
         platform_name: '淘宝闪购',
-        platform_icon: '',
+        platform_icon: '/images/platform-shangou.png',
         platform_emoji: '⚡',
         title: '闪购外卖红包',
         description: '通过草柴APP或词令APP领取，春节期间外卖优惠不断',
