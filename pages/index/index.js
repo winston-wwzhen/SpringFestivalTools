@@ -135,8 +135,15 @@ Page({
    * 跳转到红包攻略
    */
   goToRedpack() {
+    console.log('[Index] goToRedpack called')
     wx.navigateTo({
-      url: '/pages-redpack/list/index'
+      url: '/pages-redpack/list/index',
+      success: () => {
+        console.log('[Index] navigateTo redpack success')
+      },
+      fail: (err) => {
+        console.error('[Index] navigateTo redpack failed:', err)
+      }
     })
   },
 
@@ -144,8 +151,15 @@ Page({
    * 跳转到春晚节目单
    */
   goToGala() {
+    console.log('[Index] goToGala called')
     wx.navigateTo({
-      url: '/pages-gala/platforms/index'
+      url: '/pages-gala/platforms/index',
+      success: () => {
+        console.log('[Index] navigateTo gala success')
+      },
+      fail: (err) => {
+        console.error('[Index] navigateTo gala failed:', err)
+      }
     })
   },
 
@@ -153,8 +167,15 @@ Page({
    * 跳转到亲戚称呼
    */
   goToKinship() {
+    console.log('[Index] goToKinship called')
     wx.navigateTo({
-      url: '/pages-kinship/index/index'
+      url: '/pages-kinship/index/index',
+      success: () => {
+        console.log('[Index] navigateTo kinship success')
+      },
+      fail: (err) => {
+        console.error('[Index] navigateTo kinship failed:', err)
+      }
     })
   },
 

@@ -1,2 +1,62 @@
 <!--pages-kinship/index/index.wxml-->
-<text>pages-kinship/index/index.wxml</text>
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">👨‍👩‍👧‍👦 亲戚称呼计算器</text>
+    <text class="page-subtitle">拜年不尴尬，称呼要准确</text>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="quick-actions">
+    <view class="action-card" bindtap="goToCalculator">
+      <view class="action-icon">🧮</view>
+      <view class="action-title">称呼计算器</view>
+      <view class="action-desc">输入关系，自动称呼</view>
+    </view>
+    <view class="action-card" bindtap="goToChart">
+      <view class="action-icon">📊</view>
+      <view class="action-title">关系图谱</view>
+      <view class="action-desc">亲戚关系一目了然</view>
+    </view>
+  </view>
+
+  <!-- 常用称呼 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">常用称呼</text>
+      <text class="section-more" bindtap="goToCalculator">更多 ›</text>
+    </view>
+    <view class="relation-list">
+      <view class="relation-item" wx:for="{{commonRelations}}" wx:key="id" bindtap="showDetail" data-item="{{item}}">
+        <view class="relation-icon">{{item.icon}}</view>
+        <view class="relation-info">
+          <view class="relation-name">{{item.name}}</view>
+          <view class="relation-desc">{{item.description}}</view>
+        </view>
+        <view class="relation-arrow">›</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 热门搜索 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">热门搜索</text>
+    </view>
+    <view class="hot-search">
+      <view class="search-tag" wx:for="{{hotSearch}}" wx:key="*this" bindtap="searchRelation" data-keyword="{{item}}">
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 使用提示 -->
+  <view class="tips">
+    <view class="tips-title">💡 使用提示</view>
+    <view class="tips-list">
+      <view class="tips-item">• 点击"称呼计算器"输入复杂关系</view>
+      <view class="tips-item">• 支持父系、母系双向计算</view>
+      <view class="tips-item">• 覆盖大部分中国亲属称谓</view>
+    </view>
+  </view>
+</view>

@@ -1,66 +1,89 @@
 // pages-kinship/index/index.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    commonRelations: [
+      { id: 1, icon: '👨', name: '爸爸', description: '父亲的称呼' },
+      { id: 2, icon: '👩', name: '妈妈', description: '母亲的称呼' },
+      { id: 3, icon: '👴', name: '爷爷', description: '父亲的父亲' },
+      { id: 4, icon: '👵', name: '奶奶', description: '父亲的母亲' },
+      { id: 5, icon: '👨‍🦳', name: '外公', description: '母亲的父亲' },
+      { id: 6, icon: '👩‍🦳', name: '外婆', description: '母亲的母亲' }
+    ],
+    hotSearch: [
+      '表哥', '堂弟', '舅妈', '姑父', '姨夫', '婶婶', '嫂子', '弟妹'
+    ]
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad(options) {
-
+    console.log('[KinshipIndex] onLoad triggered')
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow() {
-
+    console.log('[KinshipIndex] onShow triggered')
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
+  onReady() {
+    console.log('[KinshipIndex] onReady triggered')
+  },
+
   onHide() {
-
+    console.log('[KinshipIndex] onHide triggered')
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
   onUnload() {
-
+    console.log('[KinshipIndex] onUnload triggered')
   },
 
   /**
-   * 页面相关事件处理函数--监听用户下拉动作
+   * 跳转计算器
    */
-  onPullDownRefresh() {
-
+  goToCalculator() {
+    console.log('[KinshipIndex] Go to calculator')
+    wx.navigateTo({
+      url: '/pages-kinship/calculator/index'
+    })
   },
 
   /**
-   * 页面上拉触底事件的处理函数
+   * 跳转关系图
    */
-  onReachBottom() {
-
+  goToChart() {
+    console.log('[KinshipIndex] Go to chart')
+    wx.navigateTo({
+      url: '/pages-kinship/chart/index'
+    })
   },
 
   /**
-   * 用户点击右上角分享
+   * 显示详情
+   */
+  showDetail(e) {
+    const item = e.currentTarget.dataset.item
+    console.log('[KinshipIndex] Show detail:', item)
+    wx.showToast({
+      title: item.name,
+      icon: 'none'
+    })
+  },
+
+  /**
+   * 搜索称呼
+   */
+  searchRelation(e) {
+    const keyword = e.currentTarget.dataset.keyword
+    console.log('[KinshipIndex] Search relation:', keyword)
+    wx.navigateTo({
+      url: `/pages-kinship/calculator/index?keyword=${keyword}`
+    })
+  },
+
+  /**
+   * 分享
    */
   onShareAppMessage() {
-
+    return {
+      title: '亲戚称呼计算器',
+      path: '/pages-kinship/index/index'
+    }
   }
 })
