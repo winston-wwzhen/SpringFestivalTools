@@ -10,19 +10,15 @@
   <view class="platform-list">
     <block wx:if="{{list.length > 0}}">
       <view class="platform-card" wx:for="{{list}}" wx:key="id" bindtap="goToPrograms" data-id="{{item.id}}">
-        <view class="card-cover">
-          <image class="cover-image" src="{{item.cover_image || '/images/gala-default.png'}}" mode="aspectFill"></image>
-          <view class="cover-badge" wx:if="{{item.is_live}}">
-            <text class="live-dot"></text>
-            <text>直播中</text>
-          </view>
-        </view>
-
+        <view class="card-badge">{{item.short_name}}</view>
         <view class="card-body">
           <view class="platform-header">
-            <image class="platform-logo" src="{{item.logo || '/images/icon-platform.png'}}" mode="aspectFit"></image>
+            <view class="platform-logo">{{item.emoji || '📺'}}</view>
             <view class="platform-info">
-              <view class="platform-name">{{item.name}}</view>
+              <view class="platform-name">
+                {{item.name}}
+                <text class="live-badge" wx:if="{{item.is_live}}">直播中</text>
+              </view>
               <view class="platform-time">{{item.broadcast_time}}</view>
             </view>
           </view>

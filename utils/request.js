@@ -17,6 +17,7 @@ function request(options) {
       url: app.globalData.serverUrl + url,
       method,
       data,
+      timeout: 10000, // 10秒超时
       header: {
         'content-type': 'application/json',
         'Authorization': token ? `Bearer ${token}` : '',

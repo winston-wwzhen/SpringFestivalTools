@@ -27,6 +27,42 @@
         <text class="tip-icon">🧧</text>
         <text class="tip-text">红包攻略已就位</text>
       </view>
+
+      <!-- 福字装饰 -->
+      <view class="fu-decoration">
+        <!-- 背景装饰圆 -->
+        <view class="fu-bg-circle-1"></view>
+        <view class="fu-bg-circle-2"></view>
+        <view class="fu-bg-circle-3"></view>
+
+        <!-- 祥云装饰 -->
+        <view class="cloud cloud-1">☁</view>
+        <view class="cloud cloud-2">☁</view>
+
+        <!-- 鞭炮装饰 -->
+        <view class="firework firework-1">🧨</view>
+        <view class="firework firework-2">🧨</view>
+
+        <!-- 主福字 -->
+        <view class="fu-square">
+          <view class="fu-square-border"></view>
+          <view class="fu-character">福</view>
+        </view>
+
+        <!-- 春字对联 -->
+        <view class="chun-char-top">春</view>
+        <view class="chun-char-bottom">节</view>
+
+        <!-- 灯笼装饰 -->
+        <view class="lantern-decoration lantern-1">🏮</view>
+        <view class="lantern-decoration lantern-2">🏮</view>
+
+        <!-- 花纹装饰 -->
+        <view class="pattern pattern-1"></view>
+        <view class="pattern pattern-2"></view>
+        <view class="pattern pattern-3"></view>
+        <view class="pattern pattern-4"></view>
+      </view>
     </view>
   </view>
 
@@ -35,27 +71,43 @@
     <view class="features__title">春节攻略</view>
     <view class="features__grid">
       <view class="feature-card" bindtap="goToRedpack">
-        <view class="feature-card__icon feature-card__icon--redpack">🧧</view>
+        <view class="card-decoration">福</view>
+        <view class="icon-wrapper">
+          <view class="icon-bg"></view>
+          <view class="feature-card__icon feature-card__icon--redpack">🧧</view>
+        </view>
         <view class="feature-card__title">红包攻略</view>
         <view class="feature-card__desc">各平台红包活动</view>
         <view class="feature-card__badge" wx:if="{{redpackCount > 0}}">{{redpackCount}}个活动</view>
       </view>
 
       <view class="feature-card" bindtap="goToGala">
-        <view class="feature-card__icon feature-card__icon--gala">🎭</view>
+        <view class="card-decoration">春</view>
+        <view class="icon-wrapper">
+          <view class="icon-bg"></view>
+          <view class="feature-card__icon feature-card__icon--gala">🎭</view>
+        </view>
         <view class="feature-card__title">春晚节目单</view>
         <view class="feature-card__desc">各地春晚精彩节目</view>
         <view class="feature-card__badge" wx:if="{{galaCount > 0}}">{{galaCount}}台春晚</view>
       </view>
 
       <view class="feature-card" bindtap="goToKinship">
-        <view class="feature-card__icon feature-card__icon--kinship">👨‍👩‍👧‍👦</view>
+        <view class="card-decoration">家</view>
+        <view class="icon-wrapper">
+          <view class="icon-bg"></view>
+          <view class="feature-card__icon feature-card__icon--kinship">👨‍👩‍👧‍👦</view>
+        </view>
         <view class="feature-card__title">亲戚称呼</view>
         <view class="feature-card__desc">拜年称呼不尴尬</view>
       </view>
 
       <view class="feature-card" bindtap="goToEmoticon">
-        <view class="feature-card__icon feature-card__icon--emoticon">😄</view>
+        <view class="card-decoration">乐</view>
+        <view class="icon-wrapper">
+          <view class="icon-bg"></view>
+          <view class="feature-card__icon feature-card__icon--emoticon">😄</view>
+        </view>
         <view class="feature-card__title">表情包</view>
         <view class="feature-card__desc">马年专属表情</view>
         <view class="feature-card__badge" wx:if="{{emoticonCount > 0}}">{{emoticonCount}}个表情</view>
@@ -63,27 +115,12 @@
     </view>
   </view>
 
-  <!-- 每日精选 -->
-  <view class="daily">
-    <view class="section-header">
-      <view class="section-header__title">每日精选</view>
-      <view class="section-header__more" bindtap="loadMore">
-        查看更多 <text class="icon">›</text>
-      </view>
-    </view>
-
-    <view class="daily-list">
-      <view class="daily-item" wx:for="{{dailyItems}}" wx:key="id" bindtap="goToDetail" data-item="{{item}}">
-        <view class="daily-item__icon">{{item.icon}}</view>
-        <view class="daily-item__content">
-          <view class="daily-item__title">{{item.title}}</view>
-          <view class="daily-item__desc">{{item.description}}</view>
-          <view class="daily-item__meta">
-            <text class="tag tag--{{item.type}}">{{item.category}}</text>
-            <text class="time">{{item.time}}</text>
-          </view>
-        </view>
-      </view>
+  <!-- 广告位 -->
+  <view class="ad-banner">
+    <view class="ad-placeholder">
+      <text class="ad-icon">📢</text>
+      <text class="ad-text">广告位招租</text>
+      <text class="ad-desc">优质流量 精准触达</text>
     </view>
   </view>
 

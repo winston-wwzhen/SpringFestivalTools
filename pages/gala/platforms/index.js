@@ -93,8 +93,8 @@ Page({
       {
         id: 1,
         name: '中央广播电视总台',
-        logo: '/images/gala-cctv.png',
-        cover_image: '/images/gala-cctv-cover.png',
+        short_name: '央',
+        emoji: '📺',
         broadcast_time: '2026年1月28日 20:00',
         program_count: 42,
         is_live: false,
@@ -102,43 +102,163 @@ Page({
       },
       {
         id: 2,
-        name: '辽宁卫视',
-        logo: '/images/gala-liaoning.png',
-        cover_image: '/images/gala-liaoning-cover.png',
+        name: '湖南卫视',
+        short_name: '湘',
+        emoji: '🌶️',
         broadcast_time: '2026年1月28日 19:30',
-        program_count: 35,
+        program_count: 38,
         is_live: false,
-        tags: ['卫视', '东北特色', '小品']
+        tags: ['卫视', '快乐', '青春']
       },
       {
         id: 3,
-        name: '河南卫视',
-        logo: '/images/gala-henan.png',
-        cover_image: '/images/gala-henan-cover.png',
+        name: '浙江卫视',
+        short_name: '浙',
+        emoji: '💫',
         broadcast_time: '2026年1月28日 19:30',
-        program_count: 30,
+        program_count: 35,
         is_live: false,
-        tags: ['卫视', '传统文化', '国风']
+        tags: ['卫视', '综艺', '潮流']
       },
       {
         id: 4,
+        name: '东方卫视',
+        short_name: '沪',
+        emoji: '🌃',
+        broadcast_time: '2026年1月28日 19:30',
+        program_count: 32,
+        is_live: false,
+        tags: ['卫视', '海派', '都市']
+      },
+      {
+        id: 5,
         name: '江苏卫视',
-        logo: '/images/gala-jiangsu.png',
-        cover_image: '/images/gala-jiangsu-cover.png',
+        short_name: '苏',
+        emoji: '🍒',
         broadcast_time: '2026年1月28日 19:30',
         program_count: 28,
         is_live: false,
         tags: ['卫视', '荔枝', '科技创新']
       },
       {
-        id: 5,
+        id: 6,
         name: '北京卫视',
-        logo: '/images/gala-beijing.png',
-        cover_image: '/images/gala-beijing-cover.png',
+        short_name: '京',
+        emoji: '🧧',
         broadcast_time: '2026年1月28日 19:30',
         program_count: 32,
         is_live: false,
         tags: ['卫视', '京味儿', '冰雪']
+      },
+      {
+        id: 7,
+        name: '辽宁卫视',
+        short_name: '辽',
+        emoji: '🎭',
+        broadcast_time: '2026年1月28日 19:30',
+        program_count: 35,
+        is_live: false,
+        tags: ['卫视', '东北特色', '小品']
+      },
+      {
+        id: 8,
+        name: '河南卫视',
+        short_name: '豫',
+        emoji: '🏮',
+        broadcast_time: '2026年1月28日 19:30',
+        program_count: 30,
+        is_live: false,
+        tags: ['卫视', '传统文化', '国风']
+      },
+      {
+        id: 9,
+        name: '广东卫视',
+        short_name: '粤',
+        emoji: '🧨',
+        broadcast_time: '2026年1月28日 19:30',
+        program_count: 29,
+        is_live: false,
+        tags: ['卫视', '岭南', '粤语']
+      },
+      {
+        id: 10,
+        name: '四川卫视',
+        short_name: '川',
+        emoji: '🐼',
+        broadcast_time: '2026年1月28日 19:30',
+        program_count: 27,
+        is_live: false,
+        tags: ['卫视', '巴蜀', '麻辣']
+      },
+      {
+        id: 11,
+        name: '山东卫视',
+        short_name: '鲁',
+        emoji: '⛰️',
+        broadcast_time: '2026年1月28日 19:30',
+        program_count: 31,
+        is_live: false,
+        tags: ['卫视', '儒家', '豪爽']
+      },
+      {
+        id: 12,
+        name: '湖北卫视',
+        short_name: '鄂',
+        emoji: '🌸',
+        broadcast_time: '2026年1月28日 19:30',
+        program_count: 26,
+        is_live: false,
+        tags: ['卫视', '荆楚', '黄鹤']
+      },
+      {
+        id: 13,
+        name: '陕西卫视',
+        short_name: '陕',
+        emoji: '🏛️',
+        broadcast_time: '2026年1月28日 19:30',
+        program_count: 25,
+        is_live: false,
+        tags: ['卫视', '秦腔', '大唐']
+      },
+      {
+        id: 14,
+        name: '天津卫视',
+        short_name: '津',
+        emoji: '🎪',
+        broadcast_time: '2026年1月28日 19:30',
+        program_count: 28,
+        is_live: false,
+        tags: ['卫视', '相声', '幽默']
+      },
+      {
+        id: 15,
+        name: '黑龙江卫视',
+        short_name: '黑',
+        emoji: '❄️',
+        broadcast_time: '2026年1月28日 19:30',
+        program_count: 30,
+        is_live: false,
+        tags: ['卫视', '冰雪', '北国']
+      },
+      {
+        id: 16,
+        name: '安徽卫视',
+        short_name: '皖',
+        emoji: '🎋',
+        broadcast_time: '2026年1月28日 19:30',
+        program_count: 27,
+        is_live: false,
+        tags: ['卫视', '徽派', '黄山']
+      },
+      {
+        id: 17,
+        name: '深圳卫视',
+        short_name: '深',
+        emoji: '🌊',
+        broadcast_time: '2026年1月28日 19:30',
+        program_count: 24,
+        is_live: false,
+        tags: ['卫视', '科技', '创新']
       }
     ]
   }
