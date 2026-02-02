@@ -43,3 +43,6 @@ Thumbs.db
 # 临时文件
 *.tmp
 .temp/
+
+# 图片源文件（不需要打包）
+images/raw/
