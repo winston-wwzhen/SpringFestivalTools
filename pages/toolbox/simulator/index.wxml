@@ -24,17 +24,6 @@
       </view>
     </view>
 
-    <!-- 属性显示 -->
-    <view class="stats-panel">
-      <view class="stat-item" wx:for="{{statsList}}" wx:key="key">
-        <text class="stat-icon">{{item.icon}}</text>
-        <view class="stat-bar">
-          <view class="stat-fill" style="width: {{item.value}}%; background: {{item.color}};"></view>
-        </view>
-        <text class="stat-value">{{item.value}}</text>
-      </view>
-    </view>
-
     <!-- 事件卡片 -->
     <view class="event-card" wx:if="{{currentEvent}}">
       <view class="event-header">
