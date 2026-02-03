@@ -1,6 +1,6 @@
-<!--pages/kinship/index/index.wxml-->
+<!--pages/toolbox/kinship/index.wxml-->
 <view class="container">
-  <nav-bar title="称呼计算器" bgColor="#D32F2F"></nav-bar>
+  <nav-bar title="亲戚称呼" bgColor="#D32F2F" showBack="{{true}}"></nav-bar>
 
   <!-- 装饰灯笼 -->
   <view class="lantern-left">🏮</view>
