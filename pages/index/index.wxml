@@ -93,7 +93,7 @@
       </view>
 
       <view class="feature-card" bindtap="goToToolbox">
-        <view class="card-decoration">福</view>
+        <view class="card-decoration">禄</view>
         <view class="icon-wrapper">
           <view class="icon-bg"></view>
           <view class="feature-card__icon feature-card__icon--toolbox">🧰</view>
