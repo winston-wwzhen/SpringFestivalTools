@@ -605,7 +605,29 @@
 
 /* 春节小知识 - 卡片化 */
 .tips {
-  padding: 0 32rpx 64rpx;
+  padding: 48rpx 32rpx 64rpx;
+}
+
+.tips__title {
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #D32F2F;
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.tips__title::before {
+  content: '💡';
+  font-size: 32rpx;
+}
+
+.tips__title::after {
+  content: '';
+  flex: 1;
+  height: 2rpx;
+  background: linear-gradient(90deg, rgba(211, 47, 47, 0.3), transparent);
 }
 
 .tips__content {
