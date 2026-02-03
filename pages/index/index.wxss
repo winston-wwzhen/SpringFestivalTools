@@ -471,9 +471,28 @@
   font-family: "KaiTi", "STKaiti", "楷体", serif;
   font-size: 80rpx;
   font-weight: 900;
-  color: rgba(211, 47, 47, 0.08);
+  color: #FFD700;
   pointer-events: none;
   z-index: 1;
+  text-shadow:
+    0 0 10rpx rgba(255, 215, 0, 0.8),
+    0 0 20rpx rgba(255, 215, 0, 0.6),
+    0 0 30rpx rgba(255, 215, 0, 0.4),
+    2rpx 2rpx 0 rgba(183, 28, 28, 0.1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: decorationGlow 3s ease-in-out infinite;
+}
+
+@keyframes decorationGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
 }
 
 /* 图标包裹容器 */
