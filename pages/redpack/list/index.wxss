@@ -141,15 +141,29 @@
 }
 
 .activity-card::before {
+  content: '';
+  position: absolute;
+  top: 50rpx;
+  right: 0rpx;
+  width: 90rpx;
+  height: 90rpx;
+  border: 3rpx solid #D32F2F;
+  border-radius: 50%;
+  opacity: 0.08;
+  z-index: 0;
+}
+
+.activity-card::after {
   content: '福';
   position: absolute;
   top: 60rpx;
   right: 10rpx;
-  font-size: 100rpx;
+  font-size: 80rpx;
   font-family: "KaiTi", "STKaiti", "楷体", serif;
   color: #D32F2F;
-  opacity: 0.06;
+  opacity: 0.1;
   font-weight: 900;
+  z-index: 0;
 }
 
 .activity-card:active {
