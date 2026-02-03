@@ -1,14 +1,14 @@
 /* pages/toolbox/fortune/index.wxss */
 .page {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #B71C1C 0, #B71C1C 160rpx, #FFF8E7 160rpx);
+  background: linear-gradient(to bottom, #B71C1C 0, #B71C1C 80rpx, #FFF8E7 80rpx);
   padding-bottom: 40rpx;
 }
 
 /* 头部 */
 .header {
   position: relative;
-  padding: 140rpx 40rpx 50rpx;
+  padding: 40rpx 40rpx 50rpx;
   background: linear-gradient(135deg, #B71C1C 0%, #D32F2F 100%);
 }
 
@@ -45,7 +45,7 @@
 /* 表单区域 */
 .form-section {
   padding: 24rpx 32rpx;
-  margin-top: -30rpx;
+  margin-top: 20rpx;
   position: relative;
   z-index: 10;
 }

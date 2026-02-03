@@ -1,14 +1,14 @@
 /* pages/toolbox/simulator/index.wxss */
 .page {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #B71C1C 0, #B71C1C 140rpx, #1a1a1a 140rpx);
+  background: linear-gradient(to bottom, #B71C1C 0, #B71C1C 60rpx, #1a1a1a 60rpx);
   padding-bottom: 40rpx;
 }
 
 /* 头部 */
 .header {
   position: relative;
-  padding: 120rpx 40rpx 40rpx;
+  padding: 40rpx 40rpx 40rpx;
   background: linear-gradient(135deg, #B71C1C 0%, #D32F2F 100%);
 }
 
