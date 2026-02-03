@@ -23,7 +23,7 @@
       <view class="tool-icon">👨‍👩‍👧‍👦</view>
       <view class="tool-info">
         <view class="tool-title">亲戚称呼</view>
-        <view class="tool-desc">AI智能计算拜年称呼</view>
+        <view class="tool-desc">智能计算拜年称呼</view>
       </view>
       <view class="tool-arrow">›</view>
     </view>
@@ -64,7 +64,7 @@
     </view>
     <view class="tip-item">
       <text class="tip-icon">🎯</text>
-      <text class="tip-text">AI智能计算，结果准确可靠</text>
+      <text class="tip-text">智能计算，结果准确可靠</text>
     </view>
   </view>
 </view>

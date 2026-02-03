@@ -81,7 +81,7 @@ Page({
     this.setData({ loading: true })
 
     try {
-      // 调用后端AI接口
+      // 调用后端接口
       const result = await api.kinship.calculate({
         type: 'fortune',
         name,
@@ -112,7 +112,7 @@ Page({
   },
 
   /**
-   * 本地运势算法（AI失败时使用）
+   * 本地运势算法（接口失败时使用）
    */
   calculateLocalFortune(name, birthday, gender) {
     // 基于姓名和生日生成随机但固定的结果

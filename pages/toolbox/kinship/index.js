@@ -24,7 +24,7 @@ Page({
   },
 
   /**
-   * 计算称呼（调用智谱AI）
+   * 计算称呼
    */
   async calculate() {
     const input = this.data.input.trim()
@@ -40,10 +40,10 @@ Page({
     this.setData({ loading: true })
 
     try {
-      console.log('[KinshipIndex] Calling AI API with input:', input)
+      console.log('[KinshipIndex] Calling API with input:', input)
 
       const res = await api.kinship.calculate({ input })
-      console.log('[KinshipIndex] AI response:', res)
+      console.log('[KinshipIndex] API response:', res)
 
       if (res.success && res.data) {
         this.setData({
@@ -130,7 +130,7 @@ Page({
    */
   onShareAppMessage() {
     return {
-      title: '亲戚称呼计算器 - 智能AI解答',
+      title: '亲戚称呼计算器',
       path: '/pages/kinship/index/index'
     }
   }

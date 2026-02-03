@@ -58,7 +58,7 @@ Page({
     this.setData({ loading: true })
 
     try {
-      // 调用后端AI生成
+      // 调用后端接口生成
       const result = await api.kinship.calculate({
         type: 'blessing',
         receiver: receiver || '朋友',

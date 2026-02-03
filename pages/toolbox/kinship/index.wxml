@@ -8,8 +8,8 @@
 
   <!-- 输入区域 -->
   <view class="input-section">
-    <view class="section-title">🤖 AI 智能计算称呼</view>
-    <view class="input-hint">输入任意关系，AI为您计算</view>
+    <view class="section-title">🧮 智能计算称呼</view>
+    <view class="input-hint">输入任意关系，智能为您计算</view>
 
     <view class="input-group">
       <input class="input-field"
@@ -23,7 +23,7 @@
       <text>🧮 计算称呼</text>
     </view>
     <view class="btn-calculate loading" wx:else>
-      <text>🔄 AI思考中...</text>
+      <text>🔄 计算中...</text>
     </view>
   </view>
 
@@ -54,7 +54,7 @@
   <view class="tips-section">
     <view class="tips-title">📝 使用说明</view>
     <view class="tips-list">
-      <view class="tips-item">• 由智谱AI提供智能计算</view>
+      <view class="tips-item">• 智能计算，结果准确可靠</view>
       <view class="tips-item">• 支持复杂关系链的计算</view>
       <view class="tips-item">• 输入格式：关系A 的 关系B</view>
     </view>
