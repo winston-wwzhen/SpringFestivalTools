@@ -81,9 +81,6 @@ Page({
       stats: { ...option.stats }
     }]
 
-    // 显示属性变化提示
-    this.showStatsChange(option.stats)
-
     // 更新状态
     this.setData({
       currentStats: newStats,
@@ -94,12 +91,14 @@ Page({
 
     // 检查是否游戏结束
     if (this.data.currentMonth >= 12) {
-      this.endGame()
+      setTimeout(() => {
+        this.endGame()
+      }, 300)
     } else {
       // 进入下一个月
       setTimeout(() => {
         this.nextMonth()
-      }, 500)
+      }, 300)
     }
   },
 
