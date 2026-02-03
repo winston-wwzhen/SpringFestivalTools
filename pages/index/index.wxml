@@ -104,7 +104,7 @@
       </view>
 
       <view class="feature-card" bindtap="goToSimulator">
-        <view class="card-decoration">玩</view>
+        <view class="card-decoration">乐</view>
         <view class="icon-wrapper">
           <view class="icon-bg"></view>
           <view class="feature-card__icon feature-card__icon--simulator">🎊</view>
