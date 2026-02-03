@@ -65,7 +65,7 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/admin/'),
   routes
 })
 
@@ -83,7 +83,7 @@ router.beforeEach((to, from, next) => {
   if (requiresAuth && !authStore.isAuthenticated()) {
     next('/login')
   } else if (to.path === '/login' && authStore.isAuthenticated()) {
-    next('/')
+    next('/dashboard')
   } else {
     next()
   }

@@ -16,6 +16,8 @@ const commonRoutes = require('./routes/common')
 const authRoutes = require('./routes/auth')
 const auditRoutes = require('./routes/audit')
 const crawlerRoutes = require('./routes/crawler')
+const adminRedpackRoutes = require('./routes/admin-redpack')
+const adminGalaRoutes = require('./routes/admin-gala')
 
 // 爬虫调度器
 const crawlerService = require('./services/crawler')
@@ -69,6 +71,8 @@ app.use('/api/common', commonRoutes)
 app.use('/admin/api/auth', authRoutes)
 app.use('/admin/api/audit', auditRoutes)
 app.use('/admin/api/crawler', crawlerRoutes)
+app.use('/admin/api/admin/redpack', adminRedpackRoutes)
+app.use('/admin/api/admin/gala', adminGalaRoutes)
 
 // 健康检查
 app.get('/health', (req, res) => {

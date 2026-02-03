@@ -76,8 +76,9 @@ Page({
       try {
         const res = await api.redpack.getList(params)
         console.log('[RedpackList] Data loaded:', res)
-        if (res && Array.isArray(res.data)) {
-          list = res.data
+        // 修复：正确解析API返回的数据结构
+        if (res && res.data && Array.isArray(res.data.list)) {
+          list = res.data.list
         }
       } catch (apiError) {
         console.warn('[RedpackList] API request failed, will use mock data:', apiError)

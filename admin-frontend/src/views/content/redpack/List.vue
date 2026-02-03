@@ -32,12 +32,42 @@
 
     <!-- 数据表格 -->
     <div class="card">
-      <el-table v-loading="loading" :data="tableData">
+      <el-table
+        ref="tableRef"
+        v-loading="loading"
+        :data="tableData"
+        row-key="id"
+      >
+        <el-table-column width="50">
+          <template #default="{ $index }">
+            <el-icon class="drag-handle" style="cursor: move; cursor: grab;">
+              <DCaret />
+            </el-icon>
+          </template>
+        </el-table-column>
         <el-table-column prop="platform" label="平台" width="120" />
         <el-table-column prop="title" label="活动标题" min-width="200" />
         <el-table-column prop="description" label="描述" min-width="200" show-overflow-tooltip />
-        <el-table-column prop="startTime" label="开始时间" width="180" />
-        <el-table-column prop="endTime" label="结束时间" width="180" />
+        <el-table-column prop="startTime" label="开始时间" width="110">
+          <template #default="{ row }">
+            {{ formatDateTime(row.startTime) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="endTime" label="结束时间" width="110">
+          <template #default="{ row }">
+            {{ formatDateTime(row.endTime) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="isShow" label="是否展示" width="100">
+          <template #default="{ row }">
+            <el-switch
+              v-model="row.isShow"
+              :active-value="1"
+              :inactive-value="0"
+              @change="handleToggleShow(row)"
+            />
+          </template>
+        </el-table-column>
         <el-table-column prop="reviewStatus" label="审核状态" width="100">
           <template #default="{ row }">
             <el-tag :type="reviewStatusTypeMap[row.reviewStatus]" size="small">
@@ -133,6 +163,10 @@
             <el-radio label="ended">已结束</el-radio>
           </el-radio-group>
         </el-form-item>
+
+        <el-form-item label="是否展示">
+          <el-switch v-model="formData.isShow" :active-value="1" :inactive-value="0" />
+        </el-form-item>
       </el-form>
 
       <template #footer>
@@ -148,10 +182,13 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
+import { DCaret } from '@element-plus/icons-vue'
+import Sortable from 'sortablejs'
 import { redpackService } from '@/api/redpack'
 
 const loading = ref(false)
 const tableData = ref<any[]>([])
+const tableRef = ref()
 
 const filters = reactive({
   reviewStatus: ''
@@ -177,7 +214,8 @@ const formData = reactive({
   rules: '',
   startTime: '',
   endTime: '',
-  status: 'active'
+  status: 'active',
+  isShow: 1
 })
 
 const formRules: FormRules = {
@@ -197,6 +235,18 @@ const reviewStatusTypeMap: Record<string, any> = {
   pending: 'warning',
   approved: 'success',
   rejected: 'danger'
+}
+
+// 格式化日期时间
+const formatDateTime = (datetime: string | null) => {
+  if (!datetime) return '-'
+  const date = new Date(datetime)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  return `${year}-${month}-${day} ${hours}:${minutes}`
 }
 
 // 加载数据
@@ -242,7 +292,8 @@ const handleCreate = () => {
     rules: '',
     startTime: '',
     endTime: '',
-    status: 'active'
+    status: 'active',
+    isShow: 1
   })
   dialogVisible.value = true
 }
@@ -258,7 +309,8 @@ const handleEdit = (row: any) => {
     rules: row.rules || '',
     startTime: row.startTime,
     endTime: row.endTime,
-    status: row.status
+    status: row.status,
+    isShow: row.isShow ?? 1
   })
   dialogVisible.value = true
 }
@@ -312,8 +364,67 @@ const handleDialogClosed = () => {
   editId.value = null
 }
 
+// 初始化拖拽排序
+const initSortable = () => {
+  const tbody = document.querySelector('.redpack-list-page .el-table__body-wrapper tbody')
+  if (!tbody) return
+
+  Sortable.create(tbody as HTMLElement, {
+    handle: '.drag-handle',
+    animation: 150,
+    onEnd: async (evt: any) => {
+      const { oldIndex, newIndex } = evt
+      if (oldIndex === newIndex) return
+
+      // 更新数据
+      const movedItem = tableData.value.splice(oldIndex, 1)[0]
+      tableData.value.splice(newIndex, 0, movedItem)
+
+      // 生成新的排序
+      const items = tableData.value.map((item, index) => ({
+        id: item.id,
+        sortOrder: index + 1
+      }))
+
+      try {
+        await redpackService.updateSort(items)
+        ElMessage.success('排序已更新')
+        loadData()
+      } catch (error) {
+        // 失败则恢复原顺序
+        const restoredItem = tableData.value.splice(newIndex, 1)[0]
+        tableData.value.splice(oldIndex, 0, restoredItem)
+      }
+    }
+  })
+}
+
+// 切换显示状态
+const handleToggleShow = async (row: any) => {
+  try {
+    await redpackService.update(row.id, {
+      platform: row.platform,
+      title: row.title,
+      description: row.description,
+      rules: row.rules,
+      startTime: row.startTime,
+      endTime: row.endTime,
+      status: row.status,
+      isShow: row.isShow
+    })
+    ElMessage.success(row.isShow ? '已展示' : '已隐藏')
+  } catch (error) {
+    // 失败则恢复原状态
+    row.isShow = row.isShow ? 0 : 1
+  }
+}
+
 onMounted(() => {
   loadData()
+  // 延迟初始化拖拽，等待表格渲染完成
+  setTimeout(() => {
+    initSortable()
+  }, 500)
 })
 </script>
 
@@ -328,6 +439,15 @@ onMounted(() => {
 
   .actions-bar {
     margin-bottom: 20px;
+  }
+
+  .drag-handle {
+    cursor: move;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
   }
 }
 </style>

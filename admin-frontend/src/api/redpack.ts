@@ -48,8 +48,13 @@ export const update = (id: number, data: {
   startTime: string
   endTime: string
   status?: string
+  isShow?: number
 }) => {
   return http.put(`/admin/redpack/${id}`, data)
+}
+
+export const updateSort = (items: { id: number; sortOrder: number }[]) => {
+  return http.put('/admin/redpack/sort/batch', { items })
 }
 
 export const deleteItem = (id: number) => {
@@ -61,5 +66,6 @@ export const redpackService = {
   adminGetList,
   create,
   update,
+  updateSort,
   delete: deleteItem
 }
