@@ -527,15 +527,15 @@
 
 .feature-card__badge {
   position: absolute;
-  top: 0;
+  bottom: 0;
   right: 0;
   background: linear-gradient(135deg, #D32F2F, #B71C1C);
   color: #FFD700;
   font-size: 20rpx;
   padding: 6rpx 16rpx;
-  border-bottom-left-radius: 20rpx;
+  border-top-left-radius: 20rpx;
   font-weight: 600;
-  box-shadow: -2rpx 2rpx 8rpx rgba(211, 47, 47, 0.3);
+  box-shadow: -2rpx -2rpx 8rpx rgba(211, 47, 47, 0.3);
   border: 1rpx solid rgba(255, 215, 0, 0.3);
   z-index: 3;
 }
