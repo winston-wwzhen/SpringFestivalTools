@@ -4,6 +4,13 @@
 
   <!-- 游戏主界面 -->
   <view class="game-container" wx:if="{{currentScript && !gameEnding}}">
+    <!-- 游戏介绍 -->
+    <view class="game-intro">
+      <view class="intro-title">🎮 模拟你的2026</view>
+      <view class="intro-text">新的一年，新的开始！每月都会遇到不同的事件，你的每个选择都会影响人生走向。用心经营，创造属于你的精彩故事！</view>
+      <view class="intro-tips">💡 小贴士：每个选择都会影响财富、事业、爱情、健康和幸福值</view>
+    </view>
+
     <!-- 剧本信息卡片 -->
     <view class="script-info-card">
       <text class="script-icon">{{currentScript.icon}}</text>
