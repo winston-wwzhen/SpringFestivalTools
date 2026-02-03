@@ -23,7 +23,7 @@ class KinshipService {
 
   // 统一计算接口（支持多种功能）
   async calculate(params) {
-    const { type, relation, gender, receiver, blessingType, style, name, birthday } = params
+    const { type, relation, gender, receiver, blessingType, style, keyword } = params
 
     // 根据type调用不同功能
     switch (type) {
@@ -41,9 +41,9 @@ class KinshipService {
         }
 
       case 'fortune':
-        // 新年运势测算
+        // 新年运势测算（抽签形式，随机生成）
         try {
-          const fortune = await zhipu.calculateFortune(name, birthday, gender, params.keyword)
+          const fortune = await zhipu.calculateFortune(keyword)
           return fortune
         } catch (error) {
           throw new Error('AI测算失败，请使用本地算法')

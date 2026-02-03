@@ -362,14 +362,11 @@ async function generateBlessing(receiver, blessingType, style) {
 }
 
 /**
- * 测算新年运势
- * @param {string} name 姓名
- * @param {string} birthday 生日
- * @param {string} gender 性别
+ * 测算新年运势（抽签形式）
  * @param {string} keyword 关键字（love/career/wealth/health/study/family）
  */
-async function calculateFortune(name, birthday, gender, keyword) {
-  const userPrompt = `请为${name}（${gender === 'male' ? '男' : '女'}，生日：${birthday}）测算2026马年运势。`;
+async function calculateFortune(keyword) {
+  const userPrompt = `请为用户抽取2026马年运势签，生成随机的运势结果。`;
 
   const messages = [
     {
@@ -384,7 +381,7 @@ async function calculateFortune(name, birthday, gender, keyword) {
 
   try {
     const result = await callZhipuAI(messages);
-    logger.info('Fortune calculation result:', { name, birthday, gender, result });
+    logger.info('Fortune calculation result:', { keyword, result });
 
     // 尝试解析JSON
     let fortune;
@@ -403,7 +400,6 @@ async function calculateFortune(name, birthday, gender, keyword) {
       fortune.career = Math.min(95, Math.max(60, fortune.career || 75));
       fortune.love = Math.min(95, Math.max(60, fortune.love || 75));
       fortune.health = Math.min(95, Math.max(60, fortune.health || 75));
-      fortune.name = name;
 
       return fortune;
     } catch (parseError) {

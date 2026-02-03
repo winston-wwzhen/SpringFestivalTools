@@ -8,42 +8,33 @@
     <view class="header-bg"></view>
     <view class="header-content">
       <view class="title">🔮 新年运势</view>
-      <view class="subtitle">测算2026马年运势</view>
+      <view class="subtitle">抽取你的2026马年运势签</view>
     </view>
   </view>
 
-  <!-- 输入区域 -->
-  <view class="form-section">
-    <view class="form-item">
-      <view class="label">您的姓名</view>
-      <input class="input" placeholder="请输入姓名" value="{{name}}" bindinput="onNameInput" />
-    </view>
-
-    <view class="form-item">
-      <view class="label">出生日期</view>
-      <picker mode="date" value="{{birthday}}" end="{{currentDate}}" bindchange="onBirthdayChange">
-        <view class="picker {{birthday ? '' : 'placeholder'}}">
-          {{birthday || '请选择出生日期'}}
-        </view>
-      </picker>
-    </view>
-
-    <view class="form-item">
-      <view class="label">您的性别</view>
-      <view class="radio-group">
-        <view class="radio-item {{gender === 'male' ? 'active' : ''}}" bindtap="onGenderSelect" data-gender="male">
-          <text class="radio-icon">{{gender === 'male' ? '●' : '○'}}</text>
-          <text>男</text>
-        </view>
-        <view class="radio-item {{gender === 'female' ? 'active' : ''}}" bindtap="onGenderSelect" data-gender="female">
-          <text class="radio-icon">{{gender === 'female' ? '●' : '○'}}</text>
-          <text>女</text>
+  <!-- 抽签区域 -->
+  <view class="draw-section" wx:if="{{!fortuneResult}}">
+    <view class="fortune-box {{drawing ? 'drawing' : ''}}">
+      <view class="fortune-lid {{drawing ? 'opening' : ''}}">🧧</view>
+      <view class="fortune-body {{drawing ? 'drawing' : ''}}">
+        <view class="fortune-sticks {{drawing ? 'shaking' : ''}}">
+          <view class="stick" wx:for="{{6}}" wx:key="index"></view>
         </view>
       </view>
+      <!-- 飞出的签纸效果 -->
+      <view class="fortune-paper {{drawing ? 'show' : ''}}">📜</view>
     </view>
 
-    <view class="form-item">
-      <view class="label">测算重点（可选）</view>
+    <view class="draw-hint">
+      <text class="hint-text">{{drawing ? '正在抽签中...' : '点击下方按钮抽取你的新年运势'}}</text>
+    </view>
+
+    <button class="btn-draw" bindtap="drawFortune" disabled="{{drawing}}">
+      {{drawing ? '🔮 抽签中...' : '🎲 抽取新年签'}}
+    </button>
+
+    <view class="keyword-section">
+      <view class="section-label">选择运势类型（可选）</view>
       <view class="keyword-group">
         <view class="keyword-item {{keyword === 'love' ? 'active' : ''}}" bindtap="onKeywordSelect" data-keyword="love">
           <text class="keyword-icon">❤️</text>
@@ -70,18 +61,14 @@
           <text class="keyword-text">家庭</text>
         </view>
       </view>
-      <view class="keyword-hint">选择后可获得更详细的专项解读</view>
     </view>
-
-    <button class="btn-calculate" bindtap="calculateFortune" disabled="{{loading}}">
-      {{loading ? '测算中...' : '🔮 开始测算'}}
-    </button>
   </view>
 
   <!-- 运势结果 -->
-  <view class="result-section" wx:if="{{fortuneResult}}">
+  <view class="result-section" wx:if="{{fortuneResult && !drawing}}">
     <view class="result-header">
-      <text class="result-title">🎊 {{fortuneResult.name}}的2026马年运势</text>
+      <text class="result-title">🎊 2026马年运势签</text>
+      <view class="fortune-rank {{fortuneResult.rankClass}}">{{fortuneResult.rank}}</view>
     </view>
 
     <!-- 综合运势 -->
@@ -155,6 +142,13 @@
     <view class="advice-section">
       <view class="advice-title">💡 新年寄语</view>
       <view class="advice-content">{{fortuneResult.advice}}</view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button class="btn-action" bindtap="drawFortune" disabled="{{loading}}">
+        🔄 再抽一次
+      </button>
     </view>
   </view>
 </view>

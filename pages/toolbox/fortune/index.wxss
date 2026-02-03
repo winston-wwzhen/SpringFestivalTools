@@ -42,77 +42,201 @@
   opacity: 0.9;
 }
 
-/* 表单区域 */
-.form-section {
-  padding: 24rpx 32rpx;
-  margin-top: 20rpx;
-  position: relative;
-  z-index: 10;
-}
-
-.form-item {
-  background: #fff;
-  border-radius: 20rpx;
-  padding: 28rpx 32rpx;
-  margin-bottom: 20rpx;
-  box-shadow: 0 4rpx 16rpx rgba(211, 47, 47, 0.1);
-}
-
-.label {
-  font-size: 28rpx;
-  color: #D32F2F;
-  font-weight: 600;
-  margin-bottom: 16rpx;
-}
-
-.input {
-  width: 100%;
-  font-size: 32rpx;
-  color: #333;
-}
-
-.picker {
-  font-size: 32rpx;
-  color: #333;
-}
-
-.picker.placeholder {
-  color: #999;
-}
-
-.radio-group {
+/* 抽签区域 */
+.draw-section {
+  padding: 40rpx 32rpx;
   display: flex;
-  gap: 40rpx;
+  flex-direction: column;
+  align-items: center;
 }
 
-.radio-item {
+.fortune-box {
+  position: relative;
+  width: 280rpx;
+  height: 320rpx;
+  margin: 40rpx 0;
+}
+
+.fortune-lid {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 120rpx;
+  z-index: 3;
+  transition: all 0.5s ease;
+  filter: drop-shadow(0 4rpx 12rpx rgba(255, 215, 0, 0.6));
+}
+
+.fortune-lid.opening {
+  transform: translateX(-50%) translateY(-80rpx) rotate(-30deg) scale(1.2);
+  opacity: 0;
+}
+
+.fortune-body {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200rpx;
+  height: 240rpx;
+  background: linear-gradient(135deg, #D32F2F, #B71C1C);
+  border-radius: 20rpx 20rpx 40rpx 40rpx;
+  border: 4rpx solid #FFD700;
+  box-shadow: 0 8rpx 24rpx rgba(211, 47, 47, 0.4),
+              0 0 30rpx rgba(255, 215, 0, 0.3);
   display: flex;
   align-items: center;
-  gap: 12rpx;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.fortune-body::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 60%);
+  animation: rotate 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.fortune-body.drawing::before {
+  opacity: 1;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.fortune-sticks {
+  display: flex;
+  gap: 8rpx;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.stick {
+  width: 8rpx;
+  height: 120rpx;
+  background: linear-gradient(180deg, #FFD700, #FFA500);
+  border-radius: 4rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2),
+              0 0 8rpx rgba(255, 215, 0, 0.5);
+}
+
+.fortune-sticks.shaking .stick {
+  animation: shake 0.08s ease-in-out infinite alternate;
+}
+
+.fortune-sticks.shaking .stick:nth-child(1) { animation-delay: 0s; }
+.fortune-sticks.shaking .stick:nth-child(2) { animation-delay: 0.015s; }
+.fortune-sticks.shaking .stick:nth-child(3) { animation-delay: 0.03s; }
+.fortune-sticks.shaking .stick:nth-child(4) { animation-delay: 0.045s; }
+.fortune-sticks.shaking .stick:nth-child(5) { animation-delay: 0.06s; }
+.fortune-sticks.shaking .stick:nth-child(6) { animation-delay: 0.075s; }
+
+@keyframes shake {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-12rpx) rotate(5deg); }
+}
+
+/* 抽签时的发光效果 */
+.fortune-box.drawing .fortune-body {
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 8rpx 24rpx rgba(211, 47, 47, 0.4),
+                0 0 20rpx rgba(255, 215, 0, 0.3);
+  }
+  to {
+    box-shadow: 0 8rpx 24rpx rgba(211, 47, 47, 0.4),
+                0 0 50rpx rgba(255, 215, 0, 0.8),
+                0 0 80rpx rgba(255, 215, 0, 0.4);
+  }
+}
+
+/* 签筒飞出的签纸效果 */
+.fortune-paper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60rpx;
+  opacity: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.fortune-paper.show {
+  animation: flyOut 1s ease-out forwards;
+}
+
+@keyframes flyOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -300%) scale(1) rotate(360deg);
+  }
+}
+
+.draw-hint {
+  margin: 30rpx 0;
+  text-align: center;
+}
+
+.hint-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.btn-draw {
+  margin-top: 20rpx;
+  background: linear-gradient(135deg, #D32F2F, #B71C1C);
+  color: #FFD700;
   font-size: 32rpx;
-  color: #333;
-  padding: 16rpx 32rpx;
-  border-radius: 40rpx;
-  border: 2rpx solid #eee;
-  transition: all 0.3s;
+  font-weight: 700;
+  border-radius: 50rpx;
+  padding: 28rpx 60rpx;
+  border: 2rpx solid #FFD700;
+  box-shadow: 0 8rpx 24rpx rgba(211, 47, 47, 0.3);
 }
 
-.radio-item.active {
-  background: linear-gradient(135deg, #FFF8E7, #FFE4B5);
-  border-color: #FFD700;
-  color: #D32F2F;
-}
-
-.radio-icon {
-  font-size: 24rpx;
+.btn-draw[disabled] {
+  opacity: 0.6;
 }
 
 /* 关键字选择 */
+.keyword-section {
+  width: 100%;
+  margin-top: 40rpx;
+}
+
+.section-label {
+  font-size: 26rpx;
+  color: #999;
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
 .keyword-group {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12rpx;
-  margin-bottom: 12rpx;
 }
 
 .keyword-item {
@@ -147,28 +271,6 @@
   font-weight: 600;
 }
 
-.keyword-hint {
-  font-size: 22rpx;
-  color: #999;
-  text-align: center;
-}
-
-.btn-calculate {
-  margin-top: 20rpx;
-  background: linear-gradient(135deg, #D32F2F, #B71C1C);
-  color: #FFD700;
-  font-size: 32rpx;
-  font-weight: 700;
-  border-radius: 50rpx;
-  padding: 28rpx;
-  border: 2rpx solid #FFD700;
-  box-shadow: 0 8rpx 24rpx rgba(211, 47, 47, 0.3);
-}
-
-.btn-calculate[disabled] {
-  opacity: 0.6;
-}
-
 /* 结果区域 */
 .result-section {
   padding: 0 32rpx;
@@ -177,12 +279,42 @@
 .result-header {
   text-align: center;
   padding: 30rpx 0;
+  position: relative;
 }
 
 .result-title {
   font-size: 36rpx;
   font-weight: 700;
   color: #D32F2F;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.fortune-rank {
+  font-size: 48rpx;
+  font-weight: 900;
+  padding: 16rpx 40rpx;
+  border-radius: 50rpx;
+  display: inline-block;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+}
+
+.fortune-rank.rank-excellent {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: #fff;
+  border: 3rpx solid #FF8C00;
+}
+
+.fortune-rank.rank-good {
+  background: linear-gradient(135deg, #FF6B6B, #D32F2F);
+  color: #fff;
+  border: 3rpx solid #B71C1C;
+}
+
+.fortune-rank.rank-normal {
+  background: linear-gradient(135deg, #4CAF50, #388E3C);
+  color: #fff;
+  border: 3rpx solid #2E7D32;
 }
 
 .fortune-card {
@@ -318,6 +450,7 @@
   background: #fff;
   border-radius: 20rpx;
   padding: 32rpx;
+  margin-bottom: 20rpx;
   box-shadow: 0 4rpx 16rpx rgba(211, 47, 47, 0.1);
 }
 
@@ -332,4 +465,27 @@
   font-size: 28rpx;
   color: #666;
   line-height: 1.8;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  gap: 20rpx;
+  padding: 0 32rpx 32rpx;
+}
+
+.btn-action {
+  flex: 1;
+  background: linear-gradient(135deg, #D32F2F, #B71C1C);
+  color: #FFD700;
+  font-size: 28rpx;
+  font-weight: 600;
+  border-radius: 50rpx;
+  padding: 24rpx;
+  border: 2rpx solid #FFD700;
+  box-shadow: 0 4rpx 12rpx rgba(211, 47, 47, 0.1);
+}
+
+.btn-action[disabled] {
+  opacity: 0.6;
 }

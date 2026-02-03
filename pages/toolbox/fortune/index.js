@@ -3,49 +3,13 @@ const api = require('../../../api/index')
 
 Page({
   data: {
-    name: '',
-    birthday: '',
-    gender: '',
     keyword: '',
-    currentDate: '',
+    drawing: false,
     loading: false,
     fortuneResult: null
   },
 
   onLoad() {
-    // 设置当前日期
-    const now = new Date()
-    this.setData({
-      currentDate: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
-    })
-  },
-
-  /**
-   * 姓名输入
-   */
-  onNameInput(e) {
-    this.setData({
-      name: e.detail.value
-    })
-  },
-
-  /**
-   * 生日选择
-   */
-  onBirthdayChange(e) {
-    this.setData({
-      birthday: e.detail.value
-    })
-  },
-
-  /**
-   * 性别选择
-   */
-  onGenderSelect(e) {
-    const gender = e.currentTarget.dataset.gender
-    this.setData({
-      gender
-    })
   },
 
   /**
@@ -60,85 +24,82 @@ Page({
   },
 
   /**
-   * 测算运势
+   * 抽签获取运势
    */
-  async calculateFortune() {
-    const { name, birthday, gender, keyword } = this.data
+  async drawFortune() {
+    this.setData({ drawing: true })
 
-    // 验证输入
-    if (!name) {
-      wx.showToast({
-        title: '请输入姓名',
-        icon: 'none'
-      })
-      return
-    }
-
-    if (!birthday) {
-      wx.showToast({
-        title: '请选择出生日期',
-        icon: 'none'
-      })
-      return
-    }
-
-    if (!gender) {
-      wx.showToast({
-        title: '请选择性别',
-        icon: 'none'
-      })
-      return
-    }
-
-    this.setData({ loading: true })
+    // 播放动画1.5秒
+    await new Promise(resolve => setTimeout(resolve, 1500))
 
     try {
       // 调用后端接口
       const result = await api.kinship.calculate({
         type: 'fortune',
-        name,
-        birthday,
-        gender,
-        keyword
+        keyword: this.data.keyword
       })
 
-      // 后端直接返回运势数据对象
+      // 处理结果，添加签文等级
       const fortune = result || result.data
+      fortune.rank = this.getFortuneRank(fortune.overallStars)
+      fortune.rankClass = this.getRankClass(fortune.overallStars)
 
       this.setData({
         fortuneResult: fortune,
+        drawing: false,
         loading: false
       })
+
+      wx.vibrateShort()
     } catch (error) {
       console.error('测算失败:', error)
       // 使用本地算法
-      const localResult = this.calculateLocalFortune(name, birthday, gender, keyword)
+      const localResult = this.calculateLocalFortune(this.data.keyword)
       this.setData({
         fortuneResult: localResult,
+        drawing: false,
         loading: false
       })
-      wx.showToast({
-        title: '使用本地算法',
-        icon: 'none'
-      })
+      wx.vibrateShort()
     }
+  },
+
+  /**
+   * 根据星级获取签文等级
+   */
+  getFortuneRank(stars) {
+    const ranks = {
+      5: '上上签',
+      4: '中吉签',
+      3: '吉签'
+    }
+    return ranks[stars] || '吉签'
+  },
+
+  /**
+   * 获取签文等级样式类
+   */
+  getRankClass(stars) {
+    const classes = {
+      5: 'rank-excellent',
+      4: 'rank-good',
+      3: 'rank-normal'
+    }
+    return classes[stars] || 'rank-normal'
   },
 
   /**
    * 本地运势算法（接口失败时使用）
    */
-  calculateLocalFortune(name, birthday, gender, keyword) {
-    // 基于姓名和生日生成随机但固定的结果
-    const seed = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) +
-                 new Date(birthday).getTime()
+  calculateLocalFortune(keyword) {
+    // 生成随机种子
+    const seed = Date.now() + Math.random() * 10000
 
     // 伪随机数生成器
     const random = (seed) => {
       const x = Math.sin(seed) * 10000
       return x - Math.floor(x)
     }
-
-    const r = random(seed)
 
     // 根据关键字调整基础运势值
     let keywordBonus = { wealth: 0, career: 0, love: 0, health: 0 }
@@ -148,8 +109,8 @@ Page({
         career: { career: 15 },
         wealth: { wealth: 15 },
         health: { health: 15 },
-        study: { career: 10 },  // 学业影响事业
-        family: { love: 10, health: 5 }  // 家庭影响爱情和健康
+        study: { career: 10 },
+        family: { love: 10, health: 5 }
       }
       keywordBonus = bonuses[keyword] || {}
     }
@@ -180,7 +141,8 @@ Page({
       '马年运势大吉，万事如意！',
       '马年运势亨通，事业顺利！',
       '马年运势平稳，稳中求进！',
-      '马年运势渐好，把握机遇！'
+      '马年运势渐好，把握机遇！',
+      '马年一帆风顺，前程似锦！'
     ]
     const overallDesc = overallDescs[Math.floor(random(seed + 9) * overallDescs.length)]
 
@@ -233,13 +195,13 @@ Page({
         '2026马年，愿你马到成功，万事如意！',
         '马年大吉，愿你前程似锦，步步高升！',
         '马年行大运，愿你身体健康，阖家幸福！',
-        '马年如意，愿你心想事成，财源滚滚！'
+        '马年如意，愿你心想事成，财源滚滚！',
+        '新春大吉，愿你福星高照，好运连连！'
       ]
       advice = advices[Math.floor(random(seed + 10) * advices.length)]
     }
 
-    return {
-      name,
+    const fortune = {
       overallStars,
       overfallDesc: overallDesc,
       wealth,
@@ -250,8 +212,12 @@ Page({
       luckyNumber,
       luckyDirection,
       luckyZodiac,
-      advice
+      advice,
+      rank: this.getFortuneRank(overallStars),
+      rankClass: this.getRankClass(overallStars)
     }
+
+    return fortune
   },
 
   /**
