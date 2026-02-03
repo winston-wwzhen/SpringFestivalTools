@@ -1,0 +1,113 @@
+<!--pages/toolbox/simulator/index.wxml-->
+<view class="page">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="title">🎊 新年模拟器</view>
+      <view class="subtitle">沉浸式体验过年氛围</view>
+    </view>
+  </view>
+
+  <!-- 模拟器场景 -->
+  <view class="scene-container">
+    <!-- 倒计时场景 -->
+    <view class="scene {{currentScene === 'countdown' ? 'active' : ''}}" wx:if="{{currentScene === 'countdown'}}">
+      <view class="countdown-display">
+        <view class="countdown-title">距离马年春节还有</view>
+        <view class="countdown-number">{{countdownDays}}</view>
+        <view class="countdown-unit">天</view>
+      </view>
+      <view class="countdown-decoration">
+        <text class="deco-item">🏮</text>
+        <text class="deco-item">🧨</text>
+        <text class="deco-item">🎆</text>
+      </view>
+    </view>
+
+    <!-- 放鞭炮场景 -->
+    <view class="scene {{currentScene === 'firecracker' ? 'active' : ''}}" wx:if="{{currentScene === 'firecracker'}}">
+      <view class="firecracker-container">
+        <text class="firecracker {{firecrackerActive ? 'active' : ''}}" bindtap="triggerFirecracker">🧨</text>
+        <text class="firecracker {{firecrackerActive ? 'active' : ''}}" style="animation-delay: 0.1s" bindtap="triggerFirecracker">🧨</text>
+        <text class="firecracker {{firecrackerActive ? 'active' : ''}}" style="animation-delay: 0.2s" bindtap="triggerFirecracker">🧨</text>
+        <text class="firecracker {{firecrackerActive ? 'active' : ''}}" style="animation-delay: 0.3s" bindtap="triggerFirecracker">🧨</text>
+        <text class="firecracker {{firecrackerActive ? 'active' : ''}}" style="animation-delay: 0.4s" bindtap="triggerFirecracker">🧨</text>
+      </view>
+      <view class="boom-text {{boomShow ? 'show' : ''}}">💥 嘭！</view>
+      <button class="scene-btn" bindtap="triggerFirecracker">🔥 点燃鞭炮</button>
+    </view>
+
+    <!-- 贴春联场景 -->
+    <view class="scene {{currentScene === 'couplet' ? 'active' : ''}}" wx:if="{{currentScene === 'couplet'}}">
+      <view class="couplet-container">
+        <view class="couplet-left {{coupletPasted ? 'pasted' : ''}}">
+          <text class="couplet-text">春</text>
+        </view>
+        <view class="couplet-center {{coupletPasted ? 'pasted' : ''}}">
+          <text class="couplet-text">福</text>
+        </view>
+        <view class="couplet-right {{coupletPasted ? 'pasted' : ''}}">
+          <text class="couplet-text">节</text>
+        </view>
+      </view>
+      <button class="scene-btn" bindtap="pasteCouplet">📜 贴春联</button>
+    </view>
+
+    <!-- 看春晚场景 -->
+    <view class="scene {{currentScene === 'gala' ? 'active' : ''}}" wx:if="{{currentScene === 'gala'}}">
+      <view class="tv-container">
+        <view class="tv-screen">
+          <view class="screen-content">
+            <text class="cctv-logo">📺</text>
+            <text class="gala-text">2026春晚</text>
+            <text class="gala-time">20:00</text>
+          </view>
+        </view>
+        <view class="tv-stand"></view>
+      </view>
+      <button class="scene-btn" bindtap="switchChannel">📺 换台</button>
+    </view>
+
+    <!-- 吃年夜饭场景 -->
+    <view class="scene {{currentScene === 'dinner' ? 'active' : ''}}" wx:if="{{currentScene === 'dinner'}}">
+      <view class="dinner-table">
+        <view class="dish" wx:for="{{dinnerDishes}}" wx:key="index">
+          {{item}}
+        </view>
+      </view>
+      <view class="dinner-family">👨‍👩‍👧‍👦 全家团圆</view>
+      <button class="scene-btn" bindtap="addDish">🍚 加菜</button>
+    </view>
+  </view>
+
+  <!-- 场景选择 -->
+  <view class="scene-selector">
+    <view class="scene-tab {{currentScene === 'countdown' ? 'active' : ''}}" bindtap="switchScene" data-scene="countdown">
+      <text class="tab-icon">⏰</text>
+      <text class="tab-text">倒计时</text>
+    </view>
+    <view class="scene-tab {{currentScene === 'firecracker' ? 'active' : ''}}" bindtap="switchScene" data-scene="firecracker">
+      <text class="tab-icon">🧨</text>
+      <text class="tab-text">放鞭炮</text>
+    </view>
+    <view class="scene-tab {{currentScene === 'couplet' ? 'active' : ''}}" bindtap="switchScene" data-scene="couplet">
+      <text class="tab-icon">📜</text>
+      <text class="tab-text">贴春联</text>
+    </view>
+    <view class="scene-tab {{currentScene === 'gala' ? 'active' : ''}}" bindtap="switchScene" data-scene="gala">
+      <text class="tab-icon">📺</text>
+      <text class="tab-text">看春晚</text>
+    </view>
+    <view class="scene-tab {{currentScene === 'dinner' ? 'active' : ''}}" bindtap="switchScene" data-scene="dinner">
+      <text class="tab-icon">🍚</text>
+      <text class="tab-text">年夜饭</text>
+    </view>
+  </view>
+
+  <!-- 场景说明 -->
+  <view class="scene-description">
+    <view class="desc-title">💡 {{sceneDescriptions[currentScene].title}}</view>
+    <view class="desc-text">{{sceneDescriptions[currentScene].text}}</view>
+  </view>
+</view>

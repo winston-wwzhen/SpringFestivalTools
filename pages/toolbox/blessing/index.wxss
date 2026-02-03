@@ -1,0 +1,227 @@
+/* pages/toolbox/blessing/index.wxss */
+.page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #D32F2F 0, #D32F2F 160rpx, #FFF8E7 160rpx);
+  padding-bottom: 40rpx;
+}
+
+/* 头部 */
+.header {
+  position: relative;
+  padding: 140rpx 40rpx 50rpx;
+  background: linear-gradient(135deg, #B71C1C 0%, #D32F2F 100%);
+}
+
+.header-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.1;
+  background-image: radial-gradient(#fff 1px, transparent 1px);
+  background-size: 30rpx 30rpx;
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  font-size: 52rpx;
+  font-weight: 800;
+  color: #FFD700;
+  margin-bottom: 12rpx;
+  text-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: #FFF8E7;
+  opacity: 0.9;
+}
+
+/* 表单区域 */
+.form-section {
+  padding: 24rpx 32rpx;
+  margin-top: -30rpx;
+  position: relative;
+  z-index: 10;
+}
+
+.form-item {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 28rpx 32rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(211, 47, 47, 0.1);
+}
+
+.label {
+  font-size: 28rpx;
+  color: #D32F2F;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.input {
+  width: 100%;
+  font-size: 32rpx;
+  color: #333;
+}
+
+/* 类型选择 */
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16rpx;
+}
+
+.type-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  padding: 20rpx 12rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid #eee;
+  transition: all 0.3s;
+}
+
+.type-item.active {
+  background: linear-gradient(135deg, #FFF8E7, #FFE4B5);
+  border-color: #FFD700;
+}
+
+.type-icon {
+  font-size: 40rpx;
+}
+
+.type-text {
+  font-size: 22rpx;
+  color: #666;
+}
+
+.type-item.active .type-text {
+  color: #D32F2F;
+  font-weight: 600;
+}
+
+/* 风格选择 */
+.style-group {
+  display: flex;
+  gap: 16rpx;
+}
+
+.style-item {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx;
+  border-radius: 40rpx;
+  border: 2rpx solid #eee;
+  font-size: 28rpx;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.style-item.active {
+  background: linear-gradient(135deg, #FFF8E7, #FFE4B5);
+  border-color: #FFD700;
+  color: #D32F2F;
+  font-weight: 600;
+}
+
+.btn-generate {
+  margin-top: 20rpx;
+  background: linear-gradient(135deg, #D32F2F, #B71C1C);
+  color: #FFD700;
+  font-size: 32rpx;
+  font-weight: 700;
+  border-radius: 50rpx;
+  padding: 28rpx;
+  border: 2rpx solid #FFD700;
+  box-shadow: 0 8rpx 24rpx rgba(211, 47, 47, 0.3);
+}
+
+.btn-generate[disabled] {
+  opacity: 0.6;
+}
+
+/* 结果区域 */
+.result-section {
+  padding: 0 32rpx;
+}
+
+.result-header {
+  text-align: center;
+  padding: 30rpx 0;
+}
+
+.result-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #D32F2F;
+}
+
+.blessing-card {
+  background: linear-gradient(135deg, #FFF8F0, #FFF8E7);
+  border-radius: 20rpx;
+  padding: 40rpx 32rpx;
+  border: 2rpx solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4rpx 16rpx rgba(211, 47, 47, 0.1);
+  margin-bottom: 20rpx;
+}
+
+.blessing-content {
+  font-size: 32rpx;
+  color: #333;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20rpx;
+}
+
+.btn-action {
+  flex: 1;
+  background: #fff;
+  color: #D32F2F;
+  font-size: 28rpx;
+  font-weight: 600;
+  border-radius: 50rpx;
+  padding: 24rpx;
+  border: 2rpx solid rgba(211, 47, 47, 0.2);
+  box-shadow: 0 4rpx 12rpx rgba(211, 47, 47, 0.1);
+}
+
+/* 热门模板 */
+.templates-section {
+  padding: 0 32rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #D32F2F;
+  margin-bottom: 20rpx;
+}
+
+.template-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.template-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx 28rpx;
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+  box-shadow: 0 2rpx 12rpx rgba(211, 47, 47, 0.08);
+  border-left: 4rpx solid #FFD700;
+}

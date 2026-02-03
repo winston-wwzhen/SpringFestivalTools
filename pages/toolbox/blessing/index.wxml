@@ -1,0 +1,98 @@
+<!--pages/toolbox/blessing/index.wxml-->
+<view class="page">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="title">🧧 祝福语生成器</view>
+      <view class="subtitle">一键生成个性化春节祝福</view>
+    </view>
+  </view>
+
+  <!-- 表单区域 -->
+  <view class="form-section">
+    <view class="form-item">
+      <view class="label">接收人称呼</view>
+      <input class="input" placeholder="如：张三、李叔叔、王老师" value="{{receiver}}" bindinput="onReceiverInput" />
+    </view>
+
+    <view class="form-item">
+      <view class="label">祝福类型</view>
+      <view class="type-grid">
+        <view class="type-item {{blessingType === 'spring' ? 'active' : ''}}" bindtap="onTypeSelect" data-type="spring">
+          <text class="type-icon">🎊</text>
+          <text class="type-text">春节祝福</text>
+        </view>
+        <view class="type-item {{blessingType === 'newyear' ? 'active' : ''}}" bindtap="onTypeSelect" data-type="newyear">
+          <text class="type-icon">🎆</text>
+          <text class="type-text">新年祝福</text>
+        </view>
+        <view class="type-item {{blessingType === 'wealth' ? 'active' : ''}}" bindtap="onTypeSelect" data-type="wealth">
+          <text class="type-icon">💰</text>
+          <text class="type-text">招财进宝</text>
+        </view>
+        <view class="type-item {{blessingType === 'career' ? 'active' : ''}}" bindtap="onTypeSelect" data-type="career">
+          <text class="type-icon">📈</text>
+          <text class="type-text">事业顺利</text>
+        </view>
+        <view class="type-item {{blessingType === 'health' ? 'active' : ''}}" bindtap="onTypeSelect" data-type="health">
+          <text class="type-icon">🏥</text>
+          <text class="type-text">身体健康</text>
+        </view>
+        <view class="type-item {{blessingType === 'family' ? 'active' : ''}}" bindtap="onTypeSelect" data-type="family">
+          <text class="type-icon">👨‍👩‍👧‍👦</text>
+          <text class="type-text">阖家幸福</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <view class="label">祝福风格</view>
+      <view class="style-group">
+        <view class="style-item {{style === 'classic' ? 'active' : ''}}" bindtap="onStyleSelect" data-style="classic">
+          传统经典
+        </view>
+        <view class="style-item {{style === 'modern' ? 'active' : ''}}" bindtap="onStyleSelect" data-style="modern">
+          现代时尚
+        </view>
+        <view class="style-item {{style === 'funny' ? 'active' : ''}}" bindtap="onStyleSelect" data-style="funny">
+          幽默风趣
+        </view>
+      </view>
+    </view>
+
+    <button class="btn-generate" bindtap="generateBlessing" disabled="{{loading}}">
+      {{loading ? '生成中...' : '🧧 生成祝福语'}}
+    </button>
+  </view>
+
+  <!-- 生成结果 -->
+  <view class="result-section" wx:if="{{blessingResult}}">
+    <view class="result-header">
+      <text class="result-title">✨ 祝福语</text>
+    </view>
+
+    <view class="blessing-card">
+      <view class="blessing-content">{{blessingResult}}</view>
+    </view>
+
+    <view class="action-buttons">
+      <button class="btn-action" bindtap="copyBlessing">
+        📋 复制
+      </button>
+      <button class="btn-action" bindtap="regenerate">
+        🔄 换一个
+      </button>
+    </view>
+  </view>
+
+  <!-- 热门模板 -->
+  <view class="templates-section" wx:if="{{!blessingResult}}">
+    <view class="section-title">🔥 热门祝福语</view>
+    <view class="template-list">
+      <view class="template-item" wx:for="{{hotTemplates}}" wx:key="index" bindtap="useTemplate" data-content="{{item}}">
+        {{item}}
+      </view>
+    </view>
+  </view>
+</view>

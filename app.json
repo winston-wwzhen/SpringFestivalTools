@@ -8,7 +8,11 @@
     "pages/redpack/detail/index",
     "pages/gala/platforms/index",
     "pages/gala/programs/index",
-    "pages/kinship/index/index",
+    "pages/toolbox/index/index",
+    "pages/toolbox/kinship/index",
+    "pages/toolbox/fortune/index",
+    "pages/toolbox/blessing/index",
+    "pages/toolbox/simulator/index",
     "pages/emoticon/categories/index",
     "pages/emoticon/gallery/index",
     "pages/emoticon/detail/index"
@@ -43,10 +47,10 @@
         "selectedIconPath": "images/tabbar/gala-active.png"
       },
       {
-        "pagePath": "pages/kinship/index/index",
-        "text": "亲戚称呼",
-        "iconPath": "images/tabbar/kinship.png",
-        "selectedIconPath": "images/tabbar/kinship-active.png"
+        "pagePath": "pages/toolbox/index/index",
+        "text": "百宝箱",
+        "iconPath": "images/tabbar/toolbox.png",
+        "selectedIconPath": "images/tabbar/toolbox-active.png"
       }
     ]
   },

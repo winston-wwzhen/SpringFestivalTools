@@ -171,17 +171,17 @@ Page({
   },
 
   /**
-   * 跳转到亲戚称呼
+   * 跳转到百宝箱
    */
-  goToKinship() {
-    console.log('[Index] goToKinship called')
+  goToToolbox() {
+    console.log('[Index] goToToolbox called')
     wx.switchTab({
-      url: '/pages/kinship/index/index',
+      url: '/pages/toolbox/index/index',
       success: () => {
-        console.log('[Index] switchTab kinship success')
+        console.log('[Index] switchTab toolbox success')
       },
       fail: (err) => {
-        console.error('[Index] switchTab kinship failed:', err)
+        console.error('[Index] switchTab toolbox failed:', err)
       }
     })
   },

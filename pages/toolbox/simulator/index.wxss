@@ -1,0 +1,393 @@
+/* pages/toolbox/simulator/index.wxss */
+.page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #B71C1C 0, #B71C1C 140rpx, #1a1a1a 140rpx);
+  padding-bottom: 40rpx;
+}
+
+/* 头部 */
+.header {
+  position: relative;
+  padding: 120rpx 40rpx 40rpx;
+  background: linear-gradient(135deg, #B71C1C 0%, #D32F2F 100%);
+}
+
+.header-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.1;
+  background-image: radial-gradient(#fff 1px, transparent 1px);
+  background-size: 30rpx 30rpx;
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: 800;
+  color: #FFD700;
+  margin-bottom: 12rpx;
+  text-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: #FFF8E7;
+  opacity: 0.9;
+}
+
+/* 场景容器 */
+.scene-container {
+  padding: 24rpx 32rpx;
+  min-height: 500rpx;
+}
+
+.scene {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.scene.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 倒计时场景 */
+.countdown-display {
+  background: linear-gradient(135deg, #D32F2F, #B71C1C);
+  border-radius: 30rpx;
+  padding: 60rpx 40rpx;
+  text-align: center;
+  box-shadow: 0 8rpx 24rpx rgba(211, 47, 47, 0.4);
+  border: 3rpx solid #FFD700;
+}
+
+.countdown-title {
+  font-size: 28rpx;
+  color: #FFF8E7;
+  margin-bottom: 20rpx;
+}
+
+.countdown-number {
+  font-size: 120rpx;
+  font-weight: 900;
+  color: #FFD700;
+  text-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.4);
+  line-height: 1.2;
+}
+
+.countdown-unit {
+  font-size: 36rpx;
+  color: #FFF8E7;
+  margin-top: 16rpx;
+}
+
+.countdown-decoration {
+  display: flex;
+  justify-content: center;
+  gap: 40rpx;
+  margin-top: 40rpx;
+}
+
+.deco-item {
+  font-size: 64rpx;
+  animation: swing 2s ease-in-out infinite;
+}
+
+.deco-item:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.deco-item:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes swing {
+  0%, 100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+/* 放鞭炮场景 */
+.firecracker-container {
+  display: flex;
+  justify-content: center;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.firecracker {
+  font-size: 80rpx;
+  display: inline-block;
+  transition: transform 0.1s;
+}
+
+.firecracker.active {
+  animation: explode 0.5s ease-out;
+}
+
+@keyframes explode {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.5) rotate(180deg);
+  }
+  100% {
+    transform: scale(0) rotate(360deg);
+  }
+}
+
+.boom-text {
+  text-align: center;
+  font-size: 80rpx;
+  font-weight: 900;
+  color: #FF5252;
+  text-shadow: 0 0 40rpx rgba(255, 82, 82, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.boom-text.show {
+  opacity: 1;
+  animation: boom 0.5s ease;
+}
+
+@keyframes boom {
+  0% {
+    transform: scale(0.5);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 贴春联场景 */
+.couplet-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 60rpx;
+  height: 300rpx;
+}
+
+.couplet-left,
+.couplet-center,
+.couplet-right {
+  width: 100rpx;
+  height: 200rpx;
+  background: linear-gradient(135deg, #D32F2F, #B71C1C);
+  border-radius: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3rpx solid #FFD700;
+  box-shadow: 0 4rpx 16rpx rgba(211, 47, 47, 0.3);
+  transition: all 0.5s ease;
+  transform: translateY(100rpx);
+  opacity: 0.6;
+}
+
+.couplet-center {
+  width: 120rpx;
+  height: 120rpx;
+  transform: translateY(100rpx) rotate(45deg);
+}
+
+.couplet-left.pasted,
+.couplet-center.pasted,
+.couplet-right.pasted {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.couplet-center.pasted {
+  transform: rotate(45deg);
+}
+
+.couplet-text {
+  font-size: 56rpx;
+  font-weight: 900;
+  color: #FFD700;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+}
+
+.couplet-center .couplet-text {
+  transform: rotate(-45deg);
+}
+
+/* 看春晚场景 */
+.tv-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.tv-screen {
+  width: 400rpx;
+  height: 280rpx;
+  background: #000;
+  border-radius: 20rpx;
+  border: 8rpx solid #333;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.screen-content {
+  text-align: center;
+}
+
+.cctv-logo {
+  font-size: 80rpx;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.gala-text {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #FFD700;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.gala-time {
+  font-size: 28rpx;
+  color: #FF5252;
+  display: block;
+}
+
+.tv-stand {
+  width: 200rpx;
+  height: 30rpx;
+  background: #333;
+  border-radius: 0 0 10rpx 10rpx;
+  margin-top: -5rpx;
+}
+
+/* 年夜饭场景 */
+.dinner-table {
+  background: linear-gradient(135deg, #8B4513, #A0522D);
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  justify-content: center;
+  border: 4rpx solid #FFD700;
+}
+
+.dish {
+  background: #fff;
+  border-radius: 50rpx;
+  padding: 16rpx 28rpx;
+  font-size: 32rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.2);
+}
+
+.dinner-family {
+  text-align: center;
+  font-size: 48rpx;
+  margin-bottom: 30rpx;
+}
+
+/* 场景按钮 */
+.scene-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #D32F2F, #B71C1C);
+  color: #FFD700;
+  font-size: 28rpx;
+  font-weight: 700;
+  border-radius: 50rpx;
+  padding: 24rpx;
+  border: 2rpx solid #FFD700;
+  box-shadow: 0 6rpx 20rpx rgba(211, 47, 47, 0.3);
+}
+
+/* 场景选择器 */
+.scene-selector {
+  display: flex;
+  padding: 0 16rpx;
+  margin-bottom: 24rpx;
+  overflow-x: auto;
+}
+
+.scene-tab {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  padding: 20rpx 24rpx;
+  border-radius: 16rpx;
+  margin: 0 8rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2rpx solid rgba(255, 215, 0, 0.2);
+  transition: all 0.3s;
+}
+
+.scene-tab.active {
+  background: linear-gradient(135deg, #FFF8E7, #FFE4B5);
+  border-color: #FFD700;
+}
+
+.tab-icon {
+  font-size: 40rpx;
+}
+
+.tab-text {
+  font-size: 22rpx;
+  color: #FFF8E7;
+}
+
+.scene-tab.active .tab-text {
+  color: #D32F2F;
+  font-weight: 600;
+}
+
+/* 场景说明 */
+.scene-description {
+  padding: 0 32rpx;
+}
+
+.desc-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #FFD700;
+  margin-bottom: 12rpx;
+}
+
+.desc-text {
+  font-size: 24rpx;
+  color: rgba(255, 248, 231, 0.8);
+  line-height: 1.6;
+}

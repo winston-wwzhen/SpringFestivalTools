@@ -92,14 +92,15 @@
         <view class="feature-card__badge" wx:if="{{galaCount > 0}}">{{galaCount}}台春晚</view>
       </view>
 
-      <view class="feature-card" bindtap="goToKinship">
-        <view class="card-decoration">家</view>
+      <view class="feature-card" bindtap="goToToolbox">
+        <view class="card-decoration">福</view>
         <view class="icon-wrapper">
           <view class="icon-bg"></view>
-          <view class="feature-card__icon feature-card__icon--kinship">👨‍👩‍👧‍👦</view>
+          <view class="feature-card__icon feature-card__icon--toolbox">🧰</view>
         </view>
-        <view class="feature-card__title">亲戚称呼</view>
-        <view class="feature-card__desc">拜年称呼不尴尬</view>
+        <view class="feature-card__title">百宝箱</view>
+        <view class="feature-card__desc">实用工具大全</view>
+        <view class="feature-card__badge">4个工具</view>
       </view>
 
       <view class="feature-card" bindtap="goToEmoticon">

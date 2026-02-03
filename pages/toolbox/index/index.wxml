@@ -1,0 +1,70 @@
+<!--pages/toolbox/index/index.wxml-->
+<view class="page">
+  <!-- 头部区域 -->
+  <view class="header">
+    <view class="header__bg">
+      <view class="bg-circle bg-circle--1"></view>
+      <view class="bg-circle bg-circle--2"></view>
+      <view class="bg-pattern"></view>
+    </view>
+    <view class="header__content">
+      <view class="header__top">
+        <view class="title-text">🧰 春节百宝箱</view>
+      </view>
+      <view class="header__desc">
+        <text class="desc-text">实用工具，让春节更精彩</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能入口 -->
+  <view class="tools">
+    <view class="tool-card" bindtap="goToKinship">
+      <view class="tool-icon">👨‍👩‍👧‍👦</view>
+      <view class="tool-info">
+        <view class="tool-title">亲戚称呼</view>
+        <view class="tool-desc">AI智能计算拜年称呼</view>
+      </view>
+      <view class="tool-arrow">›</view>
+    </view>
+
+    <view class="tool-card" bindtap="goToFortune">
+      <view class="tool-icon">🔮</view>
+      <view class="tool-info">
+        <view class="tool-title">新年运势</view>
+        <view class="tool-desc">测算2026马年运势</view>
+      </view>
+      <view class="tool-arrow">›</view>
+    </view>
+
+    <view class="tool-card" bindtap="goToBlessing">
+      <view class="tool-icon">🧧</view>
+      <view class="tool-info">
+        <view class="tool-title">祝福语生成器</view>
+        <view class="tool-desc">一键生成个性化祝福</view>
+      </view>
+      <view class="tool-arrow">›</view>
+    </view>
+
+    <view class="tool-card" bindtap="goToSimulator">
+      <view class="tool-icon">🎊</view>
+      <view class="tool-info">
+        <view class="tool-title">新年模拟器</view>
+        <view class="tool-desc">体验过年氛围</view>
+      </view>
+      <view class="tool-arrow">›</view>
+    </view>
+  </view>
+
+  <!-- 使用提示 -->
+  <view class="tips">
+    <view class="tip-item">
+      <text class="tip-icon">💡</text>
+      <text class="tip-text">所有功能完全免费使用</text>
+    </view>
+    <view class="tip-item">
+      <text class="tip-icon">🎯</text>
+      <text class="tip-text">AI智能计算，结果准确可靠</text>
+    </view>
+  </view>
+</view>

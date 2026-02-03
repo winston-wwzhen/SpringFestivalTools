@@ -1,0 +1,62 @@
+<!--pages/kinship/index/index.wxml-->
+<view class="container">
+  <nav-bar title="称呼计算器" bgColor="#D32F2F"></nav-bar>
+
+  <!-- 装饰灯笼 -->
+  <view class="lantern-left">🏮</view>
+  <view class="lantern-right">🏮</view>
+
+  <!-- 输入区域 -->
+  <view class="input-section">
+    <view class="section-title">🤖 AI 智能计算称呼</view>
+    <view class="input-hint">输入任意关系，AI为您计算</view>
+
+    <view class="input-group">
+      <input class="input-field"
+             placeholder="例如：爸爸的哥哥、妈妈的舅舅"
+             value="{{input}}"
+             bindinput="onInputChange" />
+      <view class="clear-btn" wx:if="{{input}}" bindtap="clearInput">✕</view>
+    </view>
+
+    <view class="btn-calculate" bindtap="calculate" wx:if="{{!loading}}">
+      <text>🧮 计算称呼</text>
+    </view>
+    <view class="btn-calculate loading" wx:else>
+      <text>🔄 AI思考中...</text>
+    </view>
+  </view>
+
+  <!-- 快捷示例 -->
+  <view class="examples-section" wx:if="{{!result}}">
+    <view class="examples-title">💡 快捷示例</view>
+    <view class="examples-list">
+      <view class="example-tag" bindtap="useExample" data-example="爸爸的哥哥">爸爸的哥哥</view>
+      <view class="example-tag" bindtap="useExample" data-example="妈妈的舅舅">妈妈的舅舅</view>
+      <view class="example-tag" bindtap="useExample" data-example="爷爷的儿子">爷爷的儿子</view>
+      <view class="example-tag" bindtap="useExample" data-example="奶奶的弟弟">奶奶的弟弟</view>
+      <view class="example-tag" bindtap="useExample" data-example="哥哥的儿子">哥哥的儿子</view>
+      <view class="example-tag" bindtap="useExample" data-example="姐姐的女儿">姐姐的女儿</view>
+    </view>
+  </view>
+
+  <!-- 结果区域 -->
+  <view class="result-section" wx:if="{{result}}">
+    <view class="result-title">计算结果</view>
+    <view class="result-card">
+      <view class="result-icon">{{result.icon}}</view>
+      <view class="result-name">{{result.name}}</view>
+      <view class="result-desc">{{result.description}}</view>
+    </view>
+  </view>
+
+  <!-- 说明 -->
+  <view class="tips-section">
+    <view class="tips-title">📝 使用说明</view>
+    <view class="tips-list">
+      <view class="tips-item">• 由智谱AI提供智能计算</view>
+      <view class="tips-item">• 支持复杂关系链的计算</view>
+      <view class="tips-item">• 输入格式：关系A 的 关系B</view>
+    </view>
+  </view>
+</view>
