@@ -606,7 +606,6 @@
 /* 春节小知识 - 卡片化 */
 .tips {
   padding: 48rpx 32rpx 64rpx;
-  position: relative;
 }
 
 .tips__title {
@@ -667,25 +666,23 @@
 
 /* 刷新按钮 */
 .tips__refresh {
-  position: absolute;
-  bottom: -15rpx;
-  right: 40rpx;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8rpx;
-  background: linear-gradient(135deg, #D32F2F, #B71C1C);
-  color: #FFD700;
-  padding: 12rpx 24rpx;
-  border-radius: 50rpx;
-  box-shadow: 0 4rpx 12rpx rgba(211, 47, 47, 0.3);
-  border: 2rpx solid rgba(255, 215, 0, 0.3);
-  z-index: 2;
+  margin-top: 32rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx dashed rgba(211, 47, 47, 0.15);
+  background: linear-gradient(135deg, rgba(211, 47, 47, 0.05), rgba(183, 28, 28, 0.03));
+  color: #D32F2F;
+  padding: 16rpx 24rpx;
+  border-radius: 16rpx;
   transition: all 0.3s;
 }
 
 .tips__refresh:active {
-  transform: scale(0.95);
-  box-shadow: 0 2rpx 8rpx rgba(211, 47, 47, 0.3);
+  background: linear-gradient(135deg, rgba(211, 47, 47, 0.1), rgba(183, 28, 28, 0.05));
+  transform: scale(0.98);
 }
 
 .refresh-icon {
