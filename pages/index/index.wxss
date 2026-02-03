@@ -466,14 +466,24 @@
 /* 卡片装饰字 */
 .card-decoration {
   position: absolute;
-  bottom: -15rpx;
-  right: -8rpx;
+  bottom: -25rpx;
+  right: -15rpx;
+  width: 70rpx;
+  height: 70rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: "KaiTi", "STKaiti", "楷体", serif;
-  font-size: 80rpx;
+  font-size: 40rpx;
   font-weight: 900;
-  color: rgba(211, 47, 47, 0.08);
+  color: rgba(211, 47, 47, 0.7);
+  background: rgba(255, 245, 245, 0.9);
+  border: 3rpx solid rgba(211, 47, 47, 0.5);
+  border-radius: 50%;
   pointer-events: none;
   z-index: 1;
+  transform: rotate(-15deg);
+  box-shadow: 0 2rpx 8rpx rgba(211, 47, 47, 0.2);
 }
 
 /* 图标包裹容器 */
