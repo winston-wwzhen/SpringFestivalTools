@@ -76,10 +76,25 @@ Page({
       try {
         const res = await api.redpack.getList(params)
         console.log('[RedpackList] Data loaded:', res)
-        // 修复：正确解析API返回的数据结构
-        if (res && res.data && Array.isArray(res.data.list)) {
+        console.log('[RedpackList] res.data type:', typeof res.data)
+        console.log('[RedpackList] res.data:', JSON.stringify(res.data))
+
+        // 适配后端数据结构：可能是 res.data 直接是数组，或 res.data.list 是数组
+        if (res && Array.isArray(res.data)) {
+          list = res.data
+          console.log('[RedpackList] Using res.data as array, length:', list.length)
+        } else if (res && res.data && Array.isArray(res.data.list)) {
           list = res.data.list
+          console.log('[RedpackList] Using res.data.list as array, length:', list.length)
+        } else if (res && res.data && Array.isArray(res.data.items)) {
+          list = res.data.items
+          console.log('[RedpackList] Using res.data.items as array, length:', list.length)
+        } else {
+          console.log('[RedpackList] No array found in response, will use mock data')
         }
+
+        // 数据字段映射和格式转换
+        list = list.map(item => this.mapBackendDataToFrontend(item))
       } catch (apiError) {
         console.warn('[RedpackList] API request failed, will use mock data:', apiError)
       }
@@ -159,6 +174,189 @@ Page({
       console.error('[RedpackList] Load more failed:', error)
       this.setData({ loading: false })
     }
+  },
+
+  /**
+   * 将后端数据格式映射为前端期望格式
+   */
+  mapBackendDataToFrontend(backendItem) {
+    // 平台 emoji 映射（如果后端没有提供）
+    const defaultEmojiMap = {
+      '腾讯元宝': '🐧',
+      '百度文心': '🐻',
+      '字节豆包': '🎭',
+      '抖音': '🎵',
+      '支付宝': '💙',
+      '京东': '🛒',
+      '拼多多': '🍑',
+      '阿里千问': '🤖',
+      '快手': '📹',
+      '淘宝': '🛍️',
+      '微信': '💬'
+    }
+
+    // 安全解析JSON字段
+    const parseJsonField = (value, defaultValue = []) => {
+      if (!value) return defaultValue
+      if (typeof value === 'object') return Array.isArray(value) ? value : defaultValue
+      if (typeof value === 'string') {
+        try {
+          const parsed = JSON.parse(value)
+          return Array.isArray(parsed) ? parsed : defaultValue
+        } catch (e) {
+          console.warn('[JSON解析失败]', e.message)
+          return defaultValue
+        }
+      }
+      return defaultValue
+    }
+
+    // 状态映射：根据实际时间和后端状态综合判断
+    let status = 'ended'
+    const now = new Date()
+    const startTime = new Date(backendItem.start_time || backendItem.startTime)
+    const endTime = new Date(backendItem.end_time || backendItem.endTime)
+
+    // 优先根据实际时间判断
+    if (now < startTime) {
+      status = 'upcoming'
+    } else if (now >= startTime && now <= endTime) {
+      status = 'ongoing'
+    } else {
+      status = 'ended'
+    }
+
+    // 如果后端标记为 inactive 且时间上应该是 ongoing，则根据后端状态调整为 ended
+    const backendStatus = backendItem.status || 'active'
+    if (status === 'ongoing' && backendStatus === 'inactive') {
+      status = 'ended'
+    }
+
+    // 时间格式转换: ISO -> MM-DD HH:mm
+    const formatTime = (isoString) => {
+      if (!isoString) ''
+      const date = new Date(isoString)
+      if (isNaN(date.getTime())) return ''
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const hours = String(date.getHours()).padStart(2, '0')
+      const minutes = String(date.getMinutes()).padStart(2, '0')
+      return `${month}-${day} ${hours}:${minutes}`
+    }
+
+    // 获取平台名称
+    const platformName = backendItem.platform || backendItem.platform_name || ''
+
+    // 获取平台 emoji（优先使用后端数据）
+    const platformEmoji = backendItem.platform_emoji || backendItem.platformEmoji || defaultEmojiMap[platformName] || '🏮'
+
+    // 获取平台图标
+    const platformIcon = backendItem.platform_icon || backendItem.platformIcon || ''
+
+    // 获取标题
+    const title = backendItem.title || ''
+
+    // 获取描述
+    const description = backendItem.description || ''
+
+    // 获取最大奖励
+    const maxReward = backendItem.max_reward || backendItem.maxReward || this.extractMaxReward(description)
+
+    // 获取标签（优先使用后端数据，否则从描述提取）
+    let tags = parseJsonField(backendItem.tags || backendItem.tags, [])
+    if (tags.length === 0) {
+      // 从 description 提取标签
+      if (description.includes('AI')) tags.push('AI互动')
+      if (description.includes('现金') || description.includes('红包')) tags.push('现金红包')
+      if (description.includes('集') || description.includes('福')) tags.push('集卡')
+      if (description.includes('券') || description.includes('满减')) tags.push('优惠券')
+    }
+    if (tags.length === 0) tags = ['春节活动']
+
+    // 获取步骤
+    const steps = parseJsonField(backendItem.steps || backendItem.steps, [])
+    const parsedSteps = steps.length > 0 ? steps : this.extractSteps(backendItem.rules || description)
+
+    // 获取技巧
+    const tips = parseJsonField(backendItem.tips || backendItem.tips, [])
+    const parsedTips = tips.length > 0 ? tips : this.extractTips(backendItem.rules || description)
+
+    // 获取总奖金
+    const totalBonus = backendItem.total_bonus || backendItem.totalBonus || ''
+
+    // 获取参与方式
+    const participation = backendItem.participation || backendItem.participation || '全民参与'
+
+    // 获取规则
+    const rules = backendItem.rules || description
+
+    return {
+      id: backendItem.id,
+      platform_name: platformName,
+      platform_icon: platformIcon,
+      platform_emoji: platformEmoji,
+      title: title,
+      description: description,
+      status: status,
+      start_time: formatTime(backendItem.start_time || backendItem.startTime),
+      end_time: formatTime(backendItem.end_time || backendItem.endTime),
+      // 保留原始时间戳供详情页倒计时使用
+      start_timestamp: new Date(backendItem.start_time || backendItem.startTime).getTime(),
+      end_timestamp: new Date(backendItem.end_time || backendItem.endTime).getTime(),
+      max_reward: maxReward,
+      tags: tags,
+      detail: {
+        total_bonus: totalBonus,
+        participation: participation,
+        rules: rules,
+        steps: parsedSteps,
+        tips: parsedTips
+      }
+    }
+  },
+
+  /**
+   * 从描述中提取最大奖励
+   */
+  extractMaxReward(description) {
+    // 匹配金额数字，如 "10亿元"、"5亿"、"万元"、"10000元"等
+    const patterns = [
+      /(\d+(?:\.\d+)?)\s*(亿元|亿)/,
+      /(\d+(?:\.\d+)?)\s*(万元|万)/,
+      /(\d+(?:\.\d+)?)\s*元/
+    ]
+
+    for (const pattern of patterns) {
+      const match = description.match(pattern)
+      if (match) {
+        return match[0]
+      }
+    }
+
+    return '现金红包'
+  },
+
+  /**
+   * 从规则中提取步骤
+   */
+  extractSteps(rules) {
+    if (!rules) return []
+    // 按行分割，过滤空行
+    const lines = rules.split('\n').filter(line => line.trim())
+    // 只取前6条作为步骤
+    return lines.slice(0, 6).map(line => line.replace(/^\d+\.\s*/, '').trim())
+  },
+
+  /**
+   * 从规则中提取技巧
+   */
+  extractTips(rules) {
+    if (!rules) return []
+    const tips = []
+    if (rules.includes('每日')) tips.push('每日参与可获得更多奖励')
+    if (rules.includes('分享') || rules.includes('邀请')) tips.push('分享给好友增加奖励')
+    if (rules.includes('签到')) tips.push('记得每日签到')
+    return tips.length > 0 ? tips : ['按时参与，不要错过']
   },
 
   /**

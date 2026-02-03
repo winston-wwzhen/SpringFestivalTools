@@ -4,7 +4,11 @@ Page({
     activity: null,
     showRules: false,
     showSteps: true,
-    showTips: false
+    showTips: false,
+    countdownText: '',
+    countdownLabel: '',
+    copied: false,
+    countdownTimer: null
   },
 
   onLoad(options) {
@@ -20,6 +24,8 @@ Page({
       this.setData({ activity })
       // 默认展开参与步骤
       this.setData({ showSteps: true })
+      // 启动倒计时
+      this.startCountdown()
     } else {
       wx.showToast({
         title: '活动不存在',
@@ -44,7 +50,102 @@ Page({
   },
 
   onUnload() {
-    console.log('[RedpackDetail] onUnload')
+    // 清除倒计时定时器
+    if (this.data.countdownTimer) {
+      clearInterval(this.data.countdownTimer)
+    }
+  },
+
+  /**
+   * 启动倒计时
+   */
+  startCountdown() {
+    this.updateCountdown()
+    this.data.countdownTimer = setInterval(() => {
+      this.updateCountdown()
+    }, 1000)
+  },
+
+  /**
+   * 更新倒计时
+   */
+  updateCountdown() {
+    const activity = this.data.activity
+    if (!activity) return
+
+    const now = new Date().getTime()
+    // 优先使用时间戳，如果没有则尝试解析格式化时间
+    const endTime = activity.end_timestamp || (activity.end_time ? new Date(activity.end_time).getTime() : 0)
+    const startTime = activity.start_timestamp || (activity.start_time ? new Date(activity.start_time).getTime() : 0)
+
+    if (!endTime || !startTime) {
+      this.setData({ countdownText: '', countdownLabel: '' })
+      return
+    }
+
+    let targetTime, label
+
+    if (now < startTime) {
+      targetTime = startTime
+      label = '距离开始'
+    } else if (now >= startTime && now < endTime) {
+      targetTime = endTime
+      label = '距离结束'
+    } else {
+      this.setData({ countdownText: '', countdownLabel: '' })
+      clearInterval(this.data.countdownTimer)
+      return
+    }
+
+    const diff = targetTime - now
+
+    if (diff <= 0) {
+      this.setData({ countdownText: '', countdownLabel: '' })
+      clearInterval(this.data.countdownTimer)
+      return
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+
+    let text = ''
+    if (days > 0) {
+      text = `${days}天${hours}时${minutes}分`
+    } else if (hours > 0) {
+      text = `${hours}时${minutes}分${seconds}秒`
+    } else {
+      text = `${minutes}分${seconds}秒`
+    }
+
+    this.setData({
+      countdownText: text,
+      countdownLabel: label
+    })
+  },
+
+  /**
+   * 复制口令码
+   */
+  copyCode() {
+    const activity = this.data.activity
+    if (!activity?.detail?.code) return
+
+    wx.setClipboardData({
+      data: activity.detail.code,
+      success: () => {
+        this.setData({ copied: true })
+        wx.showToast({
+          title: '口令已复制',
+          icon: 'success'
+        })
+        // 2秒后恢复按钮状态
+        setTimeout(() => {
+          this.setData({ copied: false })
+        }, 2000)
+      }
+    })
   },
 
   /**
@@ -75,29 +176,6 @@ Page({
   },
 
   /**
-   * 跳转平台
-   */
-  goToPlatform() {
-    const activity = this.data.activity
-    if (!activity) return
-
-    wx.showModal({
-      title: '跳转提示',
-      content: `即将跳转到${activity.platform_name}APP参与活动`,
-      confirmText: '去参与',
-      cancelText: '取消',
-      success: (res) => {
-        if (res.confirm) {
-          wx.showToast({
-            title: '请手动打开对应APP',
-            icon: 'none'
-          })
-        }
-      }
-    })
-  },
-
-  /**
    * 分享
    */
   onShare() {
@@ -116,7 +194,7 @@ Page({
   onShareAppMessage() {
     const activity = this.data.activity
     return {
-      title: activity ? `${activity.title} - 最高${activity.max_reward}` : '春节红包活动',
+      title: activity ? `${activity.title} - 最高${activity.max_reward}` : '春节活动',
       path: `/pages/redpack/detail/index?id=${this.data.activity?.id}`,
       imageUrl: '/images/share-redpack.jpg'
     }

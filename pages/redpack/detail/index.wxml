@@ -1,7 +1,7 @@
 <!--pages-redpack/detail/index.wxml-->
 <view class="container">
   <!-- 自定义导航栏 -->
-  <nav-bar title="红包详情" bgColor="#D32F2F" showBack="{{true}}"></nav-bar>
+  <nav-bar title="活动详情" bgColor="#D32F2F" showBack="{{true}}"></nav-bar>
 
   <!-- 装饰灯笼 -->
   <view class="lantern-left">🏮</view>
@@ -10,8 +10,7 @@
   <!-- 头部信息 -->
   <view class="header">
     <view class="platform-info">
-      <image wx:if="{{activity.platform_icon}}" class="platform-icon" src="{{activity.platform_icon}}" mode="aspectFit"></image>
-      <view wx:else class="platform-emoji">{{activity.platform_emoji || '🏮'}}</view>
+      <view class="platform-emoji">{{activity.platform_emoji || '🏮'}}</view>
       <view class="platform-name">{{activity.platform_name}}</view>
     </view>
     <view class="status-badge status-{{activity.status}}">{{activity.status_text}}</view>
@@ -21,8 +20,17 @@
   <view class="title-section">
     <text class="title">{{activity.title}}</text>
     <view class="reward" wx:if="{{activity.max_reward}}">
-      <text class="reward-icon">🧧</text>
+      <text class="reward-icon">🎁</text>
       <text class="reward-text">最高 {{activity.max_reward}}</text>
+    </view>
+  </view>
+
+  <!-- 活动倒计时 -->
+  <view class="countdown-section" wx:if="{{countdownText}}">
+    <view class="countdown-icon">⏰</view>
+    <view class="countdown-content">
+      <text class="countdown-label">{{countdownLabel}}</text>
+      <text class="countdown-text">{{countdownText}}</text>
     </view>
   </view>
 
@@ -64,6 +72,20 @@
 
   <!-- 详细内容折叠面板 -->
   <view class="content-section" wx:if="{{activity.detail}}">
+    <!-- 口令码 -->
+    <view class="code-section" wx:if="{{activity.detail.code}}">
+      <view class="code-header">
+        <text class="code-title">🎫 口令码</text>
+        <view class="code-copy-btn" bindtap="copyCode">
+          <text class="copy-icon">{{copied ? '✓' : '📋'}}</text>
+          <text class="copy-text">{{copied ? '已复制' : '复制'}}</text>
+        </view>
+      </view>
+      <view class="code-content">
+        <text class="code-text">{{activity.detail.code}}</text>
+      </view>
+    </view>
+
     <!-- 活动规则 -->
     <view class="accordion-item">
       <view class="accordion-header" bindtap="toggleRules">
@@ -110,11 +132,11 @@
 
   <!-- 底部按钮 -->
   <view class="footer">
+    <button class="btn-service" open-type="contact" session-from="redpack-detail">
+      <text>💬 联系客服</text>
+    </button>
     <button class="btn-share" bindtap="onShare">
       <text>📤 分享给好友</text>
-    </button>
-    <button class="btn-primary" bindtap="goToPlatform">
-      <text>🚀 立即参与</text>
     </button>
   </view>
 </view>

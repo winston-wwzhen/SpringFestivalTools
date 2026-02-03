@@ -9,11 +9,19 @@
 
   <!-- 搜索栏 -->
   <view class="search-bar">
-    <view class="search-input">
+    <view class="search-box">
       <text class="search-icon">🔍</text>
-      <input placeholder="搜索活动名称或平台" value="{{searchKeyword}}" bindinput="onSearchInput" confirm-type="search" bindconfirm="onSearch" />
-      <view class="search-decoration">🧧</view>
+      <input class="search-input" placeholder="搜索活动名称或平台" value="{{searchKeyword}}" bindinput="onSearchInput" confirm-type="search" bindconfirm="onSearch" />
+      <view class="clear-icon {{searchKeyword ? 'show' : ''}}" bindtap="onClearSearch">
+        <text>✕</text>
+      </view>
     </view>
+  </view>
+
+  <!-- 免责声明 -->
+  <view class="disclaimer-box">
+    <text class="disclaimer-icon">📢</text>
+    <text class="disclaimer-text">本页面仅为活动信息整理，具体活动规则以各平台官方为准</text>
   </view>
 
   <!-- 筛选标签 -->
@@ -37,8 +45,7 @@
     <block wx:if="{{list.length > 0}}">
       <view class="activity-card" wx:for="{{list}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
         <view class="card-header">
-          <image wx:if="{{item.platform_icon}}" class="platform-icon" src="{{item.platform_icon}}" mode="aspectFit"></image>
-          <view wx:else class="platform-emoji">{{item.platform_emoji || '🏮'}}</view>
+          <view class="platform-emoji">{{item.platform_emoji || '🏮'}}</view>
           <view class="platform-name">{{item.platform_name}}</view>
           <view class="status-tag status-{{item.status}}">{{item.status_text}}</view>
         </view>
@@ -67,7 +74,7 @@
 
     <!-- 空状态 -->
     <view class="empty-state" wx:if="{{list.length === 0 && !loading}}">
-      <image class="empty-icon" src="/images/empty.png" mode="aspectFit"></image>
+      <text class="empty-icon">🧧</text>
       <text class="empty-text">暂无红包活动</text>
     </view>
 

@@ -9,7 +9,7 @@
   <!-- 搜索栏 -->
   <view class="search-container">
     <view class="search-box">
-      <image class="search-icon" src="/images/icon-search.png"></image>
+      <text class="search-icon">🔍</text>
       <input
         class="search-input"
         type="text"
@@ -27,31 +27,80 @@
 
   <!-- 平台信息 -->
   <view class="platform-header" wx:if="{{platform}}">
-    <image class="platform-logo" src="{{platform.logo}}" mode="aspectFit"></image>
+    <view class="platform-logo">{{platform.emoji || '📺'}}</view>
     <view class="platform-info">
       <view class="platform-name">{{platform.name}}</view>
-      <view class="platform-time">{{platform.broadcast_time}}</view>
+      <view class="platform-time">🕐 {{platform.broadcast_time}}</view>
+    </view>
+    <view class="program-total">共{{programs.length}}个节目</view>
+  </view>
+
+  <!-- 分类筛选 -->
+  <view class="filter-tabs">
+    <view
+      class="filter-tab {{activeFilter === 'all' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-filter="all"
+    >
+      <text>全部</text>
+      <view class="tab-count">{{programs.length}}</view>
+    </view>
+    <view
+      class="filter-tab {{activeFilter === '歌舞' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-filter="歌舞"
+    >
+      <text>🎵 歌舞</text>
+      <view class="tab-count">{{getTypeCount('歌舞')}}</view>
+    </view>
+    <view
+      class="filter-tab {{activeFilter === '语言' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-filter="语言"
+    >
+      <text>🎭 语言</text>
+      <view class="tab-count">{{getTypeCount('语言')}}</view>
+    </view>
+    <view
+      class="filter-tab {{activeFilter === 'fav' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-filter="fav"
+    >
+      <text>⭐ 收藏</text>
+      <view class="tab-count">{{favCount}}</view>
     </view>
   </view>
 
   <!-- 节目列表 -->
   <view class="program-list">
-    <view class="program-card" wx:for="{{filteredPrograms}}" wx:key="id">
+    <view
+      class="program-card"
+      wx:for="{{filteredPrograms}}"
+      wx:key="id"
+      bindtap="onProgramClick"
+      data-id="{{item.id}}"
+    >
       <view class="program-order">{{item.order}}</view>
       <view class="program-info">
-        <view class="program-name">{{item.name}}</view>
+        <view class="program-name">
+          <text class="name-text">{{item.name}}</text>
+          <view class="fav-icon {{item.isFav ? 'active' : ''}}" catchtap="onToggleFav" data-id="{{item.id}}">
+            <text>{{item.isFav ? '⭐' : '☆'}}</text>
+          </view>
+        </view>
         <view class="program-performers" wx:if="{{item.performers}}">
-          {{item.performers}}
+          <text class="performers-icon">👤</text>
+          <text>{{item.performers}}</text>
         </view>
       </view>
-      <view class="program-type" wx:if="{{item.type}}">{{item.type}}</view>
+      <view class="program-type {{getTypeColor(item.type)}}">{{item.type}}</view>
     </view>
 
     <!-- 空状态 -->
     <view class="empty-state" wx:if="{{filteredPrograms.length === 0 && !loading}}">
       <text class="empty-icon">🔍</text>
-      <text class="empty-text">未找到相关节目</text>
-      <text class="empty-hint">试试搜索其他关键词</text>
+      <text class="empty-text">{{activeFilter === 'fav' ? '还没有收藏的节目' : '未找到相关节目'}}</text>
+      <text class="empty-hint" wx:if="{{activeFilter !== 'fav'}}">试试搜索其他关键词</text>
     </view>
 
     <!-- 加载中 -->
