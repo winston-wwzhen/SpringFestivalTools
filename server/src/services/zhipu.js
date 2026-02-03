@@ -5,7 +5,7 @@ const axios = require('axios');
 const logger = require('../../utils/logger');
 
 /**
- * 获取系统提示词
+ * 获取亲戚称呼系统提示词
  */
 function getKinshipSystemPrompt() {
   return `你是一个中国亲戚称呼专家。请根据用户输入的亲戚关系，直接给出对应的称呼。
@@ -48,6 +48,74 @@ function getKinshipSystemPrompt() {
 输出：表嫂
 
 现在，请处理用户的输入，最后一行必须是"输出："格式：`;
+}
+
+/**
+ * 获取祝福语生成系统提示词
+ */
+function getBlessingSystemPrompt() {
+  return `你是一个春节祝福语创作专家。请根据用户提供的信息，创作一条温馨、真诚的春节祝福语。
+
+【要求】
+1. 祝福语要简短精炼，不超过50个字
+2. 语言要生动活泼，符合春节氛围
+3. 根据接收人和祝福类型调整内容
+4. 只输出祝福语本身，不要有其他解释
+
+【祝福类型】
+- spring: 春节祝福（传统、喜庆）
+- newyear: 新年祝福（现代、活力）
+- wealth: 招财进宝（财富、财运）
+- career: 事业顺利（工作、前程）
+- health: 身体健康（健康、平安）
+- family: 阖家幸福（家庭、团圆）
+
+【风格类型】
+- classic: 传统经典（四字成语、传统表达）
+- modern: 现代时尚（网络用语、年轻化）
+- funny: 幽默风趣（轻松、搞笑）
+
+【输出格式】
+直接输出祝福语，不要有任何前缀或后缀。`;
+}
+
+/**
+ * 获取新年运势系统提示词
+ */
+function getFortuneSystemPrompt() {
+  return `你是一个生肖运势测算专家。请根据用户提供的姓名和生日，测算其2026马年运势。
+
+【输出要求】
+1. 必须输出JSON格式
+2. 包含以下字段：
+   - overallStars: 综合星级（3-5个整数）
+   - overfallDesc: 综合运势描述（10-20字）
+   - wealth: 财运百分比（60-95）
+   - career: 事业百分比（60-95）
+   - love: 爱情百分比（60-95）
+   - health: 健康百分比（60-95）
+   - luckyColor: 幸运颜色
+   - luckyNumber: 幸运数字
+   - luckyDirection: 幸运方位
+   - luckyZodiac: 幸运生肖
+   - advice: 新年寄语（20-30字）
+
+【JSON格式示例】
+{
+  "overallStars": 4,
+  "overfallDesc": "马年运势大吉，万事如意！",
+  "wealth": 85,
+  "career": 80,
+  "love": 75,
+  "health": 90,
+  "luckyColor": "红色",
+  "luckyNumber": "8",
+  "luckyDirection": "东方",
+  "luckyZodiac": "马",
+  "advice": "2026马年，愿你马到成功，万事如意！"
+}
+
+请只输出JSON，不要有其他内容。`;
 }
 
 /**
@@ -211,5 +279,120 @@ async function calculateKinship(input) {
 }
 
 module.exports = {
-  calculateKinship
+  calculateKinship,
+  generateBlessing,
+  calculateFortune
 };
+
+/**
+ * 生成祝福语
+ * @param {string} receiver 接收人
+ * @param {string} blessingType 祝福类型
+ * @param {string} style 风格
+ */
+async function generateBlessing(receiver, blessingType, style) {
+  const typeNames = {
+    spring: '春节',
+    newyear: '新年',
+    wealth: '招财',
+    career: '事业',
+    health: '健康',
+    family: '家庭'
+  };
+
+  const styleNames = {
+    classic: '传统经典',
+    modern: '现代时尚',
+    funny: '幽默风趣'
+  };
+
+  const userPrompt = `请给${receiver || '朋友'}生成一条${typeNames[blessingType] || '春节'}祝福语，风格要求：${styleNames[style] || '传统经典'}。`;
+
+  const messages = [
+    {
+      role: 'system',
+      content: getBlessingSystemPrompt()
+    },
+    {
+      role: 'user',
+      content: userPrompt
+    }
+  ];
+
+  try {
+    const result = await callZhipuAI(messages);
+    logger.info('Blessing generation result:', { receiver, blessingType, style, result });
+
+    // 清理结果，去除可能的引号和前缀
+    let blessing = result
+      .replace(/^["'「【]*/, '')
+      .replace(/["'」】]*$/, '')
+      .replace(/^[：:]\s*/, '')
+      .trim();
+
+    // 如果结果太长，截取前50个字
+    if (blessing.length > 50) {
+      blessing = blessing.substring(0, 50);
+    }
+
+    return blessing || `祝${receiver || '朋友'}春节快乐，马年大吉！`;
+  } catch (error) {
+    logger.error('Blessing generation failed:', error);
+    throw error;
+  }
+}
+
+/**
+ * 测算新年运势
+ * @param {string} name 姓名
+ * @param {string} birthday 生日
+ * @param {string} gender 性别
+ */
+async function calculateFortune(name, birthday, gender) {
+  const userPrompt = `请为${name}（${gender === 'male' ? '男' : '女'}，生日：${birthday}）测算2026马年运势。`;
+
+  const messages = [
+    {
+      role: 'system',
+      content: getFortuneSystemPrompt()
+    },
+    {
+      role: 'user',
+      content: userPrompt
+    }
+  ];
+
+  try {
+    const result = await callZhipuAI(messages);
+    logger.info('Fortune calculation result:', { name, birthday, gender, result });
+
+    // 尝试解析JSON
+    let fortune;
+    try {
+      // 提取JSON部分
+      const jsonMatch = result.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        fortune = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('No JSON found in response');
+      }
+
+      // 验证并修正数据
+      fortune.overallStars = Math.min(5, Math.max(3, fortune.overallStars || 4));
+      fortune.wealth = Math.min(95, Math.max(60, fortune.wealth || 75));
+      fortune.career = Math.min(95, Math.max(60, fortune.career || 75));
+      fortune.love = Math.min(95, Math.max(60, fortune.love || 75));
+      fortune.health = Math.min(95, Math.max(60, fortune.health || 75));
+      fortune.name = name;
+
+      return fortune;
+    } catch (parseError) {
+      logger.error('Fortune JSON parse error:', parseError);
+      throw new Error('运势解析失败');
+    }
+  } catch (error) {
+    logger.error('Fortune calculation failed:', error);
+    throw error;
+  }
+}
+

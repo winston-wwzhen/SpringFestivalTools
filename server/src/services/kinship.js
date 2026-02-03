@@ -1,5 +1,6 @@
 // src/services/kinship.js - 亲戚称呼服务
 const db = require('../database/db')
+const zhipu = require('./zhipu')
 
 class KinshipService {
   // 称呼映射表（简化版）
@@ -20,15 +21,72 @@ class KinshipService {
     '母妹': { male: '姨妈', female: '姨妈' },
   }
 
-  // 计算称呼（小程序端）
+  // 统一计算接口（支持多种功能）
   async calculate(params) {
-    const { gender, relation } = params
+    const { type, relation, gender, receiver, blessingType, style, name, birthday } = params
 
-    // 简化版实现，实际需要更复杂的关系计算逻辑
+    // 根据type调用不同功能
+    switch (type) {
+      case 'kinship':
+        // 亲戚称呼计算
+        return await this.calculateKinship({ relation, gender })
+
+      case 'blessing':
+        // 祝福语生成
+        try {
+          const blessing = await zhipu.generateBlessing(receiver, blessingType, style)
+          return { blessing }
+        } catch (error) {
+          throw new Error('AI生成失败，请使用本地模板')
+        }
+
+      case 'fortune':
+        // 新年运势测算
+        try {
+          const fortune = await zhipu.calculateFortune(name, birthday, gender)
+          return fortune
+        } catch (error) {
+          throw new Error('AI测算失败，请使用本地算法')
+        }
+
+      default:
+        // 默认为亲戚称呼计算（兼容旧版）
+        return await this.calculateKinship({ relation, gender })
+    }
+  }
+
+  // 计算称呼（小程序端）
+  async calculateKinship({ relation, gender }) {
+    // 如果提供了relation参数，调用AI计算
+    if (relation) {
+      try {
+        const title = await zhipu.calculateKinship(relation)
+        return {
+          relation,
+          title,
+          description: this.getDescription(relation)
+        }
+      } catch (error) {
+        // AI失败时使用本地映射
+        const result = this.relationMap[relation]
+        if (!result) {
+          return {
+            relation,
+            title: '亲戚',
+            description: '该关系较为复杂，建议详细描述'
+          }
+        }
+        return {
+          relation,
+          title: result[gender] || result.male,
+          description: this.getDescription(relation)
+        }
+      }
+    }
+
+    // 简化版实现（兼容旧版）
     const result = this.relationMap[relation]
-
     if (!result) {
-      // 如果没有预设关系，返回通用称呼
       return {
         relation,
         title: gender === 'male' ? '亲戚' : '亲戚',
