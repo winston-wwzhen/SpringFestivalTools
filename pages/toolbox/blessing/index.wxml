@@ -1,5 +1,8 @@
 <!--pages/toolbox/blessing/index.wxml-->
 <view class="page">
+  <!-- 自定义导航栏 -->
+  <nav-bar title="祝福语生成器" bgColor="#D32F2F" showBack="{{true}}"></nav-bar>
+
   <!-- 头部 -->
   <view class="header">
     <view class="header-bg"></view>
