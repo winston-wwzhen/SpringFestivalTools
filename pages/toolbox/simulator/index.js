@@ -1,153 +1,234 @@
 // pages/toolbox/simulator/index.js
-const app = getApp()
+const scriptsData = require('./scripts.js')
 
 Page({
   data: {
-    currentScene: 'countdown',
-    countdownDays: 0,
-    firecrackerActive: false,
-    boomShow: false,
-    couplerPasted: false,
-    dinnerDishes: ['🍖 红烧肉', '🐟 年年有余', '🥟 饺子', '🍗 白切鸡'],
-    sceneDescriptions: {
-      countdown: {
-        title: '春节倒计时',
-        text: '距离2026马年春节还有多少天？期待新年的到来！'
-      },
-      firecracker: {
-        title: '放鞭炮',
-        text: '点击按钮或鞭炮，感受过年的热闹氛围！注意：小心烟花哦~'
-      },
-      coupler: {
-        title: '贴春联',
-        text: '春节贴春联是传统习俗，点击按钮贴上春联，迎接福气！'
-      },
-      gala: {
-        title: '看春晚',
-        text: '除夕夜一家人围坐看春晚，是过年最温馨的时刻！'
-      },
-      dinner: {
-        title: '年夜饭',
-        text: '年夜饭是春节最重要的团圆饭，加菜享用美食吧！'
-      }
-    }
+    // 剧本列表
+    scripts: [],
+    // 当前剧本
+    currentScript: null,
+    // 当前月份 (1-12)
+    currentMonth: 1,
+    // 当前事件
+    currentEvent: null,
+    // 游戏是否结束
+    gameEnding: false,
+    // 最终属性
+    finalStats: {},
+    // 结局
+    ending: {},
+    // 属性列表
+    statsList: [
+      { key: 'wealth', label: '财富', icon: '💰', value: 50, color: '#FFD700' },
+      { key: 'career', label: '事业', icon: '💼', value: 50, color: '#FF6B6B' },
+      { key: 'love', label: '爱情', icon: '💕', value: 50, color: '#FF69B4' },
+      { key: 'health', label: '健康', icon: '💪', value: 50, color: '#4CAF50' },
+      { key: 'happiness', label: '幸福', icon: '😊', value: 50, color: '#FF9800' }
+    ],
+    // 当前属性
+    currentStats: {
+      wealth: 50,
+      career: 50,
+      love: 50,
+      health: 50,
+      happiness: 50
+    },
+    // 年度回顾列表
+    reviewList: []
   },
 
   onLoad() {
-    // 计算倒计时
-    this.calculateCountdown()
+    // 加载剧本列表
+    const scripts = Object.values(scriptsData.scripts).map(script => ({
+      id: script.id,
+      name: script.name,
+      icon: script.icon,
+      desc: script.desc
+    }))
+
+    this.setData({ scripts })
   },
 
   /**
-   * 计算倒计时
+   * 选择剧本
    */
-  calculateCountdown() {
-    const now = new Date()
-    const springFestival = new Date('2026-02-17')
-    const diffTime = springFestival - now
-    const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  selectScript(e) {
+    const scriptId = e.currentTarget.dataset.script
+    const script = scriptsData.scripts[scriptId]
+
+    // 初始化游戏状态
     this.setData({
-      countdownDays: days > 0 ? days : 0
+      currentScript: script,
+      currentMonth: 1,
+      currentEvent: script.events[0],
+      currentStats: { ...script.baseStats },
+      gameEnding: false,
+      reviewList: []
     })
+
+    this.updateStatsDisplay()
   },
 
   /**
-   * 切换场景
+   * 选择选项
    */
-  switchScene(e) {
-    const scene = e.currentTarget.dataset.scene
+  selectOption(e) {
+    const index = e.currentTarget.dataset.index
+    const option = this.data.currentEvent.options[index]
+
+    // 更新属性
+    const newStats = { ...this.data.currentStats }
+    for (const key in option.stats) {
+      newStats[key] = Math.max(0, Math.min(100, newStats[key] + option.stats[key]))
+    }
+
+    // 记录选择
+    const reviewList = [...this.data.reviewList, {
+      month: this.data.currentMonth,
+      choice: option.text,
+      stats: { ...option.stats }
+    }]
+
+    // 显示属性变化提示
+    this.showStatsChange(option.stats)
+
+    // 更新状态
     this.setData({
-      currentScene: scene
+      currentStats: newStats,
+      reviewList
     })
+
+    this.updateStatsDisplay()
+
+    // 检查是否游戏结束
+    if (this.data.currentMonth >= 12) {
+      this.endGame()
+    } else {
+      // 进入下一个月
+      setTimeout(() => {
+        this.nextMonth()
+      }, 500)
+    }
   },
 
   /**
-   * 点燃鞭炮
+   * 显示属性变化提示
    */
-  triggerFirecracker() {
-    this.setData({
-      firecrackerActive: true,
-      boomShow: false
-    })
+  showStatsChange(stats) {
+    const messages = []
+    const statNames = {
+      wealth: '财富',
+      career: '事业',
+      love: '爱情',
+      health: '健康',
+      happiness: '幸福'
+    }
 
-    setTimeout(() => {
-      this.setData({
-        firecrackerActive: false,
-        boomShow: true
-      })
-    }, 500)
+    for (const key in stats) {
+      const value = stats[key]
+      if (value > 0) {
+        messages.push(`${statNames[key]} +${value}`)
+      } else if (value < 0) {
+        messages.push(`${statNames[key]} ${value}`)
+      }
+    }
 
-    // 2秒后隐藏爆炸文字
-    setTimeout(() => {
-      this.setData({
-        boomShow: false
-      })
-    }, 2000)
-  },
-
-  /**
-   * 贴春联
-   */
-  pasteCouplet() {
-    wx.vibrateShort()
-    this.setData({
-      couplerPasted: true
-    })
-
-    setTimeout(() => {
+    if (messages.length > 0) {
       wx.showToast({
-        title: '春联贴好了！',
-        icon: 'success'
+        title: messages.join(' '),
+        icon: 'none',
+        duration: 1500
       })
-    }, 500)
+    }
   },
 
   /**
-   * 换台
+   * 进入下一个月
    */
-  switchChannel() {
-    const channels = [
-      { name: '央视春晚', time: '20:00' },
-      { name: '湖南春晚', time: '19:30' },
-      { name: '浙江春晚', time: '20:00' },
-      { name: '东方春晚', time: '19:30' }
-    ]
-
-    const random = channels[Math.floor(Math.random() * channels.length)]
-    wx.showToast({
-      title: `切换到 ${random.name}`,
-      icon: 'none'
-    })
-  },
-
-  /**
-   * 加菜
-   */
-  addDish() {
-    const dishes = [
-      '🦆 北京烤鸭', '🥬 白菜', '🍲 火锅', '🍜 面条',
-      '🥩 牛排', '🦆 鹅肝', '🦞 龙虾', '🍕 披萨',
-      '🍣 寿司', '🥪 汉堡', '🍝 意面', '🌮 墨西哥卷'
-    ]
-
-    const randomDish = dishes[Math.floor(Math.random() * dishes.length)]
+  nextMonth() {
+    const nextMonth = this.data.currentMonth + 1
+    const nextEvent = this.data.currentScript.events[nextMonth - 1]
 
     this.setData({
-      dinnerDishes: [...this.data.dinnerDishes, randomDish]
+      currentMonth: nextMonth,
+      currentEvent: nextEvent
+    })
+  },
+
+  /**
+   * 更新属性显示
+   */
+  updateStatsDisplay() {
+    const statsList = this.data.statsList.map(item => ({
+      ...item,
+      value: this.data.currentStats[item.key]
+    }))
+
+    this.setData({ statsList })
+  },
+
+  /**
+   * 结束游戏
+   */
+  endGame() {
+    const finalStats = { ...this.data.currentStats }
+    const ending = scriptsData.getEnding(finalStats)
+
+    this.setData({
+      gameEnding: true,
+      finalStats,
+      ending,
+      currentEvent: null
     })
 
-    wx.showToast({
-      title: `加菜：${randomDish}`,
-      icon: 'none'
+    wx.vibrateShort()
+  },
+
+  /**
+   * 重新开始
+   */
+  restartGame() {
+    this.setData({
+      currentScript: null,
+      currentMonth: 1,
+      currentEvent: null,
+      gameEnding: false,
+      finalStats: {},
+      ending: {},
+      currentStats: {
+        wealth: 50,
+        career: 50,
+        love: 50,
+        health: 50,
+        happiness: 50
+      },
+      reviewList: []
     })
+
+    this.updateStatsDisplay()
+  },
+
+  /**
+   * 分享结果
+   */
+  shareResult() {
+    const { ending, finalStats } = this.data
+    return {
+      title: `我在2026年获得了【${ending.title}】结局！`,
+      path: '/pages/toolbox/simulator/index',
+      imageUrl: ''
+    }
   },
 
   /**
    * 分享
    */
   onShareAppMessage() {
+    if (this.data.gameEnding) {
+      return this.shareResult()
+    }
     return {
-      title: '新年模拟器 - 体验过年氛围',
+      title: '新年模拟器 - 模拟你的2026',
       path: '/pages/toolbox/simulator/index'
     }
   }

@@ -1,116 +1,118 @@
 <!--pages/toolbox/simulator/index.wxml-->
 <view class="page">
-  <!-- 自定义导航栏 -->
-  <nav-bar title="新年模拟器" bgColor="#1a1a1a" showBack="{{true}}"></nav-bar>
+  <nav-bar title="新年模拟器" bgColor="#B71C1C" showBack="{{true}}"></nav-bar>
 
-  <!-- 头部 -->
-  <view class="header">
-    <view class="header-bg"></view>
-    <view class="header-content">
-      <view class="title">🎊 新年模拟器</view>
-      <view class="subtitle">沉浸式体验过年氛围</view>
+  <!-- 剧本选择界面 -->
+  <view class="script-selection" wx:if="{{!currentScript}}">
+    <view class="header-section">
+      <view class="title">🎮 选择你的2026剧本</view>
+      <view class="subtitle">每个剧本都是不同的人生体验</view>
+    </view>
+
+    <view class="script-list">
+      <view class="script-card" wx:for="{{scripts}}" wx:key="id" bindtap="selectScript" data-script="{{item.id}}">
+        <view class="script-icon">{{item.icon}}</view>
+        <view class="script-info">
+          <view class="script-name">{{item.name}}</view>
+          <view class="script-desc">{{item.desc}}</view>
+        </view>
+        <view class="script-arrow">›</view>
+      </view>
     </view>
   </view>
 
-  <!-- 模拟器场景 -->
-  <view class="scene-container">
-    <!-- 倒计时场景 -->
-    <view class="scene {{currentScene === 'countdown' ? 'active' : ''}}" wx:if="{{currentScene === 'countdown'}}">
-      <view class="countdown-display">
-        <view class="countdown-title">距离马年春节还有</view>
-        <view class="countdown-number">{{countdownDays}}</view>
-        <view class="countdown-unit">天</view>
+  <!-- 游戏主界面 -->
+  <view class="game-container" wx:if="{{currentScript && !gameEnding}}">
+    <!-- 顶部状态栏 -->
+    <view class="status-bar">
+      <view class="month-indicator">
+        <text class="month-number">{{currentMonth}}</text>
+        <text class="month-text">月</text>
       </view>
-      <view class="countdown-decoration">
-        <text class="deco-item">🏮</text>
-        <text class="deco-item">🧨</text>
-        <text class="deco-item">🎆</text>
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{(currentMonth / 12) * 100}}%"></view>
       </view>
     </view>
 
-    <!-- 放鞭炮场景 -->
-    <view class="scene {{currentScene === 'firecracker' ? 'active' : ''}}" wx:if="{{currentScene === 'firecracker'}}">
-      <view class="firecracker-container">
-        <text class="firecracker {{firecrackerActive ? 'active' : ''}}" bindtap="triggerFirecracker">🧨</text>
-        <text class="firecracker {{firecrackerActive ? 'active' : ''}}" style="animation-delay: 0.1s" bindtap="triggerFirecracker">🧨</text>
-        <text class="firecracker {{firecrackerActive ? 'active' : ''}}" style="animation-delay: 0.2s" bindtap="triggerFirecracker">🧨</text>
-        <text class="firecracker {{firecrackerActive ? 'active' : ''}}" style="animation-delay: 0.3s" bindtap="triggerFirecracker">🧨</text>
-        <text class="firecracker {{firecrackerActive ? 'active' : ''}}" style="animation-delay: 0.4s" bindtap="triggerFirecracker">🧨</text>
+    <!-- 属性显示 -->
+    <view class="stats-panel">
+      <view class="stat-item" wx:for="{{statsList}}" wx:key="key">
+        <text class="stat-icon">{{item.icon}}</text>
+        <view class="stat-bar">
+          <view class="stat-fill" style="width: {{item.value}}%; background: {{item.color}};"></view>
+        </view>
+        <text class="stat-value">{{item.value}}</text>
       </view>
-      <view class="boom-text {{boomShow ? 'show' : ''}}">💥 嘭！</view>
-      <button class="scene-btn" bindtap="triggerFirecracker">🔥 点燃鞭炮</button>
     </view>
 
-    <!-- 贴春联场景 -->
-    <view class="scene {{currentScene === 'couplet' ? 'active' : ''}}" wx:if="{{currentScene === 'couplet'}}">
-      <view class="couplet-container">
-        <view class="couplet-left {{coupletPasted ? 'pasted' : ''}}">
-          <text class="couplet-text">春</text>
-        </view>
-        <view class="couplet-center {{coupletPasted ? 'pasted' : ''}}">
-          <text class="couplet-text">福</text>
-        </view>
-        <view class="couplet-right {{coupletPasted ? 'pasted' : ''}}">
-          <text class="couplet-text">节</text>
-        </view>
+    <!-- 事件卡片 -->
+    <view class="event-card" wx:if="{{currentEvent}}">
+      <view class="event-header">
+        <text class="event-month">{{currentMonth}}月</text>
+        <text class="event-title">{{currentEvent.title}}</text>
       </view>
-      <button class="scene-btn" bindtap="pasteCouplet">📜 贴春联</button>
-    </view>
 
-    <!-- 看春晚场景 -->
-    <view class="scene {{currentScene === 'gala' ? 'active' : ''}}" wx:if="{{currentScene === 'gala'}}">
-      <view class="tv-container">
-        <view class="tv-screen">
-          <view class="screen-content">
-            <text class="cctv-logo">📺</text>
-            <text class="gala-text">2026春晚</text>
-            <text class="gala-time">20:00</text>
-          </view>
-        </view>
-        <view class="tv-stand"></view>
+      <view class="event-content">
+        <text class="event-text">{{currentEvent.content}}</text>
       </view>
-      <button class="scene-btn" bindtap="switchChannel">📺 换台</button>
-    </view>
 
-    <!-- 吃年夜饭场景 -->
-    <view class="scene {{currentScene === 'dinner' ? 'active' : ''}}" wx:if="{{currentScene === 'dinner'}}">
-      <view class="dinner-table">
-        <view class="dish" wx:for="{{dinnerDishes}}" wx:key="index">
-          {{item}}
+      <!-- 选项列表 -->
+      <view class="options-list">
+        <view
+          class="option-item"
+          wx:for="{{currentEvent.options}}"
+          wx:for-item="option"
+          wx:key="index"
+          bindtap="selectOption"
+          data-index="{{index}}"
+        >
+          <view class="option-dot"></view>
+          <text class="option-text">{{option.text}}</text>
         </view>
       </view>
-      <view class="dinner-family">👨‍👩‍👧‍👦 全家团圆</view>
-      <button class="scene-btn" bindtap="addDish">🍚 加菜</button>
     </view>
   </view>
 
-  <!-- 场景选择 -->
-  <view class="scene-selector">
-    <view class="scene-tab {{currentScene === 'countdown' ? 'active' : ''}}" bindtap="switchScene" data-scene="countdown">
-      <text class="tab-icon">⏰</text>
-      <text class="tab-text">倒计时</text>
+  <!-- 结局界面 -->
+  <view class="ending-container" wx:if="{{gameEnding}}">
+    <view class="ending-header">
+      <text class="ending-icon">{{ending.icon}}</text>
+      <text class="ending-title">{{ending.title}}</text>
     </view>
-    <view class="scene-tab {{currentScene === 'firecracker' ? 'active' : ''}}" bindtap="switchScene" data-scene="firecracker">
-      <text class="tab-icon">🧨</text>
-      <text class="tab-text">放鞭炮</text>
-    </view>
-    <view class="scene-tab {{currentScene === 'couplet' ? 'active' : ''}}" bindtap="switchScene" data-scene="couplet">
-      <text class="tab-icon">📜</text>
-      <text class="tab-text">贴春联</text>
-    </view>
-    <view class="scene-tab {{currentScene === 'gala' ? 'active' : ''}}" bindtap="switchScene" data-scene="gala">
-      <text class="tab-icon">📺</text>
-      <text class="tab-text">看春晚</text>
-    </view>
-    <view class="scene-tab {{currentScene === 'dinner' ? 'active' : ''}}" bindtap="switchScene" data-scene="dinner">
-      <text class="tab-icon">🍚</text>
-      <text class="tab-text">年夜饭</text>
-    </view>
-  </view>
 
-  <!-- 场景说明 -->
-  <view class="scene-description">
-    <view class="desc-title">💡 {{sceneDescriptions[currentScene].title}}</view>
-    <view class="desc-text">{{sceneDescriptions[currentScene].text}}</view>
+    <view class="ending-desc">
+      <text>{{ending.desc}}</text>
+    </view>
+
+    <!-- 最终属性 -->
+    <view class="final-stats">
+      <view class="final-stat-item" wx:for="{{statsList}}" wx:key="key">
+        <text class="final-stat-icon">{{item.icon}}</text>
+        <view class="final-stat-info">
+          <text class="final-stat-label">{{item.label}}</text>
+          <text class="final-stat-value">{{finalStats[item.key]}}</text>
+        </view>
+        <view class="final-stat-bar">
+          <view class="final-stat-fill" style="width: {{finalStats[item.key]}}%; background: {{item.color}};"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 年度回顾 -->
+    <view class="year-review">
+      <view class="review-title">📝 2026年度回顾</view>
+      <view class="review-content">
+        <view class="review-item" wx:for="{{reviewList}}" wx:key="index">
+          <text class="review-month">{{item.month}}月</text>
+          <text class="review-choice">{{item.choice}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="ending-actions">
+      <button class="btn-restart" bindtap="restartGame">🔄 再玩一次</button>
+      <button class="btn-share" bindtap="shareResult" open-type="share">📤 分享战绩</button>
+    </view>
   </view>
 </view>
