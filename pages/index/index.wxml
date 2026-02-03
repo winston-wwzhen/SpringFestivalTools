@@ -115,15 +115,6 @@
     </view>
   </view>
 
-  <!-- 广告位 -->
-  <view class="ad-banner">
-    <view class="ad-placeholder">
-      <text class="ad-icon">📢</text>
-      <text class="ad-text">广告位招租</text>
-      <text class="ad-desc">优质流量 精准触达</text>
-    </view>
-  </view>
-
   <!-- 春节小知识 -->
   <view class="tips">
     <view class="tips__title">春节小知识</view>
