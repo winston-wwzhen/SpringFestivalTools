@@ -143,12 +143,13 @@
 .activity-card::before {
   content: '福';
   position: absolute;
-  top: 30rpx;
+  top: 60rpx;
   right: 10rpx;
-  font-size: 120rpx;
+  font-size: 100rpx;
+  font-family: "KaiTi", "STKaiti", "楷体", serif;
   color: #D32F2F;
-  opacity: 0.05;
-  font-weight: 700;
+  opacity: 0.06;
+  font-weight: 900;
 }
 
 .activity-card:active {
