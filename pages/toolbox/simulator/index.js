@@ -180,24 +180,8 @@ Page({
    * 重新开始
    */
   restartGame() {
-    this.setData({
-      currentScript: null,
-      currentMonth: 1,
-      currentEvent: null,
-      gameEnding: false,
-      finalStats: {},
-      ending: {},
-      currentStats: {
-        wealth: 50,
-        career: 50,
-        love: 50,
-        health: 50,
-        happiness: 50
-      },
-      reviewList: []
-    })
-
-    this.updateStatsDisplay()
+    // 直接调用随机开始游戏
+    this.startRandomGame()
   },
 
   /**
