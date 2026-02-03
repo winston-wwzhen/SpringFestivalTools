@@ -466,33 +466,14 @@
 /* 卡片装饰字 */
 .card-decoration {
   position: absolute;
-  top: -8rpx;
+  bottom: -15rpx;
   right: -8rpx;
   font-family: "KaiTi", "STKaiti", "楷体", serif;
   font-size: 80rpx;
   font-weight: 900;
-  color: #FFD700;
+  color: rgba(211, 47, 47, 0.08);
   pointer-events: none;
   z-index: 1;
-  text-shadow:
-    0 0 10rpx rgba(255, 215, 0, 0.8),
-    0 0 20rpx rgba(255, 215, 0, 0.6),
-    0 0 30rpx rgba(255, 215, 0, 0.4),
-    2rpx 2rpx 0 rgba(183, 28, 28, 0.1);
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: decorationGlow 3s ease-in-out infinite;
-}
-
-@keyframes decorationGlow {
-  0%, 100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
 }
 
 /* 图标包裹容器 */
@@ -546,17 +527,19 @@
 
 .feature-card__badge {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  background: linear-gradient(135deg, #D32F2F, #B71C1C);
-  color: #FFD700;
+  top: -5rpx;
+  right: -5rpx;
+  background: rgba(211, 47, 47, 0.9);
+  color: rgba(255, 215, 0, 0.8);
   font-size: 20rpx;
-  padding: 6rpx 16rpx;
-  border-top-left-radius: 20rpx;
+  padding: 8rpx 12rpx;
+  border-radius: 50rpx;
   font-weight: 600;
-  box-shadow: -2rpx -2rpx 8rpx rgba(211, 47, 47, 0.3);
-  border: 1rpx solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 2rpx 8rpx rgba(211, 47, 47, 0.25);
+  border: 2rpx solid rgba(211, 47, 47, 0.3);
   z-index: 3;
+  min-width: 60rpx;
+  text-align: center;
 }
 
 
