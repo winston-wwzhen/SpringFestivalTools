@@ -2,27 +2,17 @@
 <view class="page">
   <nav-bar title="新年模拟器" bgColor="#B71C1C" showBack="{{true}}"></nav-bar>
 
-  <!-- 剧本选择界面 -->
-  <view class="script-selection" wx:if="{{!currentScript}}">
-    <view class="header-section">
-      <view class="title">🎮 选择你的2026剧本</view>
-      <view class="subtitle">每个剧本都是不同的人生体验</view>
-    </view>
-
-    <view class="script-list">
-      <view class="script-card" wx:for="{{scripts}}" wx:key="id" bindtap="selectScript" data-script="{{item.id}}">
-        <view class="script-icon">{{item.icon}}</view>
-        <view class="script-info">
-          <view class="script-name">{{item.name}}</view>
-          <view class="script-desc">{{item.desc}}</view>
-        </view>
-        <view class="script-arrow">›</view>
-      </view>
-    </view>
-  </view>
-
   <!-- 游戏主界面 -->
   <view class="game-container" wx:if="{{currentScript && !gameEnding}}">
+    <!-- 剧本信息卡片 -->
+    <view class="script-info-card">
+      <text class="script-icon">{{currentScript.icon}}</text>
+      <view class="script-info">
+        <text class="script-name">{{currentScript.name}}</text>
+        <text class="script-desc">{{currentScript.desc}}</text>
+      </view>
+    </view>
+
     <!-- 顶部状态栏 -->
     <view class="status-bar">
       <view class="month-indicator">

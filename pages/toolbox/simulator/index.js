@@ -3,8 +3,6 @@ const scriptsData = require('./scripts.js')
 
 Page({
   data: {
-    // 剧本列表
-    scripts: [],
     // 当前剧本
     currentScript: null,
     // 当前月份 (1-12)
@@ -38,23 +36,17 @@ Page({
   },
 
   onLoad() {
-    // 加载剧本列表
-    const scripts = Object.values(scriptsData.scripts).map(script => ({
-      id: script.id,
-      name: script.name,
-      icon: script.icon,
-      desc: script.desc
-    }))
-
-    this.setData({ scripts })
+    // 随机选择一个剧本开始游戏
+    this.startRandomGame()
   },
 
   /**
-   * 选择剧本
+   * 随机开始游戏
    */
-  selectScript(e) {
-    const scriptId = e.currentTarget.dataset.script
-    const script = scriptsData.scripts[scriptId]
+  startRandomGame() {
+    const scriptIds = Object.keys(scriptsData.scripts)
+    const randomId = scriptIds[Math.floor(Math.random() * scriptIds.length)]
+    const script = scriptsData.scripts[randomId]
 
     // 初始化游戏状态
     this.setData({

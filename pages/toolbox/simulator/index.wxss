@@ -5,50 +5,21 @@
   padding-bottom: 40rpx;
 }
 
-/* 剧本选择界面 */
-.script-selection {
-  padding: 40rpx 32rpx;
+/* 游戏容器 */
+.game-container {
+  padding: 24rpx 32rpx;
 }
 
-.header-section {
-  text-align: center;
-  margin-bottom: 40rpx;
-}
-
-.header-section .title {
-  font-size: 44rpx;
-  font-weight: 800;
-  color: #FFD700;
-  margin-bottom: 12rpx;
-  text-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.3);
-}
-
-.header-section .subtitle {
-  font-size: 26rpx;
-  color: #FFF8E7;
-  opacity: 0.9;
-}
-
-.script-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-}
-
-.script-card {
+/* 剧本信息卡片 */
+.script-info-card {
   display: flex;
   align-items: center;
   background: #fff;
   border-radius: 20rpx;
-  padding: 28rpx;
+  padding: 24rpx 28rpx;
+  margin-bottom: 20rpx;
   box-shadow: 0 4rpx 16rpx rgba(211, 47, 47, 0.1);
-  border: 2rpx solid rgba(255, 215, 0, 0.2);
-  transition: all 0.3s;
-}
-
-.script-card:active {
-  transform: scale(0.98);
-  box-shadow: 0 2rpx 8rpx rgba(211, 47, 47, 0.15);
+  border: 2rpx solid rgba(255, 215, 0, 0.3);
 }
 
 .script-icon {
@@ -63,26 +34,16 @@
 .script-name {
   font-size: 32rpx;
   font-weight: 700;
-  color: #333;
-  margin-bottom: 8rpx;
+  color: #D32F2F;
+  margin-bottom: 6rpx;
+  display: block;
 }
 
 .script-desc {
   font-size: 24rpx;
   color: #999;
   line-height: 1.4;
-}
-
-.script-arrow {
-  font-size: 48rpx;
-  color: #D32F2F;
-  font-weight: 300;
-  opacity: 0.5;
-}
-
-/* 游戏容器 */
-.game-container {
-  padding: 24rpx 32rpx;
+  display: block;
 }
 
 /* 状态栏 */
