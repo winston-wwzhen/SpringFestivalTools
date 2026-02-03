@@ -1,34 +1,61 @@
 // controllers/kinship.js
 // 亲戚称呼控制器
 
-const zhipuService = require('../services/zhipu');
+const kinshipService = require('../services/kinship');
 const logger = require('../../utils/logger');
 
 class KinshipController {
   /**
-   * 计算称呼（使用智谱AI）
+   * 统一计算接口（支持亲戚称呼、祝福语、运势）
    */
   async calculate(req, res) {
     try {
-      const { input } = req.body;
+      const params = req.body;
+      const { type } = params;
 
-      if (!input) {
-        return res.status(400).json({
-          success: false,
-          message: '请输入关系描述'
-        });
+      logger.info('[Kinship] Calculate request:', { type, params });
+
+      let result;
+
+      switch (type) {
+        case 'fortune':
+          // 新年运势测算
+          const { name, birthday, gender } = params;
+          if (!name || !birthday || !gender) {
+            return res.status(400).json({
+              success: false,
+              message: '请填写完整信息'
+            });
+          }
+          result = await kinshipService.calculate({ type, name, birthday, gender });
+          break;
+
+        case 'blessing':
+          // 祝福语生成
+          const { receiver, blessingType, style } = params;
+          result = await kinshipService.calculate({ type, receiver, blessingType, style });
+          break;
+
+        default:
+          // 亲戚称呼计算（兼容旧版）
+          const { input } = params;
+          if (!input) {
+            return res.status(400).json({
+              success: false,
+              message: '请输入关系描述'
+            });
+          }
+          result = await kinshipService.calculate({ type: 'kinship', relation: input });
+          // 转换为旧版格式
+          result = {
+            result: result.title
+          };
+          break;
       }
-
-      logger.info('[Kinship] Calculating with Zhipu AI:', { input });
-
-      const result = await zhipuService.calculateKinship(input);
 
       res.json({
         success: true,
-        data: {
-          result: result,
-          input: input
-        }
+        data: result
       });
     } catch (error) {
       logger.error('[Kinship] Calculate error:', error);
