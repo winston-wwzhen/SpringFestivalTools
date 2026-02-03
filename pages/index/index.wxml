@@ -124,5 +124,9 @@
         <text class="tip-item__text">{{item}}</text>
       </view>
     </view>
+    <view class="tips__refresh" bindtap="refreshTips">
+      <text class="refresh-icon">🔄</text>
+      <text class="refresh-text">换一批</text>
+    </view>
   </view>
 </view>

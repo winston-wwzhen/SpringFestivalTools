@@ -8,18 +8,37 @@ Page({
     redpackCount: 0,
     galaCount: 0,
     dailyItems: [],
-    tips: [
+    // 所有春节小知识
+    allTips: [
       '除夕夜要守岁到12点，寓意把一切邪瘟病疫驱走',
       '初一要拜年，说吉祥话，忌说不吉利的话',
       '过年吃饺子寓意"更岁交子"，新旧交替',
-      '马年戴红绳，趋吉避凶，马到成功'
-    ]
+      '马年戴红绳，趋吉避凶，马到成功',
+      '贴春联要贴在大门两侧，上联在右，下联在左',
+      '放鞭炮是为了驱赶年兽，保佑平安',
+      '长辈给晚辈压岁钱，寓意压住邪祟',
+      '正月初五接财神，迎福纳财',
+      '元宵节吃汤圆，寓意团团圆圆',
+      '过年不扫地，不倒垃圾，怕扫走财气',
+      '拜年时长辈给晚辈发红包，晚辈要双手接',
+      '过年穿新衣，辞旧迎新，万象更新',
+      '春节祭祀祖先，表达孝心和敬意',
+      '舞龙舞狮祈求风调雨顺，五谷丰登',
+      '年夜饭要有鱼，寓意年年有余',
+      '门神要贴在门上，保家宅平安',
+      '福字倒贴，寓意福到了',
+      '年画贴在墙上，增添喜庆气氛',
+      '春节要给长辈拜年，表示尊敬',
+      '过年不吵架，和和美美过新年'
+    ],
+    tips: [],
   },
 
   onLoad() {
     this.setData({
       countdownDays: app.globalData.countdownDays
     })
+    this.randomizeTips()
     this.loadData()
   },
 
@@ -215,6 +234,28 @@ Page({
     wx.showToast({
       title: '更多功能开发中',
       icon: 'none'
+    })
+  },
+
+  /**
+   * 随机选择4条小知识
+   */
+  randomizeTips() {
+    const allTips = this.data.allTips
+    const shuffled = [...allTips].sort(() => Math.random() - 0.5)
+    const selected = shuffled.slice(0, 4)
+    this.setData({ tips: selected })
+  },
+
+  /**
+   * 刷新小知识
+   */
+  refreshTips() {
+    this.randomizeTips()
+    wx.showToast({
+      title: '已刷新',
+      icon: 'success',
+      duration: 1000
     })
   }
 })

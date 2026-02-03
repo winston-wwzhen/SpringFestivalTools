@@ -606,6 +606,7 @@
 /* 春节小知识 - 卡片化 */
 .tips {
   padding: 48rpx 32rpx 64rpx;
+  position: relative;
 }
 
 .tips__title {
@@ -662,4 +663,36 @@
   color: var(--text-secondary);
   line-height: 1.6;
   padding-top: 10rpx;
+}
+
+/* 刷新按钮 */
+.tips__refresh {
+  position: absolute;
+  bottom: -15rpx;
+  right: 40rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background: linear-gradient(135deg, #D32F2F, #B71C1C);
+  color: #FFD700;
+  padding: 12rpx 24rpx;
+  border-radius: 50rpx;
+  box-shadow: 0 4rpx 12rpx rgba(211, 47, 47, 0.3);
+  border: 2rpx solid rgba(255, 215, 0, 0.3);
+  z-index: 2;
+  transition: all 0.3s;
+}
+
+.tips__refresh:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 8rpx rgba(211, 47, 47, 0.3);
+}
+
+.refresh-icon {
+  font-size: 24rpx;
+}
+
+.refresh-text {
+  font-size: 24rpx;
+  font-weight: 600;
 }
