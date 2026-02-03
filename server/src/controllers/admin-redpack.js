@@ -3,15 +3,55 @@ const db = require('../database/db')
 const logger = require('../../utils/logger')
 
 /**
+ * 安全解析JSON
+ */
+function safeParseJson(value, defaultValue = []) {
+  if (!value) return defaultValue
+
+  // 如果是Buffer类型，先转字符串
+  if (Buffer.isBuffer(value)) {
+    value = value.toString('utf8')
+  }
+
+  if (typeof value === 'object' && value !== null) {
+    // 如果是TEXT类型，可能已经是对象了
+    if (Array.isArray(value)) {
+      return value
+    }
+    return defaultValue
+  }
+
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value)
+      return Array.isArray(parsed) ? parsed : defaultValue
+    } catch (e) {
+      logger.error('JSON解析失败:', e.message, 'value:', value.substring(0, 100))
+      return defaultValue
+    }
+  }
+
+  return defaultValue
+}
+
+/**
  * 将数据库字段（下划线命名）转换为前端字段（驼峰命名）
  */
 function mapToCamelCase(item) {
   return {
     id: item.id,
     platform: item.platform,
+    platformIcon: item.platform_icon,
+    platformEmoji: item.platform_emoji,
     title: item.title,
+    maxReward: item.max_reward,
+    tags: safeParseJson(item.tags, []),
     description: item.description,
+    totalBonus: item.total_bonus,
+    participation: item.participation,
     rules: item.rules,
+    steps: safeParseJson(item.steps, []),
+    tips: safeParseJson(item.tips, []),
     startTime: item.start_time,
     endTime: item.end_time,
     status: item.status,
@@ -104,16 +144,39 @@ async function getDetail(req, res) {
  */
 async function create(req, res) {
   try {
-    const { platform, title, description, rules, start_time, end_time, status = 'active' } = req.body
+    const {
+      platform,
+      platformIcon,
+      platformEmoji,
+      title,
+      maxReward,
+      tags,
+      description,
+      totalBonus,
+      participation,
+      rules,
+      steps,
+      tips,
+      start_time,
+      end_time,
+      status = 'ongoing'
+    } = req.body
 
     if (!platform || !title || !start_time || !end_time) {
       return res.error('缺少必要参数')
     }
 
     const result = await db.query(
-      `INSERT INTO redpack_activities (platform, title, description, rules, start_time, end_time, status, review_status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, 'approved')`,
-      [platform, title, description, rules, start_time, end_time, status]
+      `INSERT INTO redpack_activities (
+        platform, platform_icon, platform_emoji, title, max_reward, tags,
+        description, total_bonus, participation, rules, steps, tips,
+        start_time, end_time, status, review_status
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'approved')`,
+      [
+        platform, platformIcon, platformEmoji, title, maxReward, tags,
+        description, totalBonus, participation, rules, steps, tips,
+        start_time, end_time, status
+      ]
     )
 
     logger.info('创建红包活动成功:', { id: result.insertId, title })
@@ -130,7 +193,24 @@ async function create(req, res) {
 async function update(req, res) {
   try {
     const { id } = req.params
-    const { platform, title, description, rules, start_time, end_time, status, is_show } = req.body
+    const {
+      platform,
+      platformIcon,
+      platformEmoji,
+      title,
+      maxReward,
+      tags,
+      description,
+      totalBonus,
+      participation,
+      rules,
+      steps,
+      tips,
+      start_time,
+      end_time,
+      status,
+      is_show
+    } = req.body
 
     // 检查活动是否存在
     const [activity] = await db.query('SELECT * FROM redpack_activities WHERE id = ?', [id])
@@ -141,9 +221,17 @@ async function update(req, res) {
     // 更新
     await db.query(
       `UPDATE redpack_activities
-       SET platform = ?, title = ?, description = ?, rules = ?, start_time = ?, end_time = ?, status = ?, is_show = ?
+       SET platform = ?, platform_icon = ?, platform_emoji = ?, title = ?, max_reward = ?, tags = ?,
+           description = ?, total_bonus = ?, participation = ?, rules = ?, steps = ?, tips = ?,
+           start_time = ?, end_time = ?, status = ?, is_show = ?
        WHERE id = ?`,
-      [platform, title, description, rules, start_time, end_time, status, is_show !== undefined ? (is_show ? 1 : 0) : activity.is_show, id]
+      [
+        platform, platformIcon, platformEmoji, title, maxReward, tags,
+        description, totalBonus, participation, rules, steps, tips,
+        start_time, end_time, status,
+        is_show !== undefined ? (is_show ? 1 : 0) : activity.is_show,
+        id
+      ]
     )
 
     logger.info('更新红包活动成功:', { id, title })

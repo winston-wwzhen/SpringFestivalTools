@@ -7,7 +7,7 @@ class RedpackService {
     const { page, pageSize, platform, status } = params
     const offset = (page - 1) * pageSize
 
-    let sql = 'SELECT * FROM redpack_activities WHERE review_status = "approved"'
+    let sql = 'SELECT * FROM redpack_activities WHERE review_status = "approved" AND is_show = 1'
     const queryParams = []
 
     if (platform) {
@@ -20,13 +20,13 @@ class RedpackService {
       queryParams.push(status)
     }
 
-    sql += ' ORDER BY start_time DESC LIMIT ? OFFSET ?'
+    sql += ' ORDER BY sort_order ASC LIMIT ? OFFSET ?'
     queryParams.push(pageSize, offset)
 
     const rows = await db.query(sql, queryParams)
 
     // 获取总数
-    let countSql = 'SELECT COUNT(*) as total FROM redpack_activities WHERE review_status = "approved"'
+    let countSql = 'SELECT COUNT(*) as total FROM redpack_activities WHERE review_status = "approved" AND is_show = 1'
     const countParams = []
 
     if (platform) {
@@ -63,7 +63,7 @@ class RedpackService {
 
   // 获取红包活动数量（小程序端，仅统计已审核数据）
   async getCount() {
-    const sql = 'SELECT COUNT(*) as count FROM redpack_activities WHERE status = "active" AND review_status = "approved"'
+    const sql = 'SELECT COUNT(*) as count FROM redpack_activities WHERE status = "active" AND review_status = "approved" AND is_show = 1'
     const rows = await db.query(sql)
     return rows[0].count
   }
@@ -73,8 +73,9 @@ class RedpackService {
     const sql = `
       SELECT * FROM redpack_activities
       WHERE review_status = "approved"
+        AND is_show = 1
         AND (DATE(start_time) = ? OR DATE(end_time) = ?)
-      ORDER BY start_time ASC
+      ORDER BY sort_order ASC
     `
     const rows = await db.query(sql, [date, date])
     return rows

@@ -30,21 +30,38 @@ export const adminGetList = (params: any) => {
 
 export const create = (data: {
   platform: string
+  platformIcon?: string
+  platformEmoji?: string
   title: string
+  maxReward?: string
+  tags?: string
   description?: string
+  totalBonus?: string
+  participation?: string
   rules?: string
+  steps?: string
+  tips?: string
   startTime: string
   endTime: string
   status?: string
+  isShow?: number
 }) => {
   return http.post('/admin/redpack/create', data)
 }
 
 export const update = (id: number, data: {
   platform: string
+  platformIcon?: string
+  platformEmoji?: string
   title: string
+  maxReward?: string
+  tags?: string
   description?: string
+  totalBonus?: string
+  participation?: string
   rules?: string
+  steps?: string
+  tips?: string
   startTime: string
   endTime: string
   status?: string

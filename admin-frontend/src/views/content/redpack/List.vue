@@ -108,14 +108,38 @@
         ref="formRef"
         :model="formData"
         :rules="formRules"
-        label-width="100px"
+        label-width="120px"
       >
-        <el-form-item label="平台" prop="platform">
-          <el-input v-model="formData.platform" placeholder="如：微信、支付宝、抖音等" />
+        <el-form-item label="平台名称" prop="platform">
+          <el-input v-model="formData.platform" placeholder="如：微信、支付宝、抖音等" style="width: 300px" />
+        </el-form-item>
+
+        <el-form-item label="平台图标">
+          <el-input v-model="formData.platformIcon" placeholder="/images/platform-xxx.png" style="width: 300px" />
+        </el-form-item>
+
+        <el-form-item label="平台Emoji">
+          <el-input v-model="formData.platformEmoji" placeholder="🐧" style="width: 100px" />
         </el-form-item>
 
         <el-form-item label="活动标题" prop="title">
           <el-input v-model="formData.title" placeholder="请输入活动标题" />
+        </el-form-item>
+
+        <el-form-item label="最大奖励">
+          <el-input v-model="formData.maxReward" placeholder="如：10000元" style="width: 200px" />
+        </el-form-item>
+
+        <el-form-item label="标签">
+          <el-input v-model="formData.tagsText" type="textarea" :rows="2" placeholder="多个标签用逗号分隔，如：AI助手,现金红包,万元大奖" />
+        </el-form-item>
+
+        <el-form-item label="总奖金池">
+          <el-input v-model="formData.totalBonus" placeholder="如：10亿元" style="width: 200px" />
+        </el-form-item>
+
+        <el-form-item label="参与方式">
+          <el-input v-model="formData.participation" placeholder="如：全民参与" style="width: 200px" />
         </el-form-item>
 
         <el-form-item label="活动描述">
@@ -133,6 +157,24 @@
             type="textarea"
             :rows="4"
             placeholder="请输入活动规则"
+          />
+        </el-form-item>
+
+        <el-form-item label="参与步骤">
+          <el-input
+            v-model="formData.stepsText"
+            type="textarea"
+            :rows="3"
+            placeholder="每行一个步骤，如：&#10;第一步：下载APP&#10;第二步：注册登录"
+          />
+        </el-form-item>
+
+        <el-form-item label="温馨提示">
+          <el-input
+            v-model="formData.tipsText"
+            type="textarea"
+            :rows="3"
+            placeholder="每行一条提示，如：&#10;每日对话都有机会获得红包&#10;邀请好友可以增加奖励"
           />
         </el-form-item>
 
@@ -158,8 +200,8 @@
 
         <el-form-item label="活动状态" prop="status">
           <el-radio-group v-model="formData.status">
-            <el-radio label="pending">未开始</el-radio>
-            <el-radio label="active">进行中</el-radio>
+            <el-radio label="upcoming">即将开始</el-radio>
+            <el-radio label="ongoing">进行中</el-radio>
             <el-radio label="ended">已结束</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -209,12 +251,20 @@ const editId = ref<number | null>(null)
 
 const formData = reactive({
   platform: '',
+  platformIcon: '',
+  platformEmoji: '',
   title: '',
+  maxReward: '',
+  tagsText: '',
   description: '',
+  totalBonus: '',
+  participation: '',
   rules: '',
+  stepsText: '',
+  tipsText: '',
   startTime: '',
   endTime: '',
-  status: 'active',
+  status: 'ongoing',
   isShow: 1
 })
 
@@ -287,12 +337,20 @@ const handleCreate = () => {
   editId.value = null
   Object.assign(formData, {
     platform: '',
+    platformIcon: '',
+    platformEmoji: '',
     title: '',
+    maxReward: '',
+    tagsText: '',
     description: '',
+    totalBonus: '',
+    participation: '',
     rules: '',
+    stepsText: '',
+    tipsText: '',
     startTime: '',
     endTime: '',
-    status: 'active',
+    status: 'ongoing',
     isShow: 1
   })
   dialogVisible.value = true
@@ -304,9 +362,17 @@ const handleEdit = (row: any) => {
   editId.value = row.id
   Object.assign(formData, {
     platform: row.platform,
+    platformIcon: row.platformIcon || '',
+    platformEmoji: row.platformEmoji || '',
     title: row.title,
+    maxReward: row.maxReward || '',
+    tagsText: (row.tags || []).join(','),
     description: row.description || '',
+    totalBonus: row.totalBonus || '',
+    participation: row.participation || '',
     rules: row.rules || '',
+    stepsText: (row.steps || []).join('\n'),
+    tipsText: (row.tips || []).join('\n'),
     startTime: row.startTime,
     endTime: row.endTime,
     status: row.status,
@@ -324,11 +390,25 @@ const handleSubmit = async () => {
 
     submitting.value = true
     try {
+      // 处理tags、steps、tips字段
+      const submitData = {
+        ...formData,
+        tags: formData.tagsText ? JSON.stringify(formData.tagsText.split(',').map(t => t.trim()).filter(t => t)) : '[]',
+        steps: formData.stepsText ? JSON.stringify(formData.stepsText.split('\n').filter(t => t.trim())) : '[]',
+        tips: formData.tipsText ? JSON.stringify(formData.tipsText.split('\n').filter(t => t.trim())) : '[]',
+        // 确保时间字段正确传递
+        startTime: formData.startTime || null,
+        endTime: formData.endTime || null
+      }
+      delete submitData.tagsText
+      delete submitData.stepsText
+      delete submitData.tipsText
+
       if (editId.value) {
-        await redpackService.update(editId.value, formData)
+        await redpackService.update(editId.value, submitData)
         ElMessage.success('更新成功')
       } else {
-        await redpackService.create(formData)
+        await redpackService.create(submitData)
         ElMessage.success('创建成功')
       }
       dialogVisible.value = false
