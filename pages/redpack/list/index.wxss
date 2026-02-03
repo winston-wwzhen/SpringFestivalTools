@@ -143,8 +143,8 @@
 .activity-card::before {
   content: '福';
   position: absolute;
-  top: -40rpx;
-  right: -30rpx;
+  top: -10rpx;
+  right: 10rpx;
   font-size: 120rpx;
   color: #D32F2F;
   opacity: 0.05;
