@@ -89,8 +89,11 @@ Page({
         gender
       })
 
+      // 后端直接返回运势数据对象
+      const fortune = result || result.data
+
       this.setData({
-        fortuneResult: result.data,
+        fortuneResult: fortune,
         loading: false
       })
     } catch (error) {

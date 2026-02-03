@@ -66,8 +66,11 @@ Page({
         style
       })
 
+      // 后端直接返回 { blessing: "xxx" } 或在 data 中
+      const blessing = result.blessing || result.data?.blessing
+
       this.setData({
-        blessingResult: result.data.blessing,
+        blessingResult: blessing,
         loading: false
       })
     } catch (error) {
