@@ -72,31 +72,6 @@ const kinship = {
 }
 
 /**
- * 表情包相关接口
- */
-const emoticon = {
-  // 获取分类列表
-  getCategories() {
-    return request.get('/emoticon/categories')
-  },
-
-  // 获取表情包列表
-  getList(params) {
-    return request.get('/emoticon/list', params)
-  },
-
-  // 获取表情包详情
-  getDetail(id) {
-    return request.get(`/emoticon/${id}`)
-  },
-
-  // 获取表情包数量（5秒超时）
-  getCount() {
-    return request.get('/emoticon/count', {}, 5000)
-  }
-}
-
-/**
  * 通用接口
  */
 const common = {
@@ -138,6 +113,5 @@ module.exports = {
   redpack,
   gala,
   kinship,
-  emoticon,
   common
 }

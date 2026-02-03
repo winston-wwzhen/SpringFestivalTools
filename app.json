@@ -12,10 +12,7 @@
     "pages/toolbox/kinship/index",
     "pages/toolbox/fortune/index",
     "pages/toolbox/blessing/index",
-    "pages/toolbox/simulator/index",
-    "pages/emoticon/categories/index",
-    "pages/emoticon/gallery/index",
-    "pages/emoticon/detail/index"
+    "pages/toolbox/simulator/index"
   ],
   "window": {
     "navigationStyle": "custom",

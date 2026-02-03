@@ -10,7 +10,6 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') })
 const redpackRoutes = require('./routes/redpack')
 const galaRoutes = require('./routes/gala')
 const kinshipRoutes = require('./routes/kinship')
-const emoticonRoutes = require('./routes/emoticon')
 const commonRoutes = require('./routes/common')
 
 // 管理端路由
@@ -62,7 +61,6 @@ app.use((req, res, next) => {
 app.use('/api/redpack', redpackRoutes)
 app.use('/api/gala', galaRoutes)
 app.use('/api/kinship', kinshipRoutes)
-app.use('/api/emoticon', emoticonRoutes)
 app.use('/api/common', commonRoutes)
 
 // ============================================================
