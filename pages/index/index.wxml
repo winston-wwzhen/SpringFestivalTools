@@ -103,15 +103,14 @@
         <view class="feature-card__badge">4个工具</view>
       </view>
 
-      <view class="feature-card" bindtap="goToEmoticon">
-        <view class="card-decoration">乐</view>
+      <view class="feature-card" bindtap="goToSimulator">
+        <view class="card-decoration">玩</view>
         <view class="icon-wrapper">
           <view class="icon-bg"></view>
-          <view class="feature-card__icon feature-card__icon--emoticon">😄</view>
+          <view class="feature-card__icon feature-card__icon--simulator">🎊</view>
         </view>
-        <view class="feature-card__title">表情包</view>
-        <view class="feature-card__desc">马年专属表情</view>
-        <view class="feature-card__badge" wx:if="{{emoticonCount > 0}}">{{emoticonCount}}个表情</view>
+        <view class="feature-card__title">新年模拟器</view>
+        <view class="feature-card__desc">模拟你的2026年</view>
       </view>
     </view>
   </view>

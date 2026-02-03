@@ -7,7 +7,6 @@ Page({
     countdownDays: 0,
     redpackCount: 0,
     galaCount: 0,
-    emoticonCount: 0,
     dailyItems: [],
     tips: [
       '春节期间，各大平台都会发放红包，记得定时领取哦',
@@ -63,24 +62,21 @@ Page({
   async loadCounts() {
     try {
       // 为 count 接口设置 5 秒超时
-      const [redpackRes, galaRes, emoticonRes] = await Promise.all([
+      const [redpackRes, galaRes] = await Promise.all([
         api.redpack.getCount().catch(() => ({ count: 6 })),
-        api.gala.getCount().catch(() => ({ count: 17 })),
-        api.emoticon.getCount().catch(() => ({ count: 138 }))
+        api.gala.getCount().catch(() => ({ count: 17 }))
       ])
 
       this.setData({
         redpackCount: redpackRes.count || 6,
-        galaCount: galaRes.count || 17,
-        emoticonCount: emoticonRes.count || 138
+        galaCount: galaRes.count || 17
       })
     } catch (error) {
       console.error('加载统计数据失败:', error)
       // 使用默认值
       this.setData({
         redpackCount: 6,
-        galaCount: 17,
-        emoticonCount: 138
+        galaCount: 17
       })
     }
   },
@@ -187,11 +183,11 @@ Page({
   },
 
   /**
-   * 跳转到表情包
+   * 跳转到新年模拟器
    */
-  goToEmoticon() {
+  goToSimulator() {
     wx.navigateTo({
-      url: '/pages/emoticon/categories/index'
+      url: '/pages/toolbox/simulator/index'
     })
   },
 
