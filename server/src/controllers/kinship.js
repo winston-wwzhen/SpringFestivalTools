@@ -20,14 +20,14 @@ class KinshipController {
       switch (type) {
         case 'fortune':
           // 新年运势测算
-          const { name, birthday, gender } = params;
+          const { name, birthday, gender, keyword } = params;
           if (!name || !birthday || !gender) {
             return res.status(400).json({
               success: false,
               message: '请填写完整信息'
             });
           }
-          result = await kinshipService.calculate({ type, name, birthday, gender });
+          result = await kinshipService.calculate({ type, name, birthday, gender, keyword });
           break;
 
         case 'blessing':

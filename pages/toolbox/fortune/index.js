@@ -6,6 +6,7 @@ Page({
     name: '',
     birthday: '',
     gender: '',
+    keyword: '',
     currentDate: '',
     loading: false,
     fortuneResult: null
@@ -48,10 +49,21 @@ Page({
   },
 
   /**
+   * 关键字选择
+   */
+  onKeywordSelect(e) {
+    const keyword = e.currentTarget.dataset.keyword
+    // 如果点击已选中的，则取消选择
+    this.setData({
+      keyword: this.data.keyword === keyword ? '' : keyword
+    })
+  },
+
+  /**
    * 测算运势
    */
   async calculateFortune() {
-    const { name, birthday, gender } = this.data
+    const { name, birthday, gender, keyword } = this.data
 
     // 验证输入
     if (!name) {
@@ -86,7 +98,8 @@ Page({
         type: 'fortune',
         name,
         birthday,
-        gender
+        gender,
+        keyword
       })
 
       // 后端直接返回运势数据对象
@@ -99,7 +112,7 @@ Page({
     } catch (error) {
       console.error('测算失败:', error)
       // 使用本地算法
-      const localResult = this.calculateLocalFortune(name, birthday, gender)
+      const localResult = this.calculateLocalFortune(name, birthday, gender, keyword)
       this.setData({
         fortuneResult: localResult,
         loading: false
@@ -114,7 +127,7 @@ Page({
   /**
    * 本地运势算法（接口失败时使用）
    */
-  calculateLocalFortune(name, birthday, gender) {
+  calculateLocalFortune(name, birthday, gender, keyword) {
     // 基于姓名和生日生成随机但固定的结果
     const seed = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) +
                  new Date(birthday).getTime()
@@ -127,11 +140,25 @@ Page({
 
     const r = random(seed)
 
+    // 根据关键字调整基础运势值
+    let keywordBonus = { wealth: 0, career: 0, love: 0, health: 0 }
+    if (keyword) {
+      const bonuses = {
+        love: { love: 15 },
+        career: { career: 15 },
+        wealth: { wealth: 15 },
+        health: { health: 15 },
+        study: { career: 10 },  // 学业影响事业
+        family: { love: 10, health: 5 }  // 家庭影响爱情和健康
+      }
+      keywordBonus = bonuses[keyword] || {}
+    }
+
     // 生成各项运势 (60-95)
-    const wealth = Math.floor(60 + random(seed + 1) * 35)
-    const career = Math.floor(60 + random(seed + 2) * 35)
-    const love = Math.floor(60 + random(seed + 3) * 35)
-    const health = Math.floor(60 + random(seed + 4) * 35)
+    const wealth = Math.min(95, Math.floor(60 + random(seed + 1) * 35 + keywordBonus.wealth))
+    const career = Math.min(95, Math.floor(60 + random(seed + 2) * 35 + keywordBonus.career))
+    const love = Math.min(95, Math.floor(60 + random(seed + 3) * 35 + keywordBonus.love))
+    const health = Math.min(95, Math.floor(60 + random(seed + 4) * 35 + keywordBonus.health))
 
     // 综合星级 (3-5)
     const avg = (wealth + career + love + health) / 4
@@ -157,14 +184,59 @@ Page({
     ]
     const overallDesc = overallDescs[Math.floor(random(seed + 9) * overallDescs.length)]
 
-    // 新年寄语
-    const advices = [
-      '2026马年，愿你马到成功，万事如意！',
-      '马年大吉，愿你前程似锦，步步高升！',
-      '马年行大运，愿你身体健康，阖家幸福！',
-      '马年如意，愿你心想事成，财源滚滚！'
-    ]
-    const advice = advices[Math.floor(random(seed + 10) * advices.length)]
+    // 新年寄语（根据关键字定制）
+    let advice
+    if (keyword === 'love') {
+      const loveAdvices = [
+        '2026马年，愿你桃花朵朵开，遇见真爱，甜甜蜜蜜！',
+        '马年爱情运势旺，愿你脱单成功，幸福美满！',
+        '新春祝福，愿你与爱人情深意浓，白头偕老！'
+      ]
+      advice = loveAdvices[Math.floor(random(seed + 10) * loveAdvices.length)]
+    } else if (keyword === 'career') {
+      const careerAdvices = [
+        '2026马年，愿你职场如骏马奔腾，升职加薪！',
+        '马年事业运势佳，愿你步步高升，前程似锦！',
+        '新春大吉，愿你工作顺利，大展宏图！'
+      ]
+      advice = careerAdvices[Math.floor(random(seed + 10) * careerAdvices.length)]
+    } else if (keyword === 'wealth') {
+      const wealthAdvices = [
+        '2026马年，愿你财源滚滚，钱包鼓鼓！',
+        '马年财运亨通，愿你日进斗金，发大财！',
+        '新春恭喜发财，愿你金银满屋，富贵有余！'
+      ]
+      advice = wealthAdvices[Math.floor(random(seed + 10) * wealthAdvices.length)]
+    } else if (keyword === 'health') {
+      const healthAdvices = [
+        '2026马年，愿你身体健康，百病不侵！',
+        '马年健康运势佳，愿你活力满满，精神焕发！',
+        '新春安康，愿你平安喜乐，福寿双全！'
+      ]
+      advice = healthAdvices[Math.floor(random(seed + 10) * healthAdvices.length)]
+    } else if (keyword === 'study') {
+      const studyAdvices = [
+        '2026马年，愿你学业有成，金榜题名！',
+        '马年学习运佳，愿你聪明伶俐，考试满分！',
+        '新春学业进步，愿你才华横溢，前程无量！'
+      ]
+      advice = studyAdvices[Math.floor(random(seed + 10) * studyAdvices.length)]
+    } else if (keyword === 'family') {
+      const familyAdvices = [
+        '2026马年，愿你阖家欢乐，团团圆圆！',
+        '马年家庭运势旺，愿你家和万事兴，幸福美满！',
+        '新春阖家安康，愿你亲人平安，其乐融融！'
+      ]
+      advice = familyAdvices[Math.floor(random(seed + 10) * familyAdvices.length)]
+    } else {
+      const advices = [
+        '2026马年，愿你马到成功，万事如意！',
+        '马年大吉，愿你前程似锦，步步高升！',
+        '马年行大运，愿你身体健康，阖家幸福！',
+        '马年如意，愿你心想事成，财源滚滚！'
+      ]
+      advice = advices[Math.floor(random(seed + 10) * advices.length)]
+    }
 
     return {
       name,

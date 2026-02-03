@@ -82,8 +82,27 @@ function getBlessingSystemPrompt() {
 /**
  * 获取新年运势系统提示词
  */
-function getFortuneSystemPrompt() {
+function getFortuneSystemPrompt(keyword) {
+  const keywordPrompts = {
+    love: '【重点关注】用户选择了"爱情"运势，请在advice字段重点描写爱情运势，内容要甜蜜浪漫，充满正能量。',
+    career: '【重点关注】用户选择了"事业"运势，请在advice字段重点描写事业运势，内容要积极向上，充满干劲。',
+    wealth: '【重点关注】用户选择了"财富"运势，请在advice字段重点描写财运，内容要喜庆吉祥，祝福发财。',
+    health: '【重点关注】用户选择了"健康"运势，请在advice字段重点描写健康运势，内容要祝福安康，充满活力。',
+    study: '【重点关注】用户选择了"学业"运势，请在advice字段重点描写学业，内容要鼓励学习，金榜题名。',
+    family: '【重点关注】用户选择了"家庭"运势，请在advice字段重点描写家庭，内容要温馨和谐，阖家幸福。'
+  };
+
+  const keywordPrompt = keywordPrompts[keyword] || '';
+
   return `你是一个生肖运势测算专家。请根据用户提供的姓名和生日，测算其2026马年运势。
+
+${keywordPrompt}
+
+【重要原则】
+1. 春节期间，运势解读必须积极向上、欢快吉祥
+2. 避免任何负面词汇，多用"大吉"、"亨通"、"旺"、"佳"等喜庆词汇
+3. 即使运势较低，也要用鼓励和祝福的口吻
+4. advice字段要温暖人心，给人希望和力量
 
 【输出要求】
 1. 必须输出JSON格式
@@ -98,7 +117,7 @@ function getFortuneSystemPrompt() {
    - luckyNumber: 幸运数字
    - luckyDirection: 幸运方位
    - luckyZodiac: 幸运生肖
-   - advice: 新年寄语（20-30字）
+   - advice: 新年寄语（20-40字，${keyword ? '重点描写用户选择的方面' : '综合运势祝福'})
 
 【JSON格式示例】
 {
@@ -347,14 +366,15 @@ async function generateBlessing(receiver, blessingType, style) {
  * @param {string} name 姓名
  * @param {string} birthday 生日
  * @param {string} gender 性别
+ * @param {string} keyword 关键字（love/career/wealth/health/study/family）
  */
-async function calculateFortune(name, birthday, gender) {
+async function calculateFortune(name, birthday, gender, keyword) {
   const userPrompt = `请为${name}（${gender === 'male' ? '男' : '女'}，生日：${birthday}）测算2026马年运势。`;
 
   const messages = [
     {
       role: 'system',
-      content: getFortuneSystemPrompt()
+      content: getFortuneSystemPrompt(keyword)
     },
     {
       role: 'user',

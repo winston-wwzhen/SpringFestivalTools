@@ -43,7 +43,7 @@ class KinshipService {
       case 'fortune':
         // 新年运势测算
         try {
-          const fortune = await zhipu.calculateFortune(name, birthday, gender)
+          const fortune = await zhipu.calculateFortune(name, birthday, gender, params.keyword)
           return fortune
         } catch (error) {
           throw new Error('AI测算失败，请使用本地算法')

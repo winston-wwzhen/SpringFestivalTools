@@ -42,6 +42,37 @@
       </view>
     </view>
 
+    <view class="form-item">
+      <view class="label">测算重点（可选）</view>
+      <view class="keyword-group">
+        <view class="keyword-item {{keyword === 'love' ? 'active' : ''}}" bindtap="onKeywordSelect" data-keyword="love">
+          <text class="keyword-icon">❤️</text>
+          <text class="keyword-text">爱情</text>
+        </view>
+        <view class="keyword-item {{keyword === 'career' ? 'active' : ''}}" bindtap="onKeywordSelect" data-keyword="career">
+          <text class="keyword-icon">💼</text>
+          <text class="keyword-text">事业</text>
+        </view>
+        <view class="keyword-item {{keyword === 'wealth' ? 'active' : ''}}" bindtap="onKeywordSelect" data-keyword="wealth">
+          <text class="keyword-icon">💰</text>
+          <text class="keyword-text">财富</text>
+        </view>
+        <view class="keyword-item {{keyword === 'health' ? 'active' : ''}}" bindtap="onKeywordSelect" data-keyword="health">
+          <text class="keyword-icon">🏥</text>
+          <text class="keyword-text">健康</text>
+        </view>
+        <view class="keyword-item {{keyword === 'study' ? 'active' : ''}}" bindtap="onKeywordSelect" data-keyword="study">
+          <text class="keyword-icon">📚</text>
+          <text class="keyword-text">学业</text>
+        </view>
+        <view class="keyword-item {{keyword === 'family' ? 'active' : ''}}" bindtap="onKeywordSelect" data-keyword="family">
+          <text class="keyword-icon">👨‍👩‍👧‍👦</text>
+          <text class="keyword-text">家庭</text>
+        </view>
+      </view>
+      <view class="keyword-hint">选择后可获得更详细的专项解读</view>
+    </view>
+
     <button class="btn-calculate" bindtap="calculateFortune" disabled="{{loading}}">
       {{loading ? '测算中...' : '🔮 开始测算'}}
     </button>
