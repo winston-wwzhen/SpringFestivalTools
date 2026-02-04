@@ -117,7 +117,7 @@
     <el-dialog
       v-model="platformDialogVisible"
       :title="platformDialogTitle"
-      width="800px"
+      width="900px"
       @closed="handlePlatformDialogClosed"
     >
       <el-tabs v-model="activePlatformTab" class="platform-tabs">
@@ -327,7 +327,7 @@
     <el-dialog
       v-model="programDialogVisible"
       :title="programDialogTitle"
-      width="700px"
+      width="800px"
       @closed="handleProgramDialogClosed"
     >
       <el-form
