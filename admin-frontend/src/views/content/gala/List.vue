@@ -327,22 +327,31 @@
     <el-dialog
       v-model="programDialogVisible"
       :title="programDialogTitle"
-      width="800px"
+      width="700px"
       @closed="handleProgramDialogClosed"
     >
       <el-form
         ref="programFormRef"
         :model="programForm"
         :rules="programFormRules"
-        label-width="100px"
+        label-width="90px"
+        class="program-form"
       >
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="14">
             <el-form-item label="节目名称" prop="title">
-              <el-input v-model="programForm.title" placeholder="请输入节目名称" />
+              <el-input v-model="programForm.title" placeholder="请输入节目名称" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="10">
+            <el-form-item label="节目序号">
+              <el-input-number v-model="programForm.orderNum" :min="0" controls-position="right" style="width: 100%" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="14">
             <el-form-item label="节目类型">
               <el-select
                 v-model="programForm.type"
@@ -350,6 +359,7 @@
                 style="width: 100%"
                 filterable
                 allow-create
+                clearable
               >
                 <el-option label="歌舞" value="歌舞" />
                 <el-option label="歌曲" value="歌曲" />
@@ -364,21 +374,34 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="10">
+            <el-form-item label="时长(秒)">
+              <el-input-number
+                v-model="programForm.duration"
+                :min="0"
+                :step="60"
+                controls-position="right"
+                style="width: 100%"
+                placeholder="秒"
+              />
+            </el-form-item>
+          </el-col>
         </el-row>
 
         <el-form-item label="表演者">
           <el-input
             v-model="programForm.performers"
             placeholder="请输入表演者，多个用逗号分隔"
+            clearable
           >
-            <template #prepend>
+            <template #prefix>
               <el-icon><User /></el-icon>
             </template>
           </el-input>
         </el-form-item>
 
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="14">
             <el-form-item label="播出时间">
               <el-time-picker
                 v-model="programForm.airTime"
@@ -387,25 +410,6 @@
                 value-format="HH:mm:ss"
                 clearable
               />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="时长(秒)">
-              <el-input-number
-                v-model="programForm.duration"
-                :min="0"
-                :step="60"
-                style="width: 100%"
-                placeholder="单位：秒"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="节目序号">
-              <el-input-number v-model="programForm.orderNum" :min="0" style="width: 100%" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -418,6 +422,7 @@
             placeholder="请输入节目描述（可选）"
             show-word-limit
             maxlength="200"
+            clearable
           />
         </el-form-item>
       </el-form>
