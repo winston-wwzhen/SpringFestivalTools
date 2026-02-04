@@ -645,11 +645,13 @@ const handleEditPlatform = (row: any) => {
 
 // 提交平台表单
 const handleSubmitPlatform = async () => {
-  // 验证所有表单
-  const forms = [platformFormRef.value, platformFormRef2.value, platformFormRef3.value].filter(Boolean)
-  for (const form of forms) {
-    const valid = await form.validate().catch(() => false)
-    if (!valid) return
+  // 只验证基本信息表单（包含必填字段）
+  if (!platformFormRef.value) return
+
+  try {
+    await platformFormRef.value.validate()
+  } catch (error) {
+    return
   }
 
   platformSubmitting.value = true
