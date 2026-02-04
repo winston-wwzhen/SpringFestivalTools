@@ -303,8 +303,8 @@ const reviewStatusTypeMap: Record<string, any> = {
 const loadPlatforms = async () => {
   loading.value = true
   try {
-    const data = await galaService.adminGetPlatforms({})
-    platforms.value = data
+    const result = await galaService.adminGetPlatforms({})
+    platforms.value = result.list || []
   } catch (error) {
     console.error('加载平台失败:', error)
   } finally {
@@ -318,10 +318,10 @@ const loadPrograms = async () => {
 
   loading.value = true
   try {
-    const data = await galaService.adminGetPrograms({
+    const result = await galaService.adminGetPrograms({
       platformId: selectedPlatformId.value
     })
-    programs.value = data
+    programs.value = result.list || []
   } catch (error) {
     console.error('加载节目失败:', error)
   } finally {
