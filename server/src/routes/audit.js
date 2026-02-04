@@ -4,74 +4,70 @@ const router = express.Router()
 const auditController = require('../controllers/audit')
 const { authMiddleware } = require('../middleware/auth')
 
-// 所有路由都需要认证
-router.use(authMiddleware)
-
 /**
- * @api {GET} /admin/api/audit/pending 获取待审核列表
+ * @api {GET} /admin/api/audit/pending/:type 获取待审核列表
  * @apiName GetPendingList
  * @apiGroup Audit
- * @apiQuery {String} type 资源类型 (redpack/gala_platform/gala_program/emoticon/kinship)
+ * @apiHeader {String} Authorization JWT Token
  * @apiQuery {Number} page 页码
  * @apiQuery {Number} pageSize 每页数量
  */
-router.get('/pending', auditController.getPendingList)
+router.get('/pending/:type', authMiddleware, auditController.getPendingList)
 
 /**
- * @api {GET} /admin/api/audit/:type/:id 获取审核详情
+ * @api {GET} /admin/api/audit/detail/:type/:id 获取审核详情
  * @apiName GetAuditDetail
  * @apiGroup Audit
- * @apiParam {String} type 资源类型
- * @apiParam {Number} id 资源ID
+ * @apiHeader {String} Authorization JWT Token
  */
-router.get('/:type/:id', auditController.getDetail)
+router.get('/detail/:type/:id', authMiddleware, auditController.getDetail)
 
 /**
- * @api {POST} /admin/api/audit/:type/:id/approve 审核通过
+ * @api {POST} /admin/api/audit/approve/:type/:id 审核通过
  * @apiName Approve
  * @apiGroup Audit
- * @apiParam {String} type 资源类型
- * @apiParam {Number} id 资源ID
- * @apiBody {String} note 审核备注
+ * @apiHeader {String} Authorization JWT Token
+ * @apiBody {String} note 备注
  */
-router.post('/:type/:id/approve', auditController.approve)
+router.post('/approve/:type/:id', authMiddleware, auditController.approve)
 
 /**
- * @api {POST} /admin/api/audit/:type/:id/reject 审核拒绝
+ * @api {POST} /admin/api/audit/reject/:type/:id 审核拒绝
  * @apiName Reject
  * @apiGroup Audit
- * @apiParam {String} type 资源类型
- * @apiParam {Number} id 资源ID
+ * @apiHeader {String} Authorization JWT Token
  * @apiBody {String} reason 拒绝理由
  */
-router.post('/:type/:id/reject', auditController.reject)
+router.post('/reject/:type/:id', authMiddleware, auditController.reject)
 
 /**
- * @api {POST} /admin/api/audit/:type/batch-approve 批量审核通过
+ * @api {POST} /admin/api/audit/batch-approve/:type 批量审核通过
  * @apiName BatchApprove
  * @apiGroup Audit
- * @apiParam {String} type 资源类型
- * @apiBody {Number[]} ids 资源ID数组
- * @apiBody {String} note 审核备注
+ * @apiHeader {String} Authorization JWT Token
+ * @apiBody {Array} ids ID数组
+ * @apiBody {String} note 备注
  */
-router.post('/:type/batch-approve', auditController.batchApprove)
+router.post('/batch-approve/:type', authMiddleware, auditController.batchApprove)
 
 /**
  * @api {GET} /admin/api/audit/logs 获取审核日志
  * @apiName GetAuditLogs
  * @apiGroup Audit
- * @apiQuery {String} resourceType 资源类型（可选）
- * @apiQuery {Number} resourceId 资源ID（可选）
+ * @apiHeader {String} Authorization JWT Token
+ * @apiQuery {String} resourceType 资源类型
+ * @apiQuery {Number} resourceId 资源ID
  * @apiQuery {Number} page 页码
  * @apiQuery {Number} pageSize 每页数量
  */
-router.get('/logs', auditController.getLogs)
+router.get('/logs', authMiddleware, auditController.getLogs)
 
 /**
  * @api {GET} /admin/api/audit/stats 获取审核统计
  * @apiName GetAuditStats
  * @apiGroup Audit
+ * @apiHeader {String} Authorization JWT Token
  */
-router.get('/stats', auditController.getStats)
+router.get('/stats', authMiddleware, auditController.getStats)
 
 module.exports = router

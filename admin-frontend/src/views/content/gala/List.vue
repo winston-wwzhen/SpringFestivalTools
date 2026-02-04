@@ -28,9 +28,17 @@
       <div class="card">
         <el-table v-loading="loading" :data="platforms">
           <el-table-column prop="name" label="平台名称" min-width="150" />
+          <el-table-column prop="year" label="年份" width="80" />
           <el-table-column prop="airDate" label="播出日期" width="120" />
           <el-table-column prop="airTime" label="播出时间" width="100" />
           <el-table-column prop="channel" label="播出频道" width="150" />
+          <el-table-column prop="isShow" label="显示" width="80">
+            <template #default="{ row }">
+              <el-tag :type="row.isShow ? 'success' : 'info'" size="small">
+                {{ row.isShow ? '显示' : '隐藏' }}
+              </el-tag>
+            </template>
+          </el-table-column>
           <el-table-column prop="reviewStatus" label="审核状态" width="100">
             <template #default="{ row }">
               <el-tag :type="reviewStatusTypeMap[row.reviewStatus]" size="small">
@@ -113,7 +121,11 @@
           <el-input v-model="platformForm.name" placeholder="如：央视春晚、河南春晚等" />
         </el-form-item>
 
-        <el-form-item label="播出日期" prop="airDate">
+        <el-form-item label="年份" prop="year">
+          <el-input-number v-model="platformForm.year" :min="2000" :max="2100" />
+        </el-form-item>
+
+        <el-form-item label="播出日期">
           <el-date-picker
             v-model="platformForm.airDate"
             type="date"
@@ -136,6 +148,14 @@
           <el-input v-model="platformForm.channel" placeholder="如：CCTV-1、河南卫视等" />
         </el-form-item>
 
+        <el-form-item label="Logo地址">
+          <el-input v-model="platformForm.logo" placeholder="/images/gala/cctv-logo.png" />
+        </el-form-item>
+
+        <el-form-item label="海报地址">
+          <el-input v-model="platformForm.poster" placeholder="/images/gala/cctv-poster.png" />
+        </el-form-item>
+
         <el-form-item label="描述">
           <el-input
             v-model="platformForm.description"
@@ -147,6 +167,10 @@
 
         <el-form-item label="排序">
           <el-input-number v-model="platformForm.sort" :min="0" />
+        </el-form-item>
+
+        <el-form-item label="是否显示">
+          <el-switch v-model="platformForm.isShow" />
         </el-form-item>
       </el-form>
 
@@ -228,15 +252,20 @@ const editPlatformId = ref<number | null>(null)
 
 const platformForm = reactive({
   name: '',
+  year: new Date().getFullYear(),
   airDate: '',
   airTime: '',
   channel: '',
+  logo: '',
+  poster: '',
   description: '',
-  sort: 0
+  sort: 0,
+  isShow: true
 })
 
 const platformFormRules: FormRules = {
-  name: [{ required: true, message: '请输入平台名称', trigger: 'blur' }]
+  name: [{ required: true, message: '请输入平台名称', trigger: 'blur' }],
+  year: [{ required: true, message: '请输入年份', trigger: 'blur' }]
 }
 
 // 节目表单
@@ -313,11 +342,15 @@ const handleCreatePlatform = () => {
   editPlatformId.value = null
   Object.assign(platformForm, {
     name: '',
+    year: new Date().getFullYear(),
     airDate: '',
     airTime: '',
     channel: '',
+    logo: '',
+    poster: '',
     description: '',
-    sort: 0
+    sort: 0,
+    isShow: true
   })
   platformDialogVisible.value = true
 }
@@ -328,11 +361,15 @@ const handleEditPlatform = (row: any) => {
   editPlatformId.value = row.id
   Object.assign(platformForm, {
     name: row.name,
+    year: row.year || new Date().getFullYear(),
     airDate: row.airDate || '',
     airTime: row.airTime || '',
     channel: row.channel || '',
+    logo: row.logo || '',
+    poster: row.poster || '',
     description: row.description || '',
-    sort: row.sort || 0
+    sort: row.sort || 0,
+    isShow: row.isShow !== undefined ? row.isShow : true
   })
   platformDialogVisible.value = true
 }

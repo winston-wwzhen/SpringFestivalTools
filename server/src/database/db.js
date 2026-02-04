@@ -158,12 +158,25 @@ const initDatabase = async () => {
       ADD INDEX IF NOT EXISTS idx_review_status (review_status)
     `)
 
-    // 亲戚称呼表 - 添加审核状态
+    // ============================================
+    // 新增表 - 亲戚称呼表
+    // ============================================
     await connection.query(`
-      ALTER TABLE kinship_terms
-      ADD COLUMN IF NOT EXISTS review_status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending' COMMENT '审核状态' AFTER description,
-      ADD COLUMN IF NOT EXISTS reviewed_at TIMESTAMP NULL COMMENT '审核时间',
-      ADD INDEX IF NOT EXISTS idx_review_status (review_status)
+      CREATE TABLE IF NOT EXISTS kinship_terms (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(50) NOT NULL COMMENT '称呼',
+        gender ENUM('male', 'female') NOT NULL COMMENT '性别',
+        category VARCHAR(50) COMMENT '分类',
+        relation_code VARCHAR(100) COMMENT '关系代码',
+        description TEXT COMMENT '说明',
+        usage_example VARCHAR(200) COMMENT '使用示例',
+        region VARCHAR(50) COMMENT '地区',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        INDEX idx_kinship_name (name),
+        INDEX idx_kinship_gender (gender),
+        INDEX idx_kinship_category (category)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='亲戚称呼表'
     `)
 
     // ============================================

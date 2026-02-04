@@ -3,6 +3,54 @@ const db = require('../database/db')
 const logger = require('../../utils/logger')
 
 /**
+ * 将数据库字段（下划线命名）转换为前端字段（驼峰命名）
+ */
+function mapPlatformToCamelCase(item) {
+  return {
+    id: item.id,
+    name: item.name,
+    year: item.year,
+    airDate: item.air_date,
+    airTime: item.air_time,
+    channel: item.channel,
+    logo: item.logo,
+    poster: item.poster,
+    description: item.description,
+    sort: item.sort,
+    isShow: item.is_show,
+    reviewStatus: item.review_status,
+    sourceUrl: item.source_url,
+    reviewedAt: item.reviewed_at,
+    reviewedBy: item.reviewed_by,
+    createdAt: item.created_at,
+    updatedAt: item.updated_at
+  }
+}
+
+/**
+ * 将节目数据库字段（下划线命名）转换为前端字段（驼峰命名）
+ */
+function mapProgramToCamelCase(item) {
+  return {
+    id: item.id,
+    platformId: item.platform_id,
+    title: item.title,
+    type: item.type,
+    performers: item.performer,
+    performer: item.performer,
+    orderNum: item.order_num,
+    airTime: item.start_time,
+    startTime: item.start_time,
+    duration: item.duration,
+    description: item.description,
+    reviewStatus: item.review_status,
+    reviewedAt: item.reviewed_at,
+    createdAt: item.created_at,
+    updatedAt: item.updated_at
+  }
+}
+
+/**
  * 获取平台列表
  */
 async function getPlatforms(req, res) {
@@ -30,8 +78,11 @@ async function getPlatforms(req, res) {
     sql += ' ORDER BY sort ASC, year DESC LIMIT ? OFFSET ?'
     const list = await db.query(sql, [...params, parseInt(pageSize), offset])
 
+    // 字段映射
+    const mappedList = list.map(mapPlatformToCamelCase)
+
     res.success({
-      list,
+      list: mappedList,
       total,
       page: parseInt(page),
       pageSize: parseInt(pageSize)
@@ -47,16 +98,16 @@ async function getPlatforms(req, res) {
  */
 async function createPlatform(req, res) {
   try {
-    const { name, year, description } = req.body
+    const { name, year, airDate, airTime, channel, logo, poster, description, sort, isShow } = req.body
 
     if (!name || !year) {
       return res.error('缺少必要参数')
     }
 
     const result = await db.query(
-      `INSERT INTO gala_platforms (name, year, description, review_status)
-       VALUES (?, ?, ?, 'approved')`,
-      [name, year, description]
+      `INSERT INTO gala_platforms (name, year, air_date, air_time, channel, logo, poster, description, sort, is_show, review_status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'approved')`,
+      [name, year, airDate || null, airTime || null, channel || null, logo || null, poster || null, description || null, sort || 0, isShow !== undefined ? (isShow ? 1 : 0) : 1]
     )
 
     logger.info('创建春晚平台成功:', { id: result.insertId, name })
@@ -73,7 +124,7 @@ async function createPlatform(req, res) {
 async function updatePlatform(req, res) {
   try {
     const { id } = req.params
-    const { name, year, description, sort } = req.body
+    const { name, year, airDate, airTime, channel, logo, poster, description, sort, isShow } = req.body
 
     const [platform] = await db.query('SELECT * FROM gala_platforms WHERE id = ?', [id])
     if (!platform) {
@@ -81,8 +132,12 @@ async function updatePlatform(req, res) {
     }
 
     await db.query(
-      `UPDATE gala_platforms SET name = ?, year = ?, description = ?, sort = ? WHERE id = ?`,
-      [name, year, description, sort || 0, id]
+      `UPDATE gala_platforms
+       SET name = ?, year = ?, air_date = ?, air_time = ?, channel = ?, logo = ?, poster = ?,
+           description = ?, sort = ?, is_show = ?
+       WHERE id = ?`,
+      [name, year, airDate || null, airTime || null, channel || null, logo || null, poster || null,
+       description || null, sort || 0, isShow !== undefined ? (isShow ? 1 : 0) : platform.is_show, id]
     )
 
     logger.info('更新春晚平台成功:', { id, name })
@@ -148,8 +203,11 @@ async function getPrograms(req, res) {
     sql += ' ORDER BY platform_id ASC, order_num ASC LIMIT ? OFFSET ?'
     const list = await db.query(sql, [...params, parseInt(pageSize), offset])
 
+    // 字段映射
+    const mappedList = list.map(mapProgramToCamelCase)
+
     res.success({
-      list,
+      list: mappedList,
       total,
       page: parseInt(page),
       pageSize: parseInt(pageSize)
@@ -165,16 +223,16 @@ async function getPrograms(req, res) {
  */
 async function createProgram(req, res) {
   try {
-    const { platform_id, title, performer, type, order_num, start_time } = req.body
+    const { platform_id, title, performer, type, order_num, start_time, duration, description } = req.body
 
     if (!platform_id || !title) {
       return res.error('缺少必要参数')
     }
 
     const result = await db.query(
-      `INSERT INTO gala_programs (platform_id, title, performer, type, order_num, start_time, review_status)
-       VALUES (?, ?, ?, ?, ?, ?, 'approved')`,
-      [platform_id, title, performer, type, order_num, start_time]
+      `INSERT INTO gala_programs (platform_id, title, performer, type, order_num, start_time, duration, description, review_status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'approved')`,
+      [platform_id, title, performer || null, type || null, order_num || 0, start_time || null, duration || null, description || null]
     )
 
     logger.info('创建春晚节目成功:', { id: result.insertId, title })
@@ -191,7 +249,7 @@ async function createProgram(req, res) {
 async function updateProgram(req, res) {
   try {
     const { id } = req.params
-    const { platform_id, title, performer, type, order_num, start_time } = req.body
+    const { platform_id, title, performer, type, order_num, start_time, duration, description } = req.body
 
     const [program] = await db.query('SELECT * FROM gala_programs WHERE id = ?', [id])
     if (!program) {
@@ -199,8 +257,10 @@ async function updateProgram(req, res) {
     }
 
     await db.query(
-      `UPDATE gala_programs SET platform_id = ?, title = ?, performer = ?, type = ?, order_num = ?, start_time = ? WHERE id = ?`,
-      [platform_id, title, performer, type, order_num, start_time, id]
+      `UPDATE gala_programs
+       SET platform_id = ?, title = ?, performer = ?, type = ?, order_num = ?, start_time = ?, duration = ?, description = ?
+       WHERE id = ?`,
+      [platform_id, title, performer || null, type || null, order_num || 0, start_time || null, duration || null, description || null, id]
     )
 
     logger.info('更新春晚节目成功:', { id, title })

@@ -27,6 +27,26 @@ const redpack = {
 }
 
 /**
+ * 亲戚称呼相关接口
+ */
+const kinship = {
+  // 计算亲戚称呼
+  calculate(params) {
+    return request.post('/kinship/calculate', params, 60000)
+  },
+
+  // 搜索亲戚称呼
+  search(keyword) {
+    return request.get('/kinship/search', { keyword })
+  },
+
+  // 获取亲戚称呼图表
+  getChart() {
+    return request.get('/kinship/chart')
+  }
+}
+
+/**
  * 春晚相关接口
  */
 const gala = {
@@ -52,26 +72,6 @@ const gala = {
 }
 
 /**
- * 亲戚称呼相关接口
- */
-const kinship = {
-  // 计算称呼（60秒超时，AI调用需要更长时间）
-  calculate(params) {
-    return request.post('/kinship/calculate', params, 60000)
-  },
-
-  // 搜索称呼
-  search(keyword) {
-    return request.get('/kinship/search', { keyword })
-  },
-
-  // 获取关系图
-  getChart() {
-    return request.get('/kinship/chart')
-  }
-}
-
-/**
  * 通用接口
  */
 const common = {
@@ -87,28 +87,11 @@ const common = {
 
   // 上传图片
   uploadImage(filePath) {
-    return new Promise((resolve, reject) => {
-      wx.uploadFile({
-        url: getApp().globalData.serverUrl + '/common/upload',
-        filePath,
-        name: 'file',
-        header: {
-          'Authorization': `Bearer ${wx.getStorageSync('token') || ''}`
-        },
-        success: (res) => {
-          const data = JSON.parse(res.data)
-          if (data.code === 0) {
-            resolve(data)
-          } else {
-            reject(data)
-          }
-        },
-        fail: reject
-      })
-    })
+    return request.upload('/common/upload', filePath)
   }
 }
 
+// 导出所有接口
 module.exports = {
   redpack,
   gala,

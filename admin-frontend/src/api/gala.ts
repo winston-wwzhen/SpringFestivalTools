@@ -8,22 +8,30 @@ export const adminGetPlatforms = (params: { reviewStatus?: string }) => {
 
 export const createPlatform = (data: {
   name: string
-  airDate: string
+  year: number
+  airDate?: string
   airTime?: string
   channel?: string
+  logo?: string
+  poster?: string
   description?: string
   sort?: number
+  isShow?: boolean
 }) => {
   return http.post('/admin/gala/platforms', data)
 }
 
 export const updatePlatform = (id: number, data: {
   name?: string
+  year?: number
   airDate?: string
   airTime?: string
   channel?: string
+  logo?: string
+  poster?: string
   description?: string
   sort?: number
+  isShow?: boolean
 }) => {
   return http.put(`/admin/gala/platforms/${id}`, data)
 }
@@ -41,19 +49,28 @@ export const createProgram = (data: {
   platform_id: number
   title: string
   type?: string
+  performer?: string
   performers?: string
   airTime?: string
+  startTime?: string
   orderNum?: number
+  duration?: number
+  description?: string
 }) => {
   return http.post('/admin/gala/programs', data)
 }
 
 export const updateProgram = (id: number, data: {
+  platform_id?: number
   title?: string
   type?: string
+  performer?: string
   performers?: string
   airTime?: string
+  startTime?: string
   orderNum?: number
+  duration?: number
+  description?: string
 }) => {
   return http.put(`/admin/gala/programs/${id}`, data)
 }
