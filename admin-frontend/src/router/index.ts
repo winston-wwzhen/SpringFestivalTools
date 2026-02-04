@@ -26,18 +26,6 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '仪表盘', requiresAuth: true }
       },
       {
-        path: 'audit',
-        name: 'Audit',
-        component: () => import('@/views/audit/PendingList.vue'),
-        meta: { title: '待审核', requiresAuth: true }
-      },
-      {
-        path: 'audit/logs',
-        name: 'AuditLogs',
-        component: () => import('@/views/audit/LogList.vue'),
-        meta: { title: '审核日志', requiresAuth: true }
-      },
-      {
         path: 'content/redpack',
         name: 'ContentRedpack',
         component: () => import('@/views/content/redpack/List.vue'),

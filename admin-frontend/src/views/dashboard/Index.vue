@@ -1,110 +1,198 @@
 <template>
   <div class="dashboard-page">
-    <h2 class="page-title">仪表盘</h2>
+    <!-- 欢迎区域 -->
+    <div class="welcome-section">
+      <div class="welcome-content">
+        <h1 class="welcome-title">🎊 春节工具管理后台</h1>
+        <p class="welcome-subtitle">欢迎使用春节数据管理系统</p>
+      </div>
+      <div class="user-info">
+        <el-avatar :size="48" class="user-avatar">
+          <el-icon><User /></el-icon>
+        </el-avatar>
+        <div class="user-details">
+          <div class="user-name">{{ authStore.user?.realName || '管理员' }}</div>
+          <div class="user-role">{{ roleMap[authStore.user?.role] || '管理员' }}</div>
+        </div>
+      </div>
+    </div>
 
-    <!-- 统计卡片 -->
+    <!-- 数据统计 -->
     <el-row :gutter="20" class="stats-row">
-      <el-col :xs="24" :sm="12" :md="6">
-        <div class="stat-card pending">
-          <div class="stat-icon">
-            <el-icon><Clock /></el-icon>
-          </div>
+      <el-col :xs="12" :sm="12" :md="6">
+        <div class="stat-card redpack">
+          <div class="stat-icon">🧧</div>
           <div class="stat-content">
-            <div class="stat-value">{{ stats.pending || 0 }}</div>
-            <div class="stat-label">待审核</div>
+            <div class="stat-value">{{ stats.redpack }}</div>
+            <div class="stat-label">红包活动</div>
           </div>
         </div>
       </el-col>
 
-      <el-col :xs="24" :sm="12" :md="6">
-        <div class="stat-card approved">
-          <div class="stat-icon">
-            <el-icon><Select /></el-icon>
-          </div>
+      <el-col :xs="12" :sm="12" :md="6">
+        <div class="stat-card gala-platform">
+          <div class="stat-icon">📺</div>
           <div class="stat-content">
-            <div class="stat-value">{{ stats.approved || 0 }}</div>
-            <div class="stat-label">已通过</div>
+            <div class="stat-value">{{ stats.galaPlatform }}</div>
+            <div class="stat-label">春晚平台</div>
           </div>
         </div>
       </el-col>
 
-      <el-col :xs="24" :sm="12" :md="6">
-        <div class="stat-card rejected">
-          <div class="stat-icon">
-            <el-icon><CloseBold /></el-icon>
-          </div>
+      <el-col :xs="12" :sm="12" :md="6">
+        <div class="stat-card gala-program">
+          <div class="stat-icon">🎭</div>
           <div class="stat-content">
-            <div class="stat-value">{{ stats.rejected || 0 }}</div>
-            <div class="stat-label">已拒绝</div>
+            <div class="stat-value">{{ stats.galaProgram }}</div>
+            <div class="stat-label">春晚节目</div>
           </div>
         </div>
       </el-col>
 
-      <el-col :xs="24" :sm="12" :md="6">
+      <el-col :xs="12" :sm="12" :md="6">
         <div class="stat-card total">
-          <div class="stat-icon">
-            <el-icon><DataLine /></el-icon>
-          </div>
+          <div class="stat-icon">📊</div>
           <div class="stat-content">
-            <div class="stat-value">{{ stats.total || 0 }}</div>
+            <div class="stat-value">{{ stats.total }}</div>
             <div class="stat-label">总数据</div>
           </div>
         </div>
       </el-col>
     </el-row>
 
-    <!-- 快捷操作 -->
-    <el-row :gutter="20" class="actions-row">
-      <el-col :span="24">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">快捷操作</h3>
+    <!-- 快捷入口 -->
+    <el-row :gutter="20" class="quick-nav-row">
+      <el-col :xs="24" :sm="12" :md="8">
+        <div class="nav-card" @click="$router.push('/content/redpack')">
+          <div class="nav-icon redpack">
+            <el-icon><Wallet /></el-icon>
           </div>
-          <div class="quick-actions">
-            <el-button type="primary" @click="$router.push('/audit')">
-              <el-icon><Document /></el-icon>
-              处理待审核
-            </el-button>
-            <el-button @click="$router.push('/crawler')">
-              <el-icon><Connection /></el-icon>
-              爬虫管理
-            </el-button>
-            <el-button @click="$router.push('/content/redpack')">
-              <el-icon><Folder /></el-icon>
-              红包管理
-            </el-button>
+          <div class="nav-content">
+            <div class="nav-title">红包管理</div>
+            <div class="nav-desc">管理红包活动信息</div>
+          </div>
+          <div class="nav-arrow">
+            <el-icon><ArrowRight /></el-icon>
+          </div>
+        </div>
+      </el-col>
+
+      <el-col :xs="24" :sm="12" :md="8">
+        <div class="nav-card" @click="$router.push('/content/gala')">
+          <div class="nav-icon gala">
+            <el-icon><Monitor /></el-icon>
+          </div>
+          <div class="nav-content">
+            <div class="nav-title">春晚管理</div>
+            <div class="nav-desc">管理平台和节目</div>
+          </div>
+          <div class="nav-arrow">
+            <el-icon><ArrowRight /></el-icon>
+          </div>
+        </div>
+      </el-col>
+
+      <el-col :xs="24" :sm="12" :md="8">
+        <div class="nav-card" @click="$router.push('/crawler')">
+          <div class="nav-icon crawler">
+            <el-icon><Connection /></el-icon>
+          </div>
+          <div class="nav-content">
+            <div class="nav-title">爬虫管理</div>
+            <div class="nav-desc">数据采集任务</div>
+          </div>
+          <div class="nav-arrow">
+            <el-icon><ArrowRight /></el-icon>
           </div>
         </div>
       </el-col>
     </el-row>
 
-    <!-- 最新审核日志 -->
+    <!-- 最新动态 -->
     <el-row :gutter="20">
       <el-col :span="24">
+        <div class="card activity-card">
+          <div class="card-header">
+            <h3 class="card-title">📅 春节倒计时</h3>
+            <el-tag type="danger" size="large" effect="dark">{{ countdownText }}</el-tag>
+          </div>
+
+          <div class="countdown-info">
+            <div class="countdown-grid">
+              <div class="countdown-item">
+                <div class="countdown-value">{{ countdown.days }}</div>
+                <div class="countdown-label">天</div>
+              </div>
+              <div class="countdown-separator">:</div>
+              <div class="countdown-item">
+                <div class="countdown-value">{{ countdown.hours }}</div>
+                <div class="countdown-label">时</div>
+              </div>
+              <div class="countdown-separator">:</div>
+              <div class="countdown-item">
+                <div class="countdown-value">{{ countdown.minutes }}</div>
+                <div class="countdown-label">分</div>
+              </div>
+              <div class="countdown-separator">:</div>
+              <div class="countdown-item">
+                <div class="countdown-value">{{ countdown.seconds }}</div>
+                <div class="countdown-label">秒</div>
+              </div>
+            </div>
+            <div class="countdown-date">距离 {{ currentYear }}年春节（{{ lunarNewYear }}）</div>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+
+    <!-- 数据总览 -->
+    <el-row :gutter="20" class="overview-row">
+      <el-col :xs="24" :md="12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">最新审核日志</h3>
-            <el-button text type="primary" @click="$router.push('/audit/logs')">
+            <h3 class="card-title">🧧 红包活动</h3>
+            <el-button type="primary" size="small" @click="$router.push('/content/redpack')">
               查看全部
             </el-button>
           </div>
-          <el-table :data="recentLogs" style="width: 100%">
-            <el-table-column prop="resourceType" label="资源类型" width="120">
+          <el-table :data="recentRedpacks" style="width: 100%" v-loading="loading">
+            <el-table-column prop="platform" label="平台" width="120" />
+            <el-table-column prop="title" label="活动名称" show-overflow-tooltip />
+            <el-table-column prop="status" label="状态" width="100">
               <template #default="{ row }">
-                <el-tag size="small">{{ resourceTypeMap[row.resourceType] }}</el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column prop="action" label="操作" width="100">
-              <template #default="{ row }">
-                <el-tag :type="actionTypeMap[row.action].type" size="small">
-                  {{ actionTypeMap[row.action].text }}
+                <el-tag :type="statusTypeMap[row.status]" size="small">
+                  {{ statusMap[row.status] }}
                 </el-tag>
               </template>
             </el-table-column>
-            <el-table-column prop="reason" label="备注" show-overflow-tooltip />
-            <el-table-column prop="createdAt" label="时间" width="180">
+            <el-table-column prop="endTime" label="结束时间" width="120">
               <template #default="{ row }">
-                {{ formatTime(row.createdAt) }}
+                {{ formatDate(row.endTime) }}
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-col>
+
+      <el-col :xs="24" :md="12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">📺 春晚平台</h3>
+            <el-button type="primary" size="small" @click="$router.push('/content/gala')">
+              查看全部
+            </el-button>
+          </div>
+          <el-table :data="recentPlatforms" style="width: 100%" v-loading="loading">
+            <el-table-column label="图标" width="60">
+              <template #default="{ row }">
+                <span style="font-size: 24px">{{ row.emoji || '📺' }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="平台名称" />
+            <el-table-column prop="programCount" label="节目数" width="80" />
+            <el-table-column prop="broadcastTime" label="播出时间" width="150">
+              <template #default="{ row }">
+                {{ formatDateTime(row.airDate, row.airTime) }}
               </template>
             </el-table-column>
           </el-table>
@@ -115,108 +203,224 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive } from 'vue'
-import { getAuditStats, getAuditLogs } from '@/api/audit'
-import type { AuditLog } from '@/types'
+import { ref, onMounted, onUnmounted, reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import dayjs from 'dayjs'
 
+const router = useRouter()
+const authStore = useAuthStore()
+
+const loading = ref(false)
+
+// 统计数据
 const stats = reactive({
-  pending: 0,
-  approved: 0,
-  rejected: 0,
+  redpack: 0,
+  galaPlatform: 0,
+  galaProgram: 0,
   total: 0
 })
 
-const recentLogs = ref<AuditLog[]>([])
+// 倒计时
+const countdown = reactive({
+  days: 0,
+  hours: 0,
+  minutes: 0,
+  seconds: 0
+})
 
-const resourceTypeMap: Record<string, string> = {
-  redpack: '红包活动',
-  gala_platform: '春晚平台',
-  gala_program: '春晚节目',
-  emoticon: '表情包',
-  kinship: '亲戚称呼'
+const currentYear = new Date().getFullYear()
+const lunarNewYear = '马年'
+
+// 计算倒计时文本
+const countdownText = computed(() => {
+  const totalSeconds = countdown.days * 86400 + countdown.hours * 3600 + countdown.minutes * 60 + countdown.seconds
+  if (totalSeconds <= 0) return '春节快乐！'
+  return '距离春节还有'
+})
+
+// 角色映射
+const roleMap: Record<string, string> = {
+  super_admin: '超级管理员',
+  admin: '管理员',
+  editor: '编辑'
 }
 
-const actionTypeMap: Record<string, any> = {
-  approve: { text: '通过', type: 'success' },
-  reject: { text: '拒绝', type: 'danger' },
-  delete: { text: '删除', type: 'warning' },
-  edit: { text: '编辑', type: 'info' }
+// 状态映射
+const statusMap: Record<string, string> = {
+  upcoming: '未开始',
+  ongoing: '进行中',
+  ended: '已结束'
 }
+
+const statusTypeMap: Record<string, string> = {
+  upcoming: 'info',
+  ongoing: 'success',
+  ended: 'info'
+}
+
+// 最新数据
+const recentRedpacks = ref<any[]>([])
+const recentPlatforms = ref<any[]>([])
+
+let countdownTimer: number | null = null
 
 // 加载统计数据
 const loadStats = async () => {
+  loading.value = true
   try {
-    const data = await getAuditStats()
+    // 加载红包统计
+    const redpackData = await redpackService.adminGetPlatforms({ page: 1, pageSize: 1 })
+    stats.redpack = redpackData.total || 0
 
-    // 汇总统计
-    let pending = 0
-    let approved = 0
-    let rejected = 0
+    // 加载春晚平台统计
+    const platformData = await galaService.adminGetPlatforms({ page: 1, pageSize: 1 })
+    stats.galaPlatform = platformData.total || 0
 
-    Object.values(data).forEach((item: any) => {
-      pending += item.pending || 0
-      approved += item.approved || 0
-      rejected += item.rejected || 0
-    })
+    // 计算节目总数
+    stats.galaProgram = 0 // TODO: 需要从后端获取
 
-    stats.pending = pending
-    stats.approved = approved
-    stats.rejected = rejected
-    stats.total = pending + approved + rejected
+    stats.total = stats.redpack + stats.galaPlatform + stats.galaProgram
+
+    // 加载最新红包活动
+    const recentRedpackData = await redpackService.adminGetPlatforms({ page: 1, pageSize: 5 })
+    recentRedpacks.value = recentRedpackData.list || []
+
+    // 加载最新春晚平台
+    const recentPlatformData = await galaService.adminGetPlatforms({ page: 1, pageSize: 5 })
+    recentPlatforms.value = recentPlatformData.list || []
+      .map((p: any) => ({
+        ...p,
+        programCount: 0 // TODO: 需要从后端获取
+      }))
   } catch (error) {
     console.error('加载统计失败:', error)
+  } finally {
+    loading.value = false
   }
 }
 
-// 加载最新日志
-const loadRecentLogs = async () => {
-  try {
-    const data = await getAuditLogs({ page: 1, pageSize: 5 })
-    recentLogs.value = data.list
-  } catch (error) {
-    console.error('加载日志失败:', error)
+// 计算春节倒计时
+const updateCountdown = () => {
+  const now = dayjs()
+  const springFestival = dayjs(`${currentYear}-01-29 00:00:00`) // 假设春节是1月29日
+
+  const diff = springFestival.diff(now, 'second')
+
+  if (diff > 0) {
+    countdown.days = Math.floor(diff / 86400)
+    countdown.hours = Math.floor((diff % 86400) / 3600)
+    countdown.minutes = Math.floor((diff % 3600) / 60)
+    countdown.seconds = diff % 60
+  } else {
+    countdown.days = 0
+    countdown.hours = 0
+    countdown.minutes = 0
+    countdown.seconds = 0
   }
 }
 
-// 格式化时间
-const formatTime = (time: string) => {
-  return dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+// 格式化日期
+const formatDate = (date: string) => {
+  return dayjs(date).format('YYYY-MM-DD')
+}
+
+// 格式化日期时间
+const formatDateTime = (date: string | null, time: string | null) => {
+  if (!date && !time) return '-'
+
+  let dateStr = ''
+  if (date) {
+    const d = new Date(date)
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    dateStr = `${year}-${month}-${day}`
+  }
+
+  const timeStr = time || ''
+
+  if (dateStr && timeStr) {
+    return `${dateStr} ${timeStr.substring(0, 5)}`
+  }
+  return dateStr || timeStr
 }
 
 onMounted(() => {
   loadStats()
-  loadRecentLogs()
+  updateCountdown()
+  countdownTimer = setInterval(updateCountdown, 1000) as unknown as number
+})
+
+onUnmounted(() => {
+  if (countdownTimer) {
+    clearInterval(countdownTimer)
+  }
 })
 </script>
 
 <style scoped lang="scss">
 .dashboard-page {
   padding: 24px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8eaf5 100%);
   min-height: calc(100vh - 60px);
 }
 
-.page-title {
-  font-size: 28px;
-  font-weight: 700;
+.welcome-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 32px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 24px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+  color: #fff;
+}
+
+.welcome-content {
+  flex: 1;
+}
+
+.welcome-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-subtitle {
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.95;
+  font-weight: 400;
+}
+
+.user-info {
   display: flex;
   align-items: center;
+  gap: 16px;
+}
 
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 4px;
-    height: 28px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    margin-right: 12px;
-    border-radius: 2px;
-  }
+.user-avatar {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-details {
+  text-align: right;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.user-role {
+  font-size: 14px;
+  opacity: 0.9;
 }
 
 .stats-row {
@@ -226,132 +430,105 @@ onMounted(() => {
 .stat-card {
   display: flex;
   align-items: center;
-  padding: 28px;
+  padding: 24px;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.3) 100%);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
+  border: 2px solid transparent;
 
   &:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-
-    &::before {
-      opacity: 1;
-    }
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 
-  &.pending {
-    background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
-    border-color: rgba(245, 108, 108, 0.2);
-
-    .stat-icon {
-      background: linear-gradient(135deg, #ff6b6b 0%, #f56c6c 100%);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(245, 108, 108, 0.3);
-    }
-  }
-
-  &.approved {
-    background: linear-gradient(135deg, #f0f9ff 0%, #fff 100%);
-    border-color: rgba(64, 158, 255, 0.2);
-
-    .stat-icon {
-      background: linear-gradient(135deg, #4facfe 0%, #409eff 100%);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
-    }
-  }
-
-  &.rejected {
-    background: linear-gradient(135deg, #f5f5f5 0%, #fff 100%);
-    border-color: rgba(144, 147, 153, 0.2);
-
-    .stat-icon {
-      background: linear-gradient(135deg, #a8a8a8 0%, #909399 100%);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(144, 147, 153, 0.3);
-    }
-  }
-
-  &.total {
-    background: linear-gradient(135deg, #f0f9ff 0%, #fff 100%);
-    border-color: rgba(103, 194, 58, 0.2);
-
-    .stat-icon {
-      background: linear-gradient(135deg, #67c23a 0%, #5daf34 100%);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(103, 194, 58, 0.3);
-    }
-  }
+  &.redpack { border-color: rgba(245, 108, 108, 0.1); }
+  &.gala-platform { border-color: rgba(64, 158, 255, 0.1); }
+  &.gala-program { border-color: rgba(103, 194, 58, 0.1); }
+  &.total { border-color: rgba(139, 92, 246, 0.1); }
 }
 
 .stat-icon {
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 16px;
-  font-size: 32px;
-  margin-right: 20px;
-  position: relative;
-  z-index: 1;
-  transition: transform 0.3s;
-}
-
-.stat-card:hover .stat-icon {
-  transform: scale(1.1) rotate(5deg);
+  font-size: 40px;
+  margin-right: 16px;
+  line-height: 1;
 }
 
 .stat-content {
   flex: 1;
-  position: relative;
-  z-index: 1;
 }
 
 .stat-value {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 800;
-  background: linear-gradient(135deg, #333 0%, #666 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #333;
   line-height: 1;
-  margin-bottom: 8px;
-  transition: all 0.3s;
-}
-
-.stat-card:hover .stat-value {
-  transform: scale(1.05);
+  margin-bottom: 4px;
 }
 
 .stat-label {
-  font-size: 15px;
-  color: #666;
+  font-size: 14px;
+  color: #999;
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
-.actions-row {
+.quick-nav-row {
   margin-bottom: 24px;
+}
+
+.nav-card {
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
+  cursor: pointer;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    border-color: rgba(102, 126, 234, 0.2);
+  }
+}
+
+.nav-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-right: 16px;
+
+  &.redpack { background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); }
+  &.gala { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); }
+  &.crawler { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); }
+}
+
+.nav-content {
+  flex: 1;
+}
+
+.nav-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.nav-desc {
+  font-size: 14px;
+  color: #999;
+}
+
+.nav-arrow {
+  color: #ccc;
+  font-size: 20px;
 }
 
 .card {
@@ -359,12 +536,7 @@ onMounted(() => {
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  transition: box-shadow 0.3s;
-
-  &:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  }
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .card-header {
@@ -381,38 +553,62 @@ onMounted(() => {
   font-weight: 600;
   color: #333;
   margin: 0;
-  display: flex;
-  align-items: center;
-
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 3px;
-    height: 18px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    margin-right: 10px;
-    border-radius: 2px;
-  }
 }
 
-.quick-actions {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
+.overview-row {
+  margin-bottom: 24px;
 }
 
-.quick-actions .el-button {
-  display: flex;
+// 倒计时样式
+.activity-card {
+  background: linear-gradient(135deg, #fff5f5 0%, #ffebee 100%);
+}
+
+.countdown-info {
+  text-align: center;
+}
+
+.countdown-grid {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 500;
-  transition: all 0.3s;
+  margin-bottom: 16px;
+}
 
-  &:hover {
-    transform: translateY(-2px);
-  }
+.countdown-item {
+  text-align: center;
+}
+
+.countdown-value {
+  font-size: 48px;
+  font-weight: 800;
+  color: #d32f2f;
+  line-height: 1;
+  min-width: 60px;
+  background: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
+}
+
+.countdown-label {
+  font-size: 12px;
+  color: #d32f2f;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.countdown-separator {
+  font-size: 32px;
+  font-weight: bold;
+  color: #d32f2f;
+  margin: 0 4px;
+}
+
+.countdown-date {
+  font-size: 16px;
+  color: #c62828;
+  font-weight: 600;
 }
 
 :deep(.el-table) {
@@ -420,19 +616,14 @@ onMounted(() => {
   overflow: hidden;
 
   th {
-    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    background: #f8f9fa;
     font-weight: 600;
     color: #333;
-  }
-
-  tr:hover {
-    background: linear-gradient(135deg, #f5f7fa 0%, #fff 100%);
   }
 }
 
 :deep(.el-tag) {
   border-radius: 8px;
   font-weight: 500;
-  padding: 4px 12px;
 }
 </style>

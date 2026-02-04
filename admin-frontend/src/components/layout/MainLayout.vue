@@ -18,11 +18,6 @@
           <template #title>仪表盘</template>
         </el-menu-item>
 
-        <el-menu-item index="/audit">
-          <el-icon><Document /></el-icon>
-          <template #title>待审核</template>
-        </el-menu-item>
-
         <el-sub-menu index="content">
           <template #title>
             <el-icon><Folder /></el-icon>
