@@ -1,0 +1,1 @@
+import{h as e}from"./request-BQix10f2.js";const o=t=>e.get("/audit/pending",{params:t}),n=(t,r,s)=>e.post(`/audit/${t}/${r}/approve`,{note:s}),p=(t,r,s)=>e.post(`/audit/${t}/${r}/reject`,{reason:s}),u=(t,r,s)=>e.post(`/audit/${t}/batch-approve`,{ids:r,note:s}),i=t=>e.get("/audit/logs",{params:t}),c=()=>e.get("/audit/stats");export{i as a,o as b,n as c,u as d,c as g,p as r};
