@@ -27,32 +27,34 @@
 
       <div class="card">
         <el-table v-loading="loading" :data="platforms">
-          <el-table-column prop="emoji" label="图标" width="60">
+          <el-table-column prop="emoji" label="图标" width="50">
             <template #default="{ row }">
-              <span style="font-size: 24px">{{ row.emoji || '📺' }}</span>
+              <span style="font-size: 20px">{{ row.emoji || '📺' }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="平台名称" min-width="150" />
-          <el-table-column prop="shortName" label="简称" width="60" />
-          <el-table-column prop="year" label="年份" width="70" />
-          <el-table-column prop="airDate" label="播出日期" width="110" />
-          <el-table-column prop="airTime" label="播出时间" width="90" />
-          <el-table-column prop="channel" label="播出频道" width="120" />
-          <el-table-column prop="tags" label="标签" width="200">
+          <el-table-column prop="name" label="平台名称" width="120" />
+          <el-table-column prop="shortName" label="简称" width="50" />
+          <el-table-column label="播出时间" width="150">
+            <template #default="{ row }">
+              {{ formatDateTime(row.airDate, row.airTime) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="channel" label="频道" width="100" />
+          <el-table-column prop="tags" label="标签" width="180">
             <template #default="{ row }">
               <el-tag v-for="(tag, idx) in row.tags" :key="idx" size="small" style="margin-right: 4px">
                 {{ tag }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="isShow" label="显示" width="70">
+          <el-table-column prop="isShow" label="显示" width="60">
             <template #default="{ row }">
               <el-tag :type="row.isShow ? 'success' : 'info'" size="small">
                 {{ row.isShow ? '显示' : '隐藏' }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="sort" label="排序" width="70" />
+          <el-table-column prop="sort" label="排序" width="60" />
           <el-table-column label="操作" width="200" fixed="right">
             <template #default="{ row }">
               <el-button size="small" @click="handleEditPlatform(row)">编辑</el-button>
@@ -336,6 +338,29 @@ const reviewStatusTypeMap: Record<string, any> = {
   pending: 'warning',
   approved: 'success',
   rejected: 'danger'
+}
+
+/**
+ * 格式化日期时间
+ */
+const formatDateTime = (date: string | null, time: string | null) => {
+  if (!date && !time) return '-'
+
+  let dateStr = ''
+  if (date) {
+    const d = new Date(date)
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    dateStr = `${year}-${month}-${day}`
+  }
+
+  const timeStr = time || ''
+
+  if (dateStr && timeStr) {
+    return `${dateStr} ${timeStr.substring(0, 5)}`
+  }
+  return dateStr || timeStr
 }
 
 // 加载平台列表
