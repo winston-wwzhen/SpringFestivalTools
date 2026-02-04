@@ -117,100 +117,203 @@
     <el-dialog
       v-model="platformDialogVisible"
       :title="platformDialogTitle"
-      width="600px"
+      width="800px"
       @closed="handlePlatformDialogClosed"
     >
-      <el-form
-        ref="platformFormRef"
-        :model="platformForm"
-        :rules="platformFormRules"
-        label-width="110px"
-      >
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="平台名称" prop="name">
-              <el-input v-model="platformForm.name" placeholder="如：央视春晚、河南春晚等" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="简称" prop="shortName">
-              <el-input v-model="platformForm.shortName" placeholder="央" maxlength="1" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="Emoji图标">
-              <el-input v-model="platformForm.emoji" placeholder="📺" maxlength="2" />
-            </el-form-item>
-          </el-col>
-        </el-row>
+      <el-tabs v-model="activePlatformTab" class="platform-tabs">
+        <!-- 基本信息 -->
+        <el-tab-pane label="基本信息" name="basic">
+          <el-form
+            ref="platformFormRef"
+            :model="platformForm"
+            :rules="platformFormRules"
+            label-width="100px"
+            class="platform-form"
+          >
+            <el-row :gutter="20">
+              <el-col :span="16">
+                <el-form-item label="平台名称" prop="name">
+                  <el-input v-model="platformForm.name" placeholder="如：央视春晚、湖南春晚等" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <el-form-item label="简称" prop="shortName">
+                  <el-input v-model="platformForm.shortName" placeholder="央" maxlength="1" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <el-form-item label="图标">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span v-if="platformForm.emoji" style="font-size: 32px;">{{ platformForm.emoji }}</span>
+                    <el-input v-model="platformForm.emoji" placeholder="📺" style="width: 60px" />
+                  </div>
+                </el-form-item>
+              </el-col>
+            </el-row>
 
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <el-form-item label="年份" prop="year">
-              <el-input-number v-model="platformForm.year" :min="2000" :max="2100" style="width: 100%" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="播出日期">
-              <el-date-picker
-                v-model="platformForm.airDate"
-                type="date"
-                placeholder="选择播出日期"
-                style="width: 100%"
-                value-format="YYYY-MM-DD"
+            <el-row :gutter="20">
+              <el-col :span="8">
+                <el-form-item label="年份" prop="year">
+                  <el-input-number v-model="platformForm.year" :min="2000" :max="2100" style="width: 100%" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="排序">
+                  <el-input-number v-model="platformForm.sort" :min="0" style="width: 100%" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="显示状态">
+                  <el-switch
+                    v-model="platformForm.isShow"
+                    active-text="显示"
+                    inactive-text="隐藏"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-form-item label="平台描述">
+              <el-input
+                v-model="platformForm.description"
+                type="textarea"
+                :rows="4"
+                placeholder="请输入平台描述"
+                show-word-limit
+                maxlength="200"
               />
             </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="播出时间">
-              <el-time-picker
-                v-model="platformForm.airTime"
-                placeholder="选择播出时间"
-                style="width: 100%"
-                value-format="HH:mm:ss"
-              />
+
+            <el-form-item label="标签">
+              <div class="tags-container">
+                <el-select
+                  v-model="platformForm.selectedTags"
+                  multiple
+                  filterable
+                  allow-create
+                  placeholder="选择或输入标签"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="tag in presetTags"
+                    :key="tag"
+                    :label="tag"
+                    :value="tag"
+                  />
+                </el-select>
+                <div class="tags-tip">
+                  <el-icon><InfoFilled /></el-icon>
+                  <span>可多选，也可输入自定义标签</span>
+                </div>
+              </div>
             </el-form-item>
-          </el-col>
-        </el-row>
+          </el-form>
+        </el-tab-pane>
 
-        <el-form-item label="播出频道">
-          <el-input v-model="platformForm.channel" placeholder="如：CCTV-1、河南卫视等" />
-        </el-form-item>
+        <!-- 播出信息 -->
+        <el-tab-pane label="播出信息" name="broadcast">
+          <el-form
+            ref="platformFormRef2"
+            :model="platformForm"
+            label-width="100px"
+            class="platform-form"
+          >
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="播出日期">
+                  <el-date-picker
+                    v-model="platformForm.airDate"
+                    type="date"
+                    placeholder="选择播出日期"
+                    style="width: 100%"
+                    value-format="YYYY-MM-DD"
+                    clearable
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="播出时间">
+                  <el-time-picker
+                    v-model="platformForm.airTime"
+                    placeholder="选择播出时间"
+                    style="width: 100%"
+                    value-format="HH:mm:ss"
+                    clearable
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
 
-        <el-form-item label="标签（逗号分隔）">
-          <el-input v-model="platformForm.tagsText" placeholder="央视, 主会场, 全球直播" />
-        </el-form-item>
-
-        <el-form-item label="Logo地址">
-          <el-input v-model="platformForm.logo" placeholder="/images/gala/cctv-logo.png" />
-        </el-form-item>
-
-        <el-form-item label="海报地址">
-          <el-input v-model="platformForm.poster" placeholder="/images/gala/cctv-poster.png" />
-        </el-form-item>
-
-        <el-form-item label="描述">
-          <el-input
-            v-model="platformForm.description"
-            type="textarea"
-            :rows="3"
-            placeholder="请输入描述"
-          />
-        </el-form-item>
-
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="排序">
-              <el-input-number v-model="platformForm.sort" :min="0" />
+            <el-form-item label="播出频道">
+              <el-input v-model="platformForm.channel" placeholder="如：CCTV-1、湖南卫视、B站等">
+                <template #prepend>
+                  <el-icon><Monitor /></el-icon>
+                </template>
+              </el-input>
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="是否显示">
-              <el-switch v-model="platformForm.isShow" />
+
+            <el-alert
+              title="播出信息预览"
+              type="info"
+              :closable="false"
+              style="margin-bottom: 20px"
+            >
+              <template #default>
+                <div style="font-size: 14px;">
+                  <strong v-if="platformForm.name">{{ platformForm.name }}</strong>
+                  <span v-else>平台名称</span>
+                  <span v-if="platformForm.airDate || platformForm.airTime" style="margin-left: 8px;">
+                    {{ formatDateTime(platformForm.airDate, platformForm.airTime) }}
+                  </span>
+                  <span v-if="platformForm.channel" style="margin-left: 8px; color: #409eff;">
+                    {{ platformForm.channel }}
+                  </span>
+                </div>
+              </template>
+            </el-alert>
+          </el-form>
+        </el-tab-pane>
+
+        <!-- 媒体资源 -->
+        <el-tab-pane label="媒体资源" name="media">
+          <el-form
+            ref="platformFormRef3"
+            :model="platformForm"
+            label-width="100px"
+            class="platform-form"
+          >
+            <el-form-item label="Logo地址">
+              <el-input v-model="platformForm.logo" placeholder="/images/gala/cctv-logo.png">
+                <template #prepend>
+                  <el-icon><Picture /></el-icon>
+                </template>
+              </el-input>
+              <div v-if="platformForm.logo" class="image-preview">
+                <img :src="platformForm.logo" alt="Logo预览" @error="handleImageError" />
+              </div>
             </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
+
+            <el-form-item label="海报地址">
+              <el-input v-model="platformForm.poster" placeholder="/images/gala/cctv-poster.png">
+                <template #prepend>
+                  <el-icon><Picture /></el-icon>
+                </template>
+              </el-input>
+              <div v-if="platformForm.poster" class="image-preview">
+                <img :src="platformForm.poster" alt="海报预览" @error="handleImageError" />
+              </div>
+            </el-form-item>
+
+            <el-form-item label="数据来源">
+              <el-input v-model="platformForm.sourceUrl" placeholder="数据来源URL（可选）">
+                <template #prepend>
+                  <el-icon><Link /></el-icon>
+                </template>
+              </el-input>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+      </el-tabs>
 
       <template #footer>
         <el-button @click="platformDialogVisible = false">取消</el-button>
@@ -224,7 +327,7 @@
     <el-dialog
       v-model="programDialogVisible"
       :title="programDialogTitle"
-      width="600px"
+      width="700px"
       @closed="handleProgramDialogClosed"
     >
       <el-form
@@ -233,29 +336,89 @@
         :rules="programFormRules"
         label-width="100px"
       >
-        <el-form-item label="节目名称" prop="title">
-          <el-input v-model="programForm.title" placeholder="请输入节目名称" />
-        </el-form-item>
-
-        <el-form-item label="节目类型">
-          <el-input v-model="programForm.type" placeholder="如：歌舞、小品、相声等" />
-        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="节目名称" prop="title">
+              <el-input v-model="programForm.title" placeholder="请输入节目名称" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="节目类型">
+              <el-select
+                v-model="programForm.type"
+                placeholder="选择节目类型"
+                style="width: 100%"
+                filterable
+                allow-create
+              >
+                <el-option label="歌舞" value="歌舞" />
+                <el-option label="歌曲" value="歌曲" />
+                <el-option label="小品" value="小品" />
+                <el-option label="相声" value="相声" />
+                <el-option label="魔术" value="魔术" />
+                <el-option label="杂技" value="杂技" />
+                <el-option label="戏曲" value="戏曲" />
+                <el-option label="综艺" value="综艺" />
+                <el-option label="语言" value="语言" />
+                <el-option label="其他" value="其他" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
         <el-form-item label="表演者">
-          <el-input v-model="programForm.performers" placeholder="请输入表演者，多个用逗号分隔" />
+          <el-input
+            v-model="programForm.performers"
+            placeholder="请输入表演者，多个用逗号分隔"
+          >
+            <template #prepend>
+              <el-icon><User /></el-icon>
+            </template>
+          </el-input>
         </el-form-item>
 
-        <el-form-item label="播出时间">
-          <el-time-picker
-            v-model="programForm.airTime"
-            placeholder="选择播出时间"
-            style="width: 100%"
-            value-format="HH:mm:ss"
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="播出时间">
+              <el-time-picker
+                v-model="programForm.airTime"
+                placeholder="选择播出时间"
+                style="width: 100%"
+                value-format="HH:mm:ss"
+                clearable
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="时长(秒)">
+              <el-input-number
+                v-model="programForm.duration"
+                :min="0"
+                :step="60"
+                style="width: 100%"
+                placeholder="单位：秒"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="节目序号">
+              <el-input-number v-model="programForm.orderNum" :min="0" style="width: 100%" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-form-item label="节目描述">
+          <el-input
+            v-model="programForm.description"
+            type="textarea"
+            :rows="3"
+            placeholder="请输入节目描述（可选）"
+            show-word-limit
+            maxlength="200"
           />
-        </el-form-item>
-
-        <el-form-item label="节目序号">
-          <el-input-number v-model="programForm.orderNum" :min="0" />
         </el-form-item>
       </el-form>
 
@@ -272,19 +435,34 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
+import { InfoFilled, Monitor, Picture, Link, User } from '@element-plus/icons-vue'
 import { galaService } from '@/api/gala'
 
 const activeTab = ref('platforms')
+const activePlatformTab = ref('basic')
 const loading = ref(false)
 const platforms = ref<any[]>([])
 const programs = ref<any[]>([])
 const approvedPlatforms = computed(() => platforms.value.filter(p => p.reviewStatus === 'approved'))
 const selectedPlatformId = ref<number | null>(null)
 
+// 预设标签
+const presetTags = [
+  '央视', '卫视', '网络', '主会场', '分会场',
+  '全球直播', '4K', '8K', 'VR', 'AR',
+  '国潮', '国风', '传统文化', '科技创新',
+  'Z世代', '二次元', '年轻化', '潮流',
+  '短视频', '互动', '社交', '接地气',
+  '快乐', '青春', '京味儿', '冰雪',
+  '海派', '都市', '中国蓝', '荔枝'
+]
+
 // 平台表单
 const platformDialogVisible = ref(false)
 const platformDialogTitle = ref('新建平台')
 const platformFormRef = ref<FormInstance>()
+const platformFormRef2 = ref<FormInstance>()
+const platformFormRef3 = ref<FormInstance>()
 const platformSubmitting = ref(false)
 const editPlatformId = ref<number | null>(null)
 
@@ -302,7 +480,8 @@ const platformForm = reactive({
   sort: 0,
   isShow: true,
   tags: [] as string[],
-  tagsText: ''
+  selectedTags: [] as string[],
+  sourceUrl: ''
 })
 
 const platformFormRules: FormRules = {
@@ -320,9 +499,13 @@ const editProgramId = ref<number | null>(null)
 const programForm = reactive({
   title: '',
   type: '',
+  performer: '',
   performers: '',
   airTime: '',
-  orderNum: 0
+  startTime: '',
+  orderNum: 0,
+  duration: 0,
+  description: ''
 })
 
 const programFormRules: FormRules = {
@@ -362,6 +545,14 @@ const formatDateTime = (date: string | null, time: string | null) => {
     return `${dateStr} ${timeStr.substring(0, 5)}`
   }
   return dateStr || timeStr
+}
+
+/**
+ * 图片加载错误处理
+ */
+const handleImageError = (e: Event) => {
+  const img = e.target as HTMLImageElement
+  img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iI2Y1ZjVmNSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTk5Ij7liqDovb3lu5bu65Lu75oGi77ya77yaPC90ZXh0Pjwvc3ZnPg=='
 }
 
 // 加载平台列表
@@ -405,6 +596,7 @@ const handleTabChange = () => {
 const handleCreatePlatform = () => {
   platformDialogTitle.value = '新建平台'
   editPlatformId.value = null
+  activePlatformTab.value = 'basic'
   Object.assign(platformForm, {
     name: '',
     shortName: '',
@@ -419,7 +611,8 @@ const handleCreatePlatform = () => {
     sort: 0,
     isShow: true,
     tags: [],
-    tagsText: ''
+    selectedTags: [],
+    sourceUrl: ''
   })
   platformDialogVisible.value = true
 }
@@ -428,6 +621,7 @@ const handleCreatePlatform = () => {
 const handleEditPlatform = (row: any) => {
   platformDialogTitle.value = '编辑平台'
   editPlatformId.value = row.id
+  activePlatformTab.value = 'basic'
   const tags = Array.isArray(row.tags) ? row.tags : []
   Object.assign(platformForm, {
     name: row.name,
@@ -443,45 +637,43 @@ const handleEditPlatform = (row: any) => {
     sort: row.sort || 0,
     isShow: row.isShow !== undefined ? row.isShow : true,
     tags: tags,
-    tagsText: tags.join(', ')
+    selectedTags: tags,
+    sourceUrl: row.sourceUrl || ''
   })
   platformDialogVisible.value = true
 }
 
 // 提交平台表单
 const handleSubmitPlatform = async () => {
-  if (!platformFormRef.value) return
-
-  await platformFormRef.value.validate(async (valid) => {
+  // 验证所有表单
+  const forms = [platformFormRef.value, platformFormRef2.value, platformFormRef3.value].filter(Boolean)
+  for (const form of forms) {
+    const valid = await form.validate().catch(() => false)
     if (!valid) return
+  }
 
-    platformSubmitting.value = true
-    try {
-      // 处理标签
-      const tags = platformForm.tagsText
-        ? platformForm.tagsText.split(',').map(t => t.trim()).filter(t => t)
-        : []
-
-      const submitData = {
-        ...platformForm,
-        tags
-      }
-
-      if (editPlatformId.value) {
-        await galaService.updatePlatform(editPlatformId.value, submitData)
-        ElMessage.success('更新成功')
-      } else {
-        await galaService.createPlatform(submitData)
-        ElMessage.success('创建成功')
-      }
-      platformDialogVisible.value = false
-      loadPlatforms()
-    } catch (error: any) {
-      ElMessage.error(error.message || '操作失败')
-    } finally {
-      platformSubmitting.value = false
+  platformSubmitting.value = true
+  try {
+    // 使用 selectedTags 作为 tags
+    const submitData = {
+      ...platformForm,
+      tags: platformForm.selectedTags
     }
-  })
+
+    if (editPlatformId.value) {
+      await galaService.updatePlatform(editPlatformId.value, submitData)
+      ElMessage.success('更新成功')
+    } else {
+      await galaService.createPlatform(submitData)
+      ElMessage.success('创建成功')
+    }
+    platformDialogVisible.value = false
+    loadPlatforms()
+  } catch (error: any) {
+    ElMessage.error(error.message || '操作失败')
+  } finally {
+    platformSubmitting.value = false
+  }
 }
 
 // 删除平台
@@ -519,9 +711,13 @@ const handleCreateProgram = () => {
   Object.assign(programForm, {
     title: '',
     type: '',
+    performer: '',
     performers: '',
     airTime: '',
-    orderNum: programs.value.length + 1
+    startTime: '',
+    orderNum: programs.value.length + 1,
+    duration: 0,
+    description: ''
   })
   programDialogVisible.value = true
 }
@@ -533,9 +729,13 @@ const handleEditProgram = (row: any) => {
   Object.assign(programForm, {
     title: row.title,
     type: row.type || '',
-    performers: row.performers || '',
-    airTime: row.airTime || '',
-    orderNum: row.orderNum || 0
+    performer: row.performer || row.performers || '',
+    performers: row.performer || row.performers || '',
+    airTime: row.airTime || row.startTime || '',
+    startTime: row.airTime || row.startTime || '',
+    orderNum: row.orderNum || 0,
+    duration: row.duration || 0,
+    description: row.description || ''
   })
   programDialogVisible.value = true
 }
@@ -608,6 +808,78 @@ onMounted(() => {
 
   .actions-bar {
     margin-bottom: 20px;
+  }
+
+  .search-form {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: #f5f7fa;
+    border-radius: 4px;
+
+    .search-form-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      label {
+        white-space: nowrap;
+        font-weight: 500;
+      }
+    }
+  }
+
+  // 平台编辑对话框样式
+  .platform-tabs {
+    :deep(.el-tabs__content) {
+      padding-top: 20px;
+    }
+  }
+
+  .platform-form {
+    .el-form-item {
+      margin-bottom: 22px;
+    }
+
+    .tags-container {
+      width: 100%;
+
+      .tags-tip {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 8px;
+        font-size: 12px;
+        color: #909399;
+
+        .el-icon {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .image-preview {
+      margin-top: 12px;
+      border: 1px dashed #dcdfe6;
+      border-radius: 4px;
+      padding: 8px;
+      text-align: center;
+
+      img {
+        max-width: 200px;
+        max-height: 150px;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  // 节目表单优化
+  .el-form-item {
+    :deep(.el-input-group__prepend) {
+      background-color: #f5f7fa;
+      border-color: #dcdfe6;
+    }
   }
 }
 </style>
