@@ -206,6 +206,7 @@
 import { ref, onMounted, onUnmounted, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { http } from '@/utils/request'
 import dayjs from 'dayjs'
 
 const router = useRouter()
@@ -270,11 +271,11 @@ const loadStats = async () => {
   loading.value = true
   try {
     // 加载红包统计
-    const redpackData = await redpackService.adminGetPlatforms({ page: 1, pageSize: 1 })
+    const redpackData = await http.get('/admin/redpack/list', { page: 1, pageSize: 1 })
     stats.redpack = redpackData.total || 0
 
     // 加载春晚平台统计
-    const platformData = await galaService.adminGetPlatforms({ page: 1, pageSize: 1 })
+    const platformData = await http.get('/admin/gala/platforms', { page: 1, pageSize: 1 })
     stats.galaPlatform = platformData.total || 0
 
     // 计算节目总数
@@ -283,11 +284,11 @@ const loadStats = async () => {
     stats.total = stats.redpack + stats.galaPlatform + stats.galaProgram
 
     // 加载最新红包活动
-    const recentRedpackData = await redpackService.adminGetPlatforms({ page: 1, pageSize: 5 })
+    const recentRedpackData = await http.get('/admin/redpack/list', { page: 1, pageSize: 5 })
     recentRedpacks.value = recentRedpackData.list || []
 
     // 加载最新春晚平台
-    const recentPlatformData = await galaService.adminGetPlatforms({ page: 1, pageSize: 5 })
+    const recentPlatformData = await http.get('/admin/gala/platforms', { page: 1, pageSize: 5 })
     recentPlatforms.value = recentPlatformData.list || []
       .map((p: any) => ({
         ...p,
