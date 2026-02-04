@@ -27,26 +27,32 @@
 
       <div class="card">
         <el-table v-loading="loading" :data="platforms">
+          <el-table-column prop="emoji" label="图标" width="60">
+            <template #default="{ row }">
+              <span style="font-size: 24px">{{ row.emoji || '📺' }}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="name" label="平台名称" min-width="150" />
-          <el-table-column prop="year" label="年份" width="80" />
-          <el-table-column prop="airDate" label="播出日期" width="120" />
-          <el-table-column prop="airTime" label="播出时间" width="100" />
-          <el-table-column prop="channel" label="播出频道" width="150" />
-          <el-table-column prop="isShow" label="显示" width="80">
+          <el-table-column prop="shortName" label="简称" width="60" />
+          <el-table-column prop="year" label="年份" width="70" />
+          <el-table-column prop="airDate" label="播出日期" width="110" />
+          <el-table-column prop="airTime" label="播出时间" width="90" />
+          <el-table-column prop="channel" label="播出频道" width="120" />
+          <el-table-column prop="tags" label="标签" width="200">
+            <template #default="{ row }">
+              <el-tag v-for="(tag, idx) in row.tags" :key="idx" size="small" style="margin-right: 4px">
+                {{ tag }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="isShow" label="显示" width="70">
             <template #default="{ row }">
               <el-tag :type="row.isShow ? 'success' : 'info'" size="small">
                 {{ row.isShow ? '显示' : '隐藏' }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="reviewStatus" label="审核状态" width="100">
-            <template #default="{ row }">
-              <el-tag :type="reviewStatusTypeMap[row.reviewStatus]" size="small">
-                {{ reviewStatusMap[row.reviewStatus] }}
-              </el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="sort" label="排序" width="80" />
+          <el-table-column prop="sort" label="排序" width="70" />
           <el-table-column label="操作" width="200" fixed="right">
             <template #default="{ row }">
               <el-button size="small" @click="handleEditPlatform(row)">编辑</el-button>
@@ -115,37 +121,61 @@
         ref="platformFormRef"
         :model="platformForm"
         :rules="platformFormRules"
-        label-width="100px"
+        label-width="110px"
       >
-        <el-form-item label="平台名称" prop="name">
-          <el-input v-model="platformForm.name" placeholder="如：央视春晚、河南春晚等" />
-        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="平台名称" prop="name">
+              <el-input v-model="platformForm.name" placeholder="如：央视春晚、河南春晚等" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="简称" prop="shortName">
+              <el-input v-model="platformForm.shortName" placeholder="央" maxlength="1" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="Emoji图标">
+              <el-input v-model="platformForm.emoji" placeholder="📺" maxlength="2" />
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-        <el-form-item label="年份" prop="year">
-          <el-input-number v-model="platformForm.year" :min="2000" :max="2100" />
-        </el-form-item>
-
-        <el-form-item label="播出日期">
-          <el-date-picker
-            v-model="platformForm.airDate"
-            type="date"
-            placeholder="选择播出日期"
-            style="width: 100%"
-            value-format="YYYY-MM-DD"
-          />
-        </el-form-item>
-
-        <el-form-item label="播出时间">
-          <el-time-picker
-            v-model="platformForm.airTime"
-            placeholder="选择播出时间"
-            style="width: 100%"
-            value-format="HH:mm:ss"
-          />
-        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <el-form-item label="年份" prop="year">
+              <el-input-number v-model="platformForm.year" :min="2000" :max="2100" style="width: 100%" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="播出日期">
+              <el-date-picker
+                v-model="platformForm.airDate"
+                type="date"
+                placeholder="选择播出日期"
+                style="width: 100%"
+                value-format="YYYY-MM-DD"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="播出时间">
+              <el-time-picker
+                v-model="platformForm.airTime"
+                placeholder="选择播出时间"
+                style="width: 100%"
+                value-format="HH:mm:ss"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
 
         <el-form-item label="播出频道">
           <el-input v-model="platformForm.channel" placeholder="如：CCTV-1、河南卫视等" />
+        </el-form-item>
+
+        <el-form-item label="标签（逗号分隔）">
+          <el-input v-model="platformForm.tagsText" placeholder="央视, 主会场, 全球直播" />
         </el-form-item>
 
         <el-form-item label="Logo地址">
@@ -165,13 +195,18 @@
           />
         </el-form-item>
 
-        <el-form-item label="排序">
-          <el-input-number v-model="platformForm.sort" :min="0" />
-        </el-form-item>
-
-        <el-form-item label="是否显示">
-          <el-switch v-model="platformForm.isShow" />
-        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="排序">
+              <el-input-number v-model="platformForm.sort" :min="0" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="是否显示">
+              <el-switch v-model="platformForm.isShow" />
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
 
       <template #footer>
@@ -252,6 +287,8 @@ const editPlatformId = ref<number | null>(null)
 
 const platformForm = reactive({
   name: '',
+  shortName: '',
+  emoji: '📺',
   year: new Date().getFullYear(),
   airDate: '',
   airTime: '',
@@ -260,7 +297,9 @@ const platformForm = reactive({
   poster: '',
   description: '',
   sort: 0,
-  isShow: true
+  isShow: true,
+  tags: [] as string[],
+  tagsText: ''
 })
 
 const platformFormRules: FormRules = {
@@ -342,6 +381,8 @@ const handleCreatePlatform = () => {
   editPlatformId.value = null
   Object.assign(platformForm, {
     name: '',
+    shortName: '',
+    emoji: '📺',
     year: new Date().getFullYear(),
     airDate: '',
     airTime: '',
@@ -350,7 +391,9 @@ const handleCreatePlatform = () => {
     poster: '',
     description: '',
     sort: 0,
-    isShow: true
+    isShow: true,
+    tags: [],
+    tagsText: ''
   })
   platformDialogVisible.value = true
 }
@@ -359,8 +402,11 @@ const handleCreatePlatform = () => {
 const handleEditPlatform = (row: any) => {
   platformDialogTitle.value = '编辑平台'
   editPlatformId.value = row.id
+  const tags = Array.isArray(row.tags) ? row.tags : []
   Object.assign(platformForm, {
     name: row.name,
+    shortName: row.shortName || '',
+    emoji: row.emoji || '📺',
     year: row.year || new Date().getFullYear(),
     airDate: row.airDate || '',
     airTime: row.airTime || '',
@@ -369,7 +415,9 @@ const handleEditPlatform = (row: any) => {
     poster: row.poster || '',
     description: row.description || '',
     sort: row.sort || 0,
-    isShow: row.isShow !== undefined ? row.isShow : true
+    isShow: row.isShow !== undefined ? row.isShow : true,
+    tags: tags,
+    tagsText: tags.join(', ')
   })
   platformDialogVisible.value = true
 }
@@ -383,11 +431,21 @@ const handleSubmitPlatform = async () => {
 
     platformSubmitting.value = true
     try {
+      // 处理标签
+      const tags = platformForm.tagsText
+        ? platformForm.tagsText.split(',').map(t => t.trim()).filter(t => t)
+        : []
+
+      const submitData = {
+        ...platformForm,
+        tags
+      }
+
       if (editPlatformId.value) {
-        await galaService.updatePlatform(editPlatformId.value, platformForm)
+        await galaService.updatePlatform(editPlatformId.value, submitData)
         ElMessage.success('更新成功')
       } else {
-        await galaService.createPlatform(platformForm)
+        await galaService.createPlatform(submitData)
         ElMessage.success('创建成功')
       }
       platformDialogVisible.value = false

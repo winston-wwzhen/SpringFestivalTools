@@ -2,11 +2,85 @@
 const db = require('../database/db')
 
 class GalaService {
+  /**
+   * 安全解析JSON
+   */
+  safeParseJson(value, defaultValue = []) {
+    if (!value) return defaultValue
+
+    if (typeof value === 'string') {
+      try {
+        const parsed = JSON.parse(value)
+        return Array.isArray(parsed) ? parsed : defaultValue
+      } catch (e) {
+        return defaultValue
+      }
+    }
+
+    return defaultValue
+  }
+
+  /**
+   * 格式化播出时间
+   */
+  formatBroadcastTime(airDate, airTime) {
+    if (!airDate && !airTime) return ''
+
+    // 处理 Date 对象或字符串
+    let dateStr = ''
+    if (airDate) {
+      if (airDate instanceof Date) {
+        const year = airDate.getFullYear()
+        const month = String(airDate.getMonth() + 1).padStart(2, '0')
+        const day = String(airDate.getDate()).padStart(2, '0')
+        dateStr = `${year}年${month}月${day}日`
+      } else {
+        dateStr = airDate.replace(/-/g, '年') + '日'
+      }
+    }
+
+    const time = airTime || ''
+
+    if (dateStr && time) {
+      return `${dateStr} ${time}`
+    }
+    return dateStr || time
+  }
+
   // 获取春晚平台列表（小程序端，仅返回已审核数据）
   async getPlatforms() {
-    const sql = 'SELECT * FROM gala_platforms WHERE review_status = "approved" ORDER BY sort ASC'
+    const sql = 'SELECT * FROM gala_platforms WHERE review_status = "approved" AND is_show = 1 ORDER BY sort ASC'
     const rows = await db.query(sql)
-    return rows
+
+    // 统计每个平台的节目数量
+    const platformIds = rows.map(r => r.id)
+    const programCounts = {}
+
+    if (platformIds.length > 0) {
+      const placeholders = platformIds.map(() => '?').join(',')
+      const countSql = `
+        SELECT platform_id, COUNT(*) as count
+        FROM gala_programs
+        WHERE platform_id IN (${placeholders}) AND review_status = "approved"
+        GROUP BY platform_id
+      `
+      const countRows = await db.query(countSql, platformIds)
+      countRows.forEach(row => {
+        programCounts[row.platform_id] = row.count
+      })
+    }
+
+    // 格式化数据
+    return rows.map(row => ({
+      id: row.id,
+      name: row.name,
+      short_name: row.short_name || '',
+      emoji: row.emoji || '📺',
+      broadcast_time: this.formatBroadcastTime(row.air_date, row.air_time),
+      program_count: programCounts[row.id] || 0,
+      is_live: false, // TODO: 根据当前时间和播出时间判断
+      tags: this.safeParseJson(row.tags, [])
+    }))
   }
 
   // 获取节目单（小程序端，仅返回已审核数据）
@@ -21,10 +95,28 @@ class GalaService {
     // 获取平台信息（仅返回已审核的平台）
     const platformSql = 'SELECT * FROM gala_platforms WHERE id = ? AND review_status = "approved"'
     const platformRows = await db.query(platformSql, [platformId])
+    const platform = platformRows[0] || {}
+
+    // 格式化节目数据
+    const programs = rows.map(row => ({
+      id: row.id,
+      order: row.order_num,
+      name: row.title,
+      performers: row.performer,
+      type: row.type || '歌舞'
+    }))
+
+    // 格式化平台数据
+    const platformData = {
+      id: platform.id,
+      name: platform.name,
+      emoji: platform.emoji || '📺',
+      broadcast_time: this.formatBroadcastTime(platform.air_date, platform.air_time)
+    }
 
     return {
-      platform: platformRows[0] || {},
-      programs: rows
+      platform: platformData,
+      programs: programs
     }
   }
 

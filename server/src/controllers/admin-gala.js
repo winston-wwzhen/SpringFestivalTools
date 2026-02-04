@@ -9,6 +9,8 @@ function mapPlatformToCamelCase(item) {
   return {
     id: item.id,
     name: item.name,
+    shortName: item.short_name,
+    emoji: item.emoji,
     year: item.year,
     airDate: item.air_date,
     airTime: item.air_time,
@@ -18,6 +20,7 @@ function mapPlatformToCamelCase(item) {
     description: item.description,
     sort: item.sort,
     isShow: item.is_show,
+    tags: safeParseJson(item.tags, []),
     reviewStatus: item.review_status,
     sourceUrl: item.source_url,
     reviewedAt: item.reviewed_at,
@@ -25,6 +28,24 @@ function mapPlatformToCamelCase(item) {
     createdAt: item.created_at,
     updatedAt: item.updated_at
   }
+}
+
+/**
+ * 安全解析JSON
+ */
+function safeParseJson(value, defaultValue = []) {
+  if (!value) return defaultValue
+
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value)
+      return Array.isArray(parsed) ? parsed : defaultValue
+    } catch (e) {
+      return defaultValue
+    }
+  }
+
+  return defaultValue
 }
 
 /**
@@ -98,16 +119,18 @@ async function getPlatforms(req, res) {
  */
 async function createPlatform(req, res) {
   try {
-    const { name, year, airDate, airTime, channel, logo, poster, description, sort, isShow } = req.body
+    const { name, shortName, emoji, year, airDate, airTime, channel, logo, poster, description, sort, isShow, tags } = req.body
 
     if (!name || !year) {
       return res.error('缺少必要参数')
     }
 
+    const tagsJson = Array.isArray(tags) ? JSON.stringify(tags) : (tags || '[]')
+
     const result = await db.query(
-      `INSERT INTO gala_platforms (name, year, air_date, air_time, channel, logo, poster, description, sort, is_show, review_status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'approved')`,
-      [name, year, airDate || null, airTime || null, channel || null, logo || null, poster || null, description || null, sort || 0, isShow !== undefined ? (isShow ? 1 : 0) : 1]
+      `INSERT INTO gala_platforms (name, short_name, emoji, year, air_date, air_time, channel, logo, poster, description, sort, is_show, tags, review_status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'approved')`,
+      [name, shortName || null, emoji || null, year, airDate || null, airTime || null, channel || null, logo || null, poster || null, description || null, sort || 0, isShow !== undefined ? (isShow ? 1 : 0) : 1, tagsJson]
     )
 
     logger.info('创建春晚平台成功:', { id: result.insertId, name })
@@ -124,20 +147,22 @@ async function createPlatform(req, res) {
 async function updatePlatform(req, res) {
   try {
     const { id } = req.params
-    const { name, year, airDate, airTime, channel, logo, poster, description, sort, isShow } = req.body
+    const { name, shortName, emoji, year, airDate, airTime, channel, logo, poster, description, sort, isShow, tags } = req.body
 
     const [platform] = await db.query('SELECT * FROM gala_platforms WHERE id = ?', [id])
     if (!platform) {
       return res.error('平台不存在', -1, 404)
     }
 
+    const tagsJson = Array.isArray(tags) ? JSON.stringify(tags) : (tags || platform.tags || '[]')
+
     await db.query(
       `UPDATE gala_platforms
-       SET name = ?, year = ?, air_date = ?, air_time = ?, channel = ?, logo = ?, poster = ?,
-           description = ?, sort = ?, is_show = ?
+       SET name = ?, short_name = ?, emoji = ?, year = ?, air_date = ?, air_time = ?, channel = ?, logo = ?, poster = ?,
+           description = ?, sort = ?, is_show = ?, tags = ?
        WHERE id = ?`,
-      [name, year, airDate || null, airTime || null, channel || null, logo || null, poster || null,
-       description || null, sort || 0, isShow !== undefined ? (isShow ? 1 : 0) : platform.is_show, id]
+      [name, shortName || null, emoji || null, year, airDate || null, airTime || null, channel || null, logo || null, poster || null,
+       description || null, sort || 0, isShow !== undefined ? (isShow ? 1 : 0) : platform.is_show, tagsJson, id]
     )
 
     logger.info('更新春晚平台成功:', { id, name })
