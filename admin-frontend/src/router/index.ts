@@ -38,6 +38,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '春晚管理', requiresAuth: true }
       },
       {
+        path: 'content/gala/program/:platformId/:id',
+        name: 'ProgramDetail',
+        component: () => import('@/views/content/gala/ProgramDetail.vue'),
+        meta: { title: '节目详情', requiresAuth: true }
+      },
+      {
         path: 'crawler',
         name: 'Crawler',
         component: () => import('@/views/crawler/TaskList.vue'),

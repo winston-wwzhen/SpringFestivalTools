@@ -103,10 +103,9 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="200" fixed="right">
+          <el-table-column label="操作" width="120" fixed="right">
             <template #default="{ row }">
-              <el-button size="small" @click="handleEditProgram(row)">编辑</el-button>
-              <el-button size="small" type="danger" @click="handleDeleteProgram(row)">删除</el-button>
+              <el-button size="small" @click="handleEditProgram(row)">查看/编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -323,10 +322,10 @@
       </template>
     </el-dialog>
 
-    <!-- 节目编辑对话框 -->
+    <!-- 节目新建对话框 -->
     <el-dialog
       v-model="programDialogVisible"
-      :title="programDialogTitle"
+      title="新建节目"
       width="700px"
       @closed="handleProgramDialogClosed"
     >
@@ -439,9 +438,12 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { InfoFilled, Monitor, Picture, Link, User } from '@element-plus/icons-vue'
 import { galaService } from '@/api/gala'
+
+const router = useRouter()
 
 const activeTab = ref('platforms')
 const activePlatformTab = ref('basic')
@@ -494,12 +496,10 @@ const platformFormRules: FormRules = {
   year: [{ required: true, message: '请输入年份', trigger: 'blur' }]
 }
 
-// 节目表单
+// 节目表单（仅用于新建）
 const programDialogVisible = ref(false)
-const programDialogTitle = ref('新建节目')
 const programFormRef = ref<FormInstance>()
 const programSubmitting = ref(false)
-const editProgramId = ref<number | null>(null)
 
 const programForm = reactive({
   title: '',
@@ -713,8 +713,6 @@ const handleCreateProgram = () => {
     return
   }
 
-  programDialogTitle.value = '新建节目'
-  editProgramId.value = null
   Object.assign(programForm, {
     title: '',
     type: '',
@@ -729,25 +727,16 @@ const handleCreateProgram = () => {
   programDialogVisible.value = true
 }
 
-// 编辑节目
+// 编辑节目 - 跳转到详情页
 const handleEditProgram = (row: any) => {
-  programDialogTitle.value = '编辑节目'
-  editProgramId.value = row.id
-  Object.assign(programForm, {
-    title: row.title,
-    type: row.type || '',
-    performer: row.performer || row.performers || '',
-    performers: row.performer || row.performers || '',
-    airTime: row.airTime || row.startTime || '',
-    startTime: row.airTime || row.startTime || '',
-    orderNum: row.orderNum || 0,
-    duration: row.duration || 0,
-    description: row.description || ''
-  })
-  programDialogVisible.value = true
+  if (!selectedPlatformId.value) {
+    ElMessage.warning('请先选择平台')
+    return
+  }
+  router.push(`/content/gala/program/${selectedPlatformId.value}/${row.id}`)
 }
 
-// 提交节目表单
+// 提交新节目表单
 const handleSubmitProgram = async () => {
   if (!programFormRef.value) return
 
@@ -756,47 +745,24 @@ const handleSubmitProgram = async () => {
 
     programSubmitting.value = true
     try {
-      if (editProgramId.value) {
-        await galaService.updateProgram(editProgramId.value, programForm)
-        ElMessage.success('更新成功')
-      } else {
-        await galaService.createProgram({
-          ...programForm,
-          platform_id: selectedPlatformId.value!
-        })
-        ElMessage.success('创建成功')
-      }
+      await galaService.createProgram({
+        ...programForm,
+        platform_id: selectedPlatformId.value!
+      })
+      ElMessage.success('创建成功')
       programDialogVisible.value = false
       loadPrograms()
     } catch (error: any) {
-      ElMessage.error(error.message || '操作失败')
+      ElMessage.error(error.message || '创建失败')
     } finally {
       programSubmitting.value = false
     }
   })
 }
 
-// 删除节目
-const handleDeleteProgram = async (row: any) => {
-  try {
-    await ElMessageBox.confirm(`确定要删除节目 "${row.title}" 吗？`, '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    })
-
-    await galaService.deleteProgram(row.id)
-    ElMessage.success('删除成功')
-    loadPrograms()
-  } catch (error) {
-    // 用户取消
-  }
-}
-
 // 节目对话框关闭
 const handleProgramDialogClosed = () => {
   programFormRef.value?.resetFields()
-  editProgramId.value = null
 }
 
 onMounted(() => {
