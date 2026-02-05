@@ -356,6 +356,21 @@ const handleCreate = () => {
   dialogVisible.value = true
 }
 
+/**
+ * 格式化ISO时间字符串为Element Plus日期选择器格式
+ */
+const formatDateTimeForPicker = (isoString: string | null) => {
+  if (!isoString) return ''
+  const date = new Date(isoString)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+}
+
 // 编辑活动
 const handleEdit = (row: any) => {
   dialogTitle.value = '编辑活动'
@@ -373,8 +388,8 @@ const handleEdit = (row: any) => {
     rules: row.rules || '',
     stepsText: (row.steps || []).join('\n'),
     tipsText: (row.tips || []).join('\n'),
-    startTime: row.startTime,
-    endTime: row.endTime,
+    startTime: formatDateTimeForPicker(row.startTime),
+    endTime: formatDateTimeForPicker(row.endTime),
     status: row.status,
     isShow: row.isShow ?? 1
   })
