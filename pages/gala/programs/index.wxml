@@ -98,9 +98,9 @@
 
     <!-- 空状态 -->
     <view class="empty-state" wx:if="{{filteredPrograms.length === 0 && !loading}}">
-      <text class="empty-icon">🔍</text>
-      <text class="empty-text">{{activeFilter === 'fav' ? '还没有收藏的节目' : '未找到相关节目'}}</text>
-      <text class="empty-hint" wx:if="{{activeFilter !== 'fav'}}">试试搜索其他关键词</text>
+      <text class="empty-icon">📭</text>
+      <text class="empty-text">节目单未发布</text>
+      <text class="empty-hint">2026春晚节目单尚未公布</text>
     </view>
 
     <!-- 加载中 -->

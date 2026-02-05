@@ -56,23 +56,22 @@ Page({
       })
     } catch (error) {
       console.error('[GalaPrograms] Load data failed:', error)
-      // 使用模拟数据
-      const mockPrograms = this.getMockPrograms()
-
-      // 加载收藏状态
-      const favList = wx.getStorageSync('gala_fav_list') || {}
-      const programs = mockPrograms.map(p => ({
-        ...p,
-        isFav: !!favList[p.id]
-      }))
-
+      // 不再使用模拟数据，显示"未发布"状态
       this.setData({
         platform: this.getPlatformInfo(this.data.platformId),
-        programs,
-        filteredPrograms: this.applyFilter(programs, this.data.activeFilter),
-        favCount: Object.keys(favList).length,
+        programs: [],
+        filteredPrograms: [],
         loading: false
       })
+
+      // 如果是网络错误，提示用户
+      if (error.errMsg && error.errMsg.includes('request:fail')) {
+        wx.showToast({
+          title: '网络连接失败',
+          icon: 'none',
+          duration: 2000
+        })
+      }
     }
   },
 
