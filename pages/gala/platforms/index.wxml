@@ -24,8 +24,8 @@
           </view>
 
           <view class="program-count">
-            <text class="count-num">{{item.program_count}}</text>
-            <text class="count-text">个节目</text>
+            <text wx:if="{{item.program_count > 0}}" class="count-num">{{item.program_count}}</text>
+            <text class="count-text">{{item.program_count > 0 ? '个节目' : '节目单未公布'}}</text>
           </view>
 
           <view class="platform-tags" wx:if="{{item.tags && item.tags.length > 0}}">

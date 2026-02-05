@@ -10,7 +10,7 @@
 .lantern-left,
 .lantern-right {
   position: fixed;
-  top: 260rpx;
+  top: 320rpx;
   font-size: 48rpx;
   z-index: 10;
   animation: swing 3s ease-in-out infinite;
@@ -38,7 +38,7 @@
 
 /* 搜索栏 */
 .search-container {
-  padding: 180rpx 32rpx 16rpx;
+  padding: 240rpx 32rpx 16rpx;
 }
 
 .search-box {
