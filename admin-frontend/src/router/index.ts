@@ -44,6 +44,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '节目详情', requiresAuth: true }
       },
       {
+        path: 'content/gala/platform/:id',
+        name: 'PlatformDetail',
+        component: () => import('@/views/content/gala/PlatformDetail.vue'),
+        meta: { title: '平台详情', requiresAuth: true }
+      },
+      {
         path: 'crawler',
         name: 'Crawler',
         component: () => import('@/views/crawler/TaskList.vue'),

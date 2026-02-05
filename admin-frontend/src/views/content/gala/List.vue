@@ -3,17 +3,8 @@
     <h2 class="page-title">春晚管理</h2>
 
     <!-- Tab 切换 -->
-    <el-tabs v-model="activeTab" @tab-change="handleTabChange">
-      <el-tab-pane label="春晚平台" name="platforms">
-        <template #label>
-          <span>春晚平台</span>
-        </template>
-      </el-tab-pane>
-      <el-tab-pane label="节目单" name="programs">
-        <template #label>
-          <span>节目单</span>
-        </template>
-      </el-tab-pane>
+    <el-tabs v-model="activeTab">
+      <el-tab-pane label="春晚平台" name="platforms" />
     </el-tabs>
 
     <!-- 平台管理 -->
@@ -58,54 +49,8 @@
           <el-table-column prop="sort" label="排序" width="80" />
           <el-table-column label="操作" width="200" fixed="right">
             <template #default="{ row }">
-              <el-button size="small" @click="handleEditPlatform(row)">编辑</el-button>
+              <el-button size="small" @click="handleViewPlatform(row)">查看详情</el-button>
               <el-button size="small" type="danger" @click="handleDeletePlatform(row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </div>
-
-    <!-- 节目管理 -->
-    <div v-else>
-      <div class="search-form">
-        <div class="search-form-item">
-          <label>选择平台</label>
-          <el-select v-model="selectedPlatformId" placeholder="请选择平台" @change="loadPrograms" style="width: 200px">
-            <el-option
-              v-for="platform in approvedPlatforms"
-              :key="platform.id"
-              :label="platform.name"
-              :value="platform.id"
-            />
-          </el-select>
-        </div>
-      </div>
-
-      <div v-if="selectedPlatformId" class="actions-bar">
-        <el-button type="primary" @click="handleCreateProgram">
-          <el-icon><Plus /></el-icon>
-          新建节目
-        </el-button>
-      </div>
-
-      <div class="card">
-        <el-table v-loading="loading" :data="programs">
-          <el-table-column prop="orderNum" label="序号" width="80" />
-          <el-table-column prop="title" label="节目名称" min-width="200" />
-          <el-table-column prop="type" label="类型" width="120" />
-          <el-table-column prop="performers" label="表演者" min-width="200" show-overflow-tooltip />
-          <el-table-column prop="airTime" label="播出时间" width="100" />
-          <el-table-column prop="reviewStatus" label="审核状态" width="100">
-            <template #default="{ row }">
-              <el-tag :type="reviewStatusTypeMap[row.reviewStatus]" size="small">
-                {{ reviewStatusMap[row.reviewStatus] }}
-              </el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" width="120" fixed="right">
-            <template #default="{ row }">
-              <el-button size="small" @click="handleEditProgram(row)">查看/编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -321,126 +266,14 @@
         </el-button>
       </template>
     </el-dialog>
-
-    <!-- 节目新建对话框 -->
-    <el-dialog
-      v-model="programDialogVisible"
-      title="新建节目"
-      width="700px"
-      @closed="handleProgramDialogClosed"
-    >
-      <el-form
-        ref="programFormRef"
-        :model="programForm"
-        :rules="programFormRules"
-        label-width="90px"
-        class="program-form"
-      >
-        <el-row :gutter="20">
-          <el-col :span="14">
-            <el-form-item label="节目名称" prop="title">
-              <el-input v-model="programForm.title" placeholder="请输入节目名称" clearable />
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="节目序号">
-              <el-input-number v-model="programForm.orderNum" :min="0" controls-position="right" style="width: 100%" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="14">
-            <el-form-item label="节目类型">
-              <el-select
-                v-model="programForm.type"
-                placeholder="选择节目类型"
-                style="width: 100%"
-                filterable
-                allow-create
-                clearable
-              >
-                <el-option label="歌舞" value="歌舞" />
-                <el-option label="歌曲" value="歌曲" />
-                <el-option label="小品" value="小品" />
-                <el-option label="相声" value="相声" />
-                <el-option label="魔术" value="魔术" />
-                <el-option label="杂技" value="杂技" />
-                <el-option label="戏曲" value="戏曲" />
-                <el-option label="综艺" value="综艺" />
-                <el-option label="语言" value="语言" />
-                <el-option label="其他" value="其他" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="时长(秒)">
-              <el-input-number
-                v-model="programForm.duration"
-                :min="0"
-                :step="60"
-                controls-position="right"
-                style="width: 100%"
-                placeholder="秒"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-form-item label="表演者">
-          <el-input
-            v-model="programForm.performers"
-            placeholder="请输入表演者，多个用逗号分隔"
-            clearable
-          >
-            <template #prefix>
-              <el-icon><User /></el-icon>
-            </template>
-          </el-input>
-        </el-form-item>
-
-        <el-row :gutter="20">
-          <el-col :span="14">
-            <el-form-item label="播出时间">
-              <el-time-picker
-                v-model="programForm.airTime"
-                placeholder="选择播出时间"
-                style="width: 100%"
-                value-format="HH:mm:ss"
-                clearable
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-form-item label="节目描述">
-          <el-input
-            v-model="programForm.description"
-            type="textarea"
-            :rows="3"
-            placeholder="请输入节目描述（可选）"
-            show-word-limit
-            maxlength="200"
-            clearable
-          />
-        </el-form-item>
-      </el-form>
-
-      <template #footer>
-        <el-button @click="programDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmitProgram" :loading="programSubmitting">
-          确定
-        </el-button>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
-import { InfoFilled, Monitor, Picture, Link, User } from '@element-plus/icons-vue'
+import { InfoFilled, Monitor, Picture, Link } from '@element-plus/icons-vue'
 import { galaService } from '@/api/gala'
 
 const router = useRouter()
@@ -449,9 +282,6 @@ const activeTab = ref('platforms')
 const activePlatformTab = ref('basic')
 const loading = ref(false)
 const platforms = ref<any[]>([])
-const programs = ref<any[]>([])
-const approvedPlatforms = computed(() => platforms.value.filter(p => p.reviewStatus === 'approved'))
-const selectedPlatformId = ref<number | null>(null)
 
 // 预设标签
 const presetTags = [
@@ -494,39 +324,6 @@ const platformForm = reactive({
 const platformFormRules: FormRules = {
   name: [{ required: true, message: '请输入平台名称', trigger: 'blur' }],
   year: [{ required: true, message: '请输入年份', trigger: 'blur' }]
-}
-
-// 节目表单（仅用于新建）
-const programDialogVisible = ref(false)
-const programFormRef = ref<FormInstance>()
-const programSubmitting = ref(false)
-
-const programForm = reactive({
-  title: '',
-  type: '',
-  performer: '',
-  performers: '',
-  airTime: '',
-  startTime: '',
-  orderNum: 0,
-  duration: 0,
-  description: ''
-})
-
-const programFormRules: FormRules = {
-  title: [{ required: true, message: '请输入节目名称', trigger: 'blur' }]
-}
-
-const reviewStatusMap: Record<string, string> = {
-  pending: '待审核',
-  approved: '已通过',
-  rejected: '已拒绝'
-}
-
-const reviewStatusTypeMap: Record<string, any> = {
-  pending: 'warning',
-  approved: 'success',
-  rejected: 'danger'
 }
 
 /**
@@ -573,30 +370,6 @@ const loadPlatforms = async () => {
   }
 }
 
-// 加载节目列表
-const loadPrograms = async () => {
-  if (!selectedPlatformId.value) return
-
-  loading.value = true
-  try {
-    const result = await galaService.adminGetPrograms({
-      platformId: selectedPlatformId.value
-    })
-    programs.value = result.list || []
-  } catch (error) {
-    console.error('加载节目失败:', error)
-  } finally {
-    loading.value = false
-  }
-}
-
-// 切换 Tab
-const handleTabChange = () => {
-  if (activeTab.value === 'platforms') {
-    loadPlatforms()
-  }
-}
-
 // 创建平台
 const handleCreatePlatform = () => {
   platformDialogTitle.value = '新建平台'
@@ -622,30 +395,9 @@ const handleCreatePlatform = () => {
   platformDialogVisible.value = true
 }
 
-// 编辑平台
-const handleEditPlatform = (row: any) => {
-  platformDialogTitle.value = '编辑平台'
-  editPlatformId.value = row.id
-  activePlatformTab.value = 'basic'
-  const tags = Array.isArray(row.tags) ? row.tags : []
-  Object.assign(platformForm, {
-    name: row.name,
-    shortName: row.shortName || '',
-    emoji: row.emoji || '📺',
-    year: row.year || new Date().getFullYear(),
-    airDate: row.airDate || '',
-    airTime: row.airTime || '',
-    channel: row.channel || '',
-    logo: row.logo || '',
-    poster: row.poster || '',
-    description: row.description || '',
-    sort: row.sort || 0,
-    isShow: row.isShow !== undefined ? row.isShow : true,
-    tags: tags,
-    selectedTags: tags,
-    sourceUrl: row.sourceUrl || ''
-  })
-  platformDialogVisible.value = true
+// 查看平台详情 - 跳转到详情页
+const handleViewPlatform = (row: any) => {
+  router.push(`/content/gala/platform/${row.id}`)
 }
 
 // 提交平台表单
@@ -704,65 +456,6 @@ const handleDeletePlatform = async (row: any) => {
 const handlePlatformDialogClosed = () => {
   platformFormRef.value?.resetFields()
   editPlatformId.value = null
-}
-
-// 创建节目
-const handleCreateProgram = () => {
-  if (!selectedPlatformId.value) {
-    ElMessage.warning('请先选择平台')
-    return
-  }
-
-  Object.assign(programForm, {
-    title: '',
-    type: '',
-    performer: '',
-    performers: '',
-    airTime: '',
-    startTime: '',
-    orderNum: programs.value.length + 1,
-    duration: 0,
-    description: ''
-  })
-  programDialogVisible.value = true
-}
-
-// 编辑节目 - 跳转到详情页
-const handleEditProgram = (row: any) => {
-  if (!selectedPlatformId.value) {
-    ElMessage.warning('请先选择平台')
-    return
-  }
-  router.push(`/content/gala/program/${selectedPlatformId.value}/${row.id}`)
-}
-
-// 提交新节目表单
-const handleSubmitProgram = async () => {
-  if (!programFormRef.value) return
-
-  await programFormRef.value.validate(async (valid) => {
-    if (!valid) return
-
-    programSubmitting.value = true
-    try {
-      await galaService.createProgram({
-        ...programForm,
-        platform_id: selectedPlatformId.value!
-      })
-      ElMessage.success('创建成功')
-      programDialogVisible.value = false
-      loadPrograms()
-    } catch (error: any) {
-      ElMessage.error(error.message || '创建失败')
-    } finally {
-      programSubmitting.value = false
-    }
-  })
-}
-
-// 节目对话框关闭
-const handleProgramDialogClosed = () => {
-  programFormRef.value?.resetFields()
 }
 
 onMounted(() => {
