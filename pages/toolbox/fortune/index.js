@@ -40,7 +40,7 @@ Page({
       })
 
       // 处理结果，添加签文等级
-      const fortune = result || result.data
+      const fortune = result.data || result
       fortune.rank = this.getFortuneRank(fortune.overallStars)
       fortune.rankClass = this.getRankClass(fortune.overallStars)
 
