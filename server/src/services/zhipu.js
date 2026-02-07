@@ -141,8 +141,9 @@ ${keywordPrompt}
  * 调用智谱AI API
  * @param {Array} messages 消息列表
  * @param {boolean} useReasoning 是否使用推理模式（默认false）
+ * @param {number} maxTokens 最大token数（默认2048）
  */
-async function callZhipuAI(messages, useReasoning = false) {
+async function callZhipuAI(messages, useReasoning = false, maxTokens = 2048) {
   const apiKey = process.env.ZHIPU_API_KEY;
   const apiUrl = process.env.ZHIPU_API_URL;
 
@@ -157,7 +158,7 @@ async function callZhipuAI(messages, useReasoning = false) {
         model: 'glm-4.5-airx',
         messages: messages,
         temperature: 0.3,
-        max_tokens: 200,
+        max_tokens: maxTokens,
         top_p: 0.7
       },
       {
