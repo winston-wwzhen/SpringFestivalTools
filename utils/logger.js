@@ -1,8 +1,23 @@
 // utils/logger.js - 统一日志工具
-const app = getApp()
 
-// 开发环境检测
-const isDev = typeof getApp === 'function' && getApp().globalData?.isDev !== false
+/**
+ * 获取 App 实例（安全方式）
+ */
+function getAppSafely() {
+  try {
+    return getApp()
+  } catch (e) {
+    return null
+  }
+}
+
+/**
+ * 开发环境检测
+ */
+function isDevMode() {
+  const app = getAppSafely()
+  return app?.globalData?.isDev !== false
+}
 
 /**
  * 日志级别枚举
@@ -16,7 +31,7 @@ const LogLevel = {
 }
 
 // 当前日志级别（生产环境默认只显示 ERROR）
-let currentLevel = isDev ? LogLevel.DEBUG : LogLevel.ERROR
+let currentLevel = isDevMode() ? LogLevel.DEBUG : LogLevel.ERROR
 
 /**
  * 设置日志级别
