@@ -1,4 +1,6 @@
 // app.js
+const logger = require('./utils/logger')
+
 App({
   globalData: {
     // 服务器配置
@@ -8,12 +10,14 @@ App({
     // 春节日期（当年）
     springFestivalDate: null,
     // 倒计时
-    countdownDays: 0
+    countdownDays: 0,
+    // 是否开发环境
+    isDev: true
   },
 
   onLaunch() {
     // 小程序启动
-    console.log('春节攻略小程序启动')
+    logger.info('春节攻略小程序启动')
 
     // 获取系统信息
     const systemInfo = wx.getSystemInfoSync()
@@ -78,7 +82,7 @@ App({
 
       updateManager.onCheckForUpdate((res) => {
         if (res.hasUpdate) {
-          console.log('发现新版本')
+          logger.info('发现新版本')
         }
       })
 

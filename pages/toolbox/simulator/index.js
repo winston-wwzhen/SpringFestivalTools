@@ -35,6 +35,18 @@ Page({
     reviewList: []
   },
 
+  // 定时器ID集合
+  _timers: [],
+
+  /**
+   * 生命周期 - 页面卸载
+   */
+  onUnload() {
+    // 清理所有定时器
+    this._timers.forEach(timerId => clearTimeout(timerId))
+    this._timers = []
+  },
+
   onLoad() {
     // 随机选择一个剧本开始游戏
     this.startRandomGame()
@@ -91,14 +103,16 @@ Page({
 
     // 检查是否游戏结束
     if (this.data.currentMonth >= 12) {
-      setTimeout(() => {
+      const timerId = setTimeout(() => {
         this.endGame()
       }, 300)
+      this._timers.push(timerId)
     } else {
       // 进入下一个月
-      setTimeout(() => {
+      const timerId = setTimeout(() => {
         this.nextMonth()
       }, 300)
+      this._timers.push(timerId)
     }
   },
 

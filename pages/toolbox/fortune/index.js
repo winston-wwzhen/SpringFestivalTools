@@ -1,5 +1,6 @@
 // pages/toolbox/fortune/index.js
 const api = require('../../../api/index')
+const logger = require('../../../utils/logger')
 
 Page({
   data: {
@@ -52,7 +53,7 @@ Page({
 
       wx.vibrateShort()
     } catch (error) {
-      console.error('测算失败:', error)
+      logger.error('测算失败:', error)
       // 使用本地算法
       const localResult = this.calculateLocalFortune(this.data.keyword)
       this.setData({

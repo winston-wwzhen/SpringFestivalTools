@@ -11,25 +11,19 @@ Page({
     hasMore: true
   },
 
+  // 防抖定时器
+  _searchTimer: null,
+
   onLoad(options) {
-    console.log('[RedpackList] onLoad triggered')
     this.loadData()
   },
 
-  onShow() {
-    console.log('[RedpackList] onShow triggered')
-  },
-
-  onReady() {
-    console.log('[RedpackList] onReady triggered')
-  },
-
-  onHide() {
-    console.log('[RedpackList] onHide triggered')
-  },
-
   onUnload() {
-    console.log('[RedpackList] onUnload triggered')
+    // 清理防抖定时器
+    if (this._searchTimer) {
+      clearTimeout(this._searchTimer)
+      this._searchTimer = null
+    }
   },
 
   /**
@@ -372,18 +366,41 @@ Page({
   },
 
   /**
-   * 搜索输入
+   * 搜索输入（带防抖）
    */
   onSearchInput(e) {
-    this.setData({
-      searchKeyword: e.detail.value
-    })
+    const keyword = e.detail.value
+    this.setData({ searchKeyword: keyword })
+
+    // 清除之前的定时器
+    if (this._searchTimer) {
+      clearTimeout(this._searchTimer)
+    }
+
+    // 如果输入为空，立即加载
+    if (!keyword.trim()) {
+      this.setData({ page: 1, hasMore: true })
+      this.loadData()
+      return
+    }
+
+    // 防抖 500ms 后执行搜索
+    this._searchTimer = setTimeout(() => {
+      this.setData({ page: 1, hasMore: true })
+      this.loadData()
+    }, 500)
   },
 
   /**
-   * 搜索
+   * 搜索（确认键触发）
    */
   onSearch() {
+    // 清除防抖定时器
+    if (this._searchTimer) {
+      clearTimeout(this._searchTimer)
+      this._searchTimer = null
+    }
+
     this.setData({
       page: 1,
       hasMore: true

@@ -1,5 +1,6 @@
 // pages/kinship/index/index.js
 const api = require('../../../api/index')
+const logger = require('../../../utils/logger')
 const app = getApp()
 
 Page({
@@ -10,7 +11,7 @@ Page({
   },
 
   onLoad(options) {
-    console.log('[KinshipIndex] onLoad, options:', options)
+    logger.debug('[KinshipIndex] onLoad, options:', options)
     if (options.keyword) {
       this.setData({ input: options.keyword })
     }
@@ -40,10 +41,10 @@ Page({
     this.setData({ loading: true })
 
     try {
-      console.log('[KinshipIndex] Calling AI API with input:', input)
+      logger.debug('[KinshipIndex] Calling AI API with input:', input)
 
       const res = await api.kinship.calculate({ input })
-      console.log('[KinshipIndex] AI response:', res)
+      logger.debug('[KinshipIndex] AI response:', res)
 
       if (res.success && res.data) {
         this.setData({
@@ -59,7 +60,7 @@ Page({
         throw new Error(res.message || '计算失败')
       }
     } catch (error) {
-      console.error('[KinshipIndex] Calculate error:', error)
+      logger.error('[KinshipIndex] Calculate error:', error)
 
       this.setData({
         result: {
