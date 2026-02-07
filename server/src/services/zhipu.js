@@ -139,8 +139,10 @@ ${keywordPrompt}
 
 /**
  * 调用智谱AI API
+ * @param {Array} messages 消息列表
+ * @param {boolean} useReasoning 是否使用推理模式（默认false）
  */
-async function callZhipuAI(messages) {
+async function callZhipuAI(messages, useReasoning = false) {
   const apiKey = process.env.ZHIPU_API_KEY;
   const apiUrl = process.env.ZHIPU_API_URL;
 
@@ -169,8 +171,12 @@ async function callZhipuAI(messages) {
 
     if (response.data && response.data.choices && response.data.choices[0]) {
       const choice = response.data.choices[0];
-      // GLM-4.5-airx 推理模型使用 reasoning_content 字段
-      const content = choice.message.reasoning_content || choice.message.content;
+      // 根据需要决定使用推理内容还是最终输出
+      // useReasoning=true: 使用reasoning_content（亲戚称呼计算需要推理过程）
+      // useReasoning=false: 使用content（祝福语、运势等需要最终结果）
+      const content = useReasoning
+        ? (choice.message.reasoning_content || choice.message.content)
+        : (choice.message.content || choice.message.reasoning_content);
       return content ? content.trim() : '';
     }
 
@@ -202,7 +208,7 @@ async function calculateKinship(input) {
   ];
 
   try {
-    const result = await callZhipuAI(messages);
+    const result = await callZhipuAI(messages, true);
     logger.info('Kinship calculation result:', { input, result });
 
     // 后处理：提取最终的称呼（去除推理过程）
@@ -381,17 +387,23 @@ async function calculateFortune(keyword) {
 
   try {
     const result = await callZhipuAI(messages);
-    logger.info('Fortune calculation result:', { keyword, result });
+    logger.info('Fortune AI result:', { keyword, resultLength: result?.length, resultPreview: result?.substring(0, 200) });
 
     // 尝试解析JSON
     let fortune;
     try {
+      // 检查结果是否为空
+      if (!result || result.trim().length === 0) {
+        throw new Error('AI返回空内容');
+      }
+
       // 提取JSON部分
       const jsonMatch = result.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         fortune = JSON.parse(jsonMatch[0]);
       } else {
-        throw new Error('No JSON found in response');
+        logger.error('No JSON found in AI response:', result);
+        throw new Error('AI返回内容不包含JSON');
       }
 
       // 验证并修正数据
@@ -401,13 +413,14 @@ async function calculateFortune(keyword) {
       fortune.love = Math.min(95, Math.max(60, fortune.love || 75));
       fortune.health = Math.min(95, Math.max(60, fortune.health || 75));
 
+      logger.info('Fortune parsed successfully:', fortune);
       return fortune;
     } catch (parseError) {
-      logger.error('Fortune JSON parse error:', parseError);
-      throw new Error('运势解析失败');
+      logger.error('Fortune JSON parse error:', { message: parseError.message, result });
+      throw new Error('运势解析失败: ' + parseError.message);
     }
   } catch (error) {
-    logger.error('Fortune calculation failed:', error);
+    logger.error('Fortune calculation failed:', { message: error.message, stack: error.stack });
     throw error;
   }
 }

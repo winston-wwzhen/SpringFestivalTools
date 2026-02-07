@@ -90,29 +90,29 @@ Page({
    * 根据称呼获取图标
    */
   getIconByRelation(name) {
-    if (!name) return '👤'
+    // 使用非人头像的春节主题图标
+    if (!name) return '🏮'
 
+    // 长辈 - 灯笼
     if (name.includes('爷') || name.includes('公') || name.includes('父') ||
         name.includes('舅') || name.includes('伯') || name.includes('叔') ||
-        name.includes('哥') || name.includes('兄')) {
-      return '👴'
+        name.includes('奶') || name.includes('婆') || name.includes('母') ||
+        name.includes('妈') || name.includes('婶') || name.includes('姨')) {
+      return '🏮'
     }
 
-    if (name.includes('奶') || name.includes('婆') || name.includes('母') ||
-        name.includes('妈') || name.includes('婶') || name.includes('姨') ||
-        name.includes('姐') || name.includes('妹')) {
-      return '👵'
+    // 同辈 - 烟花
+    if (name.includes('哥') || name.includes('兄') || name.includes('姐') || name.includes('妹')) {
+      return '🎆'
     }
 
-    if (name.includes('子') || name.includes('孙') || name.includes('弟')) {
-      return '👦'
+    // 晚辈 - 红包
+    if (name.includes('子') || name.includes('孙') || name.includes('弟') ||
+        name.includes('女') || name.includes('媳')) {
+      return '🧧'
     }
 
-    if (name.includes('女') || name.includes('媳')) {
-      return '👧'
-    }
-
-    return '👨‍👩‍👧‍👦'
+    return '✨'
   },
 
   /**
