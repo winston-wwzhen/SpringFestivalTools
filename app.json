@@ -1,6 +1,9 @@
 {
   "usingComponents": {
-    "nav-bar": "/components/nav-bar/nav-bar"
+    "nav-bar": "/components/nav-bar/nav-bar",
+    "skeleton": "/components/skeleton/skeleton",
+    "empty-state": "/components/empty-state/empty-state",
+    "error-state": "/components/error-state/error-state"
   },
   "pages": [
     "pages/index/index",
@@ -8,12 +11,26 @@
     "pages/redpack/detail/index",
     "pages/gala/platforms/index",
     "pages/gala/programs/index",
-    "pages/toolbox/index/index",
-    "pages/toolbox/kinship/index",
-    "pages/toolbox/fortune/index",
-    "pages/toolbox/blessing/index",
-    "pages/toolbox/simulator/index"
+    "pages/toolbox/index/index"
   ],
+  "subpackages": [
+    {
+      "root": "pages-toolbox-sub",
+      "name": "toolbox-sub",
+      "pages": [
+        "pages/toolbox/kinship/index",
+        "pages/toolbox/fortune/index",
+        "pages/toolbox/blessing/index",
+        "pages/toolbox/simulator/index"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/toolbox/index/index": {
+      "network": "all",
+      "packages": ["toolbox-sub"]
+    }
+  },
   "window": {
     "navigationStyle": "custom",
     "backgroundColor": "#F5F7FA",

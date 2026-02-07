@@ -46,3 +46,6 @@ Thumbs.db
 
 # 图片源文件（不需要打包）
 images/raw/
+
+# Claude
+.claude/

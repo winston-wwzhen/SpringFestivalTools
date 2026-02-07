@@ -7,7 +7,7 @@ Page({
    */
   goToKinship() {
     wx.navigateTo({
-      url: '/pages/toolbox/kinship/index'
+      url: '/pages-toolbox-sub/pages/toolbox/kinship/index'
     })
   },
 
@@ -16,7 +16,7 @@ Page({
    */
   goToFortune() {
     wx.navigateTo({
-      url: '/pages/toolbox/fortune/index'
+      url: '/pages-toolbox-sub/pages/toolbox/fortune/index'
     })
   },
 
@@ -25,7 +25,7 @@ Page({
    */
   goToBlessing() {
     wx.navigateTo({
-      url: '/pages/toolbox/blessing/index'
+      url: '/pages-toolbox-sub/pages/toolbox/blessing/index'
     })
   },
 
@@ -34,7 +34,7 @@ Page({
    */
   goToSimulator() {
     wx.navigateTo({
-      url: '/pages/toolbox/simulator/index'
+      url: '/pages-toolbox-sub/pages/toolbox/simulator/index'
     })
   },
 

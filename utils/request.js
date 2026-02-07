@@ -1,15 +1,16 @@
 // utils/request.js - 网络请求封装
 const app = getApp()
+const config = require('../config/index')
 
 // 请求缓存存储
 const cache = new Map()
 // 进行中的请求存储
 const pendingRequests = new Map()
+// 请求任务存储（用于取消）
+const requestTasks = new Map()
 // 缓存配置
 const CACHE_CONFIG = {
-  // 默认缓存时间 5分钟（单位：毫秒）
-  defaultTTL: 5 * 60 * 1000,
-  // 最大缓存数量
+  defaultTTL: config.CONSTANTS.CACHE_TTL.SHORT,
   maxSize: 50
 }
 
@@ -60,13 +61,48 @@ function clearCache() {
 }
 
 /**
+ * 取消指定请求
+ * @param {String} requestId 请求ID
+ */
+function abortRequest(requestId) {
+  const task = requestTasks.get(requestId)
+  if (task) {
+    task.abort()
+    requestTasks.delete(requestId)
+  }
+}
+
+/**
+ * 取消所有请求
+ */
+function abortAllRequests() {
+  requestTasks.forEach(task => {
+    try {
+      task.abort()
+    } catch (e) {
+      // 忽略已完成的请求
+    }
+  })
+  requestTasks.clear()
+}
+
+/**
  * 统一请求方法
  * @param {Object} options 请求配置
  * @returns {Promise}
  */
 function request(options) {
   return new Promise((resolve, reject) => {
-    const { url, method = 'GET', data = {}, header = {}, timeout = 30000, useCache = false, cacheTTL } = options
+    const { 
+      url, 
+      method = 'GET', 
+      data = {}, 
+      header = {}, 
+      timeout = config.CONSTANTS.TIMEOUT.DEFAULT, 
+      useCache = false, 
+      cacheTTL,
+      requestId  // 用于取消请求的唯一标识
+    } = options
 
     // 只对 GET 请求启用缓存
     const enableCache = useCache && method === 'GET'
@@ -160,8 +196,13 @@ function request(options) {
         }
       },
       fail: (err) => {
-        showError('网络错误，请检查网络连接')
-        reject(err)
+        // 检查是否是主动取消的请求
+        if (err.errMsg && err.errMsg.includes('abort')) {
+          reject({ cancelled: true, message: '请求已取消' })
+        } else {
+          showError('网络错误，请检查网络连接')
+          reject(err)
+        }
 
         if (enableCache) {
           const pendingKey = getCacheKey(url, method, data)
@@ -169,8 +210,19 @@ function request(options) {
           pending.forEach(({ reject: r }) => r(err))
           pendingRequests.delete(pendingKey)
         }
+      },
+      complete: () => {
+        // 请求完成，从任务列表中移除
+        if (requestId) {
+          requestTasks.delete(requestId)
+        }
       }
     })
+
+    // 保存请求任务以便取消
+    if (requestId) {
+      requestTasks.set(requestId, requestTask)
+    }
   })
 }
 
@@ -224,6 +276,14 @@ function del(url, data = {}) {
  * 显示错误提示
  */
 function showError(message) {
+  // 避免连续弹出错误提示
+  const lastErrorTime = wx.getStorageSync('lastErrorTime') || 0
+  const now = Date.now()
+  if (now - lastErrorTime < 2000) {
+    return
+  }
+  wx.setStorageSync('lastErrorTime', now)
+  
   wx.showToast({
     title: message,
     icon: 'none',
@@ -251,5 +311,7 @@ module.exports = {
   post,
   put,
   delete: del,
-  clearCache
+  clearCache,
+  abortRequest,
+  abortAllRequests
 }

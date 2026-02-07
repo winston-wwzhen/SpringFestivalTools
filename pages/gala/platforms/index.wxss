@@ -1,4 +1,4 @@
-/* pages-gala/platforms/index.wxss */
+/* pages/gala/platforms/index.wxss */
 .container {
   min-height: 100vh;
   background: linear-gradient(to bottom, #D32F2F 0, #D32F2F 220rpx, #FFF8E7 220rpx);

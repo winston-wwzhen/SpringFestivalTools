@@ -1,0 +1,46 @@
+/* components/error-state/error-state.wxss */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 40rpx;
+}
+
+.error-state__icon {
+  font-size: 120rpx;
+  margin-bottom: 32rpx;
+}
+
+.error-state__title {
+  font-size: 32rpx;
+  color: var(--text-secondary, #495057);
+  margin-bottom: 16rpx;
+  font-weight: 500;
+}
+
+.error-state__desc {
+  font-size: 28rpx;
+  color: var(--text-light, #ADB5BD);
+  text-align: center;
+  margin-bottom: 40rpx;
+  line-height: 1.5;
+}
+
+.error-state__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 48rpx;
+  background: linear-gradient(135deg, var(--primary-color, #D32F2F), var(--primary-dark, #B71C1C));
+  color: #fff;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  box-shadow: 0 8rpx 20rpx rgba(211, 47, 47, 0.3);
+}
+
+.error-state__btn:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}

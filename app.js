@@ -1,10 +1,11 @@
 // app.js
 const logger = require('./utils/logger')
+const config = require('./config/index')
 
 App({
   globalData: {
-    // 服务器配置
-    serverUrl: 'http://49.234.120.81/api',
+    // 服务器配置（从配置文件读取）
+    serverUrl: config.serverUrl,
     // 用户信息
     userInfo: null,
     // 春节日期（当年）
@@ -12,7 +13,10 @@ App({
     // 倒计时
     countdownDays: 0,
     // 是否开发环境
-    isDev: true
+    isDev: config.isDev,
+    // 网络状态
+    networkType: 'unknown',
+    isConnected: true
   },
 
   onLaunch() {
@@ -31,6 +35,9 @@ App({
 
     // 初始化用户信息
     this.initUserInfo()
+
+    // 监听网络状态
+    this.initNetworkListener()
   },
 
   onShow() {
@@ -65,12 +72,9 @@ App({
    * 获取春节日期
    */
   getSpringFestivalDate(year) {
-    // 2025年和2026年春节日期
-    const dates = {
-      2025: '2025-01-29',
-      2026: '2026-02-17'
-    }
-    return new Date(dates[year] || '2026-02-17')
+    // 从配置文件读取春节日期
+    const dateStr = config.SPRING_FESTIVAL_DATES[year] || config.SPRING_FESTIVAL_DATES[2026]
+    return new Date(dateStr)
   },
 
   /**
@@ -119,7 +123,37 @@ App({
   },
 
   /**
-   * 统一的网络请求方法
+   * 初始化网络状态监听
+   */
+  initNetworkListener() {
+    // 获取当前网络状态
+    wx.getNetworkType({
+      success: (res) => {
+        this.globalData.networkType = res.networkType
+        logger.info('当前网络类型:', res.networkType)
+      }
+    })
+
+    // 监听网络状态变化
+    wx.onNetworkStatusChange((res) => {
+      this.globalData.isConnected = res.isConnected
+      this.globalData.networkType = res.networkType
+
+      if (!res.isConnected) {
+        wx.showToast({
+          title: '网络已断开，请检查网络设置',
+          icon: 'none',
+          duration: 2000
+        })
+        logger.warn('网络已断开')
+      } else {
+        logger.info('网络已恢复，类型:', res.networkType)
+      }
+    })
+  },
+
+  /**
+   * 统一的网络请求方法（兼容旧代码）
    */
   request(options) {
     const { url, method = 'GET', data = {}, success, fail, complete } = options

@@ -1,0 +1,148 @@
+/* components/skeleton/skeleton.wxss */
+.skeleton {
+  --skeleton-bg: #f0f0f0;
+  --skeleton-highlight: #e0e0e0;
+}
+
+/* 通用骨架线条 */
+.skeleton-line {
+  height: 16rpx;
+  background: var(--skeleton-bg);
+  border-radius: 8rpx;
+  margin-bottom: 16rpx;
+}
+
+.skeleton-line--short {
+  width: 40%;
+}
+
+.skeleton-line--medium {
+  width: 70%;
+}
+
+/* 卡片骨架 */
+.skeleton-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 32rpx;
+  margin: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.skeleton-card__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.skeleton-card__avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: var(--skeleton-bg);
+  margin-right: 24rpx;
+}
+
+.skeleton-card__info {
+  flex: 1;
+}
+
+.skeleton-card__content .skeleton-line:last-child {
+  margin-bottom: 0;
+}
+
+/* 列表骨架 */
+.skeleton-list__item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  background: #fff;
+  margin-bottom: 2rpx;
+}
+
+.skeleton-list__icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 16rpx;
+  background: var(--skeleton-bg);
+  margin-right: 24rpx;
+}
+
+.skeleton-list__content {
+  flex: 1;
+}
+
+.skeleton-list__content .skeleton-line:last-child {
+  margin-bottom: 0;
+  width: 50%;
+}
+
+/* 网格骨架 */
+.skeleton-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 24rpx;
+}
+
+.skeleton-grid__item {
+  width: calc(25% - 36rpx);
+  margin: 18rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.skeleton-grid__image {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: var(--skeleton-bg);
+  margin-bottom: 16rpx;
+}
+
+/* 文章骨架 */
+.skeleton-article {
+  padding: 32rpx;
+  background: #fff;
+}
+
+.skeleton-article__title {
+  height: 48rpx;
+  background: var(--skeleton-bg);
+  border-radius: 8rpx;
+  margin-bottom: 24rpx;
+}
+
+.skeleton-article__meta {
+  margin-bottom: 32rpx;
+}
+
+.skeleton-article__content .skeleton-line {
+  height: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 动画效果 */
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton--animate .skeleton-line,
+.skeleton--animate .skeleton-card__avatar,
+.skeleton--animate .skeleton-list__icon,
+.skeleton--animate .skeleton-grid__image,
+.skeleton--animate .skeleton-article__title {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-bg) 25%,
+    var(--skeleton-highlight) 50%,
+    var(--skeleton-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}

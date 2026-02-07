@@ -1,5 +1,6 @@
 // pages/gala/programs/index.js
 const api = require('../../../api/index')
+const logger = require('../../../utils/logger')
 
 Page({
   data: {
@@ -14,7 +15,7 @@ Page({
   },
 
   onLoad(options) {
-    console.log('[GalaPrograms] onLoad, platformId:', options.platformId)
+    logger.info('[GalaPrograms] onLoad, platformId:', options.platformId)
     const platformId = options.platformId || '1'
 
     this.setData({ platformId })
@@ -36,7 +37,7 @@ Page({
 
       // 获取节目列表
       const res = await api.gala.getPrograms(this.data.platformId)
-      console.log('[GalaPrograms] Programs loaded:', res)
+      logger.info('[GalaPrograms] Programs loaded:', res)
 
       let programs = res.data || []
 
@@ -55,7 +56,7 @@ Page({
         loading: false
       })
     } catch (error) {
-      console.error('[GalaPrograms] Load data failed:', error)
+      logger.error('[GalaPrograms] Load data failed:', error)
       // 不再使用模拟数据，显示"未发布"状态
       this.setData({
         platform: this.getPlatformInfo(this.data.platformId),
@@ -231,7 +232,7 @@ Page({
 
     if (program) {
       // 可以显示节目详情或执行其他操作
-      console.log('[GalaPrograms] Program clicked:', program)
+      logger.info('[GalaPrograms] Program clicked:', program)
     }
   },
 

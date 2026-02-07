@@ -1,0 +1,56 @@
+<!--components/skeleton/skeleton.wxml-->
+<view class="skeleton {{animate ? 'skeleton--animate' : ''}}">
+  <!-- 卡片骨架屏 -->
+  <block wx:if="{{type === 'card'}}">
+    <view class="skeleton-card">
+      <view class="skeleton-card__header">
+        <view class="skeleton-card__avatar"></view>
+        <view class="skeleton-card__info">
+          <view class="skeleton-line skeleton-line--short"></view>
+          <view class="skeleton-line skeleton-line--medium"></view>
+        </view>
+      </view>
+      <view class="skeleton-card__content">
+        <view class="skeleton-line"></view>
+        <view class="skeleton-line"></view>
+        <view class="skeleton-line skeleton-line--medium"></view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 列表骨架屏 -->
+  <block wx:if="{{type === 'list'}}">
+    <view class="skeleton-list">
+      <view class="skeleton-list__item" wx:for="{{rows}}" wx:key="index">
+        <view class="skeleton-list__icon"></view>
+        <view class="skeleton-list__content">
+          <view class="skeleton-line"></view>
+          <view class="skeleton-line skeleton-line--medium"></view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 网格骨架屏 -->
+  <block wx:if="{{type === 'grid'}}">
+    <view class="skeleton-grid">
+      <view class="skeleton-grid__item" wx:for="{{rows}}" wx:key="index">
+        <view class="skeleton-grid__image"></view>
+        <view class="skeleton-line skeleton-line--short"></view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 文章骨架屏 -->
+  <block wx:if="{{type === 'article'}}">
+    <view class="skeleton-article">
+      <view class="skeleton-article__title"></view>
+      <view class="skeleton-article__meta">
+        <view class="skeleton-line skeleton-line--short"></view>
+      </view>
+      <view class="skeleton-article__content">
+        <view class="skeleton-line" wx:for="{{rows}}" wx:key="index"></view>
+      </view>
+    </view>
+  </block>
+</view>

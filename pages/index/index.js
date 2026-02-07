@@ -1,6 +1,7 @@
 // pages/index/index.js
 const app = getApp()
 const api = require('../../api/index')
+const logger = require('../../utils/logger')
 
 Page({
   data: {
@@ -71,7 +72,7 @@ Page({
         this.loadDailyItems()
       ])
     } catch (error) {
-      console.error('加载数据失败:', error)
+      logger.error('加载首页数据失败:', error)
     }
   },
 
@@ -91,7 +92,7 @@ Page({
         galaCount: galaRes.count || 17
       })
     } catch (error) {
-      console.error('加载统计数据失败:', error)
+      logger.warn('加载统计数据失败:', error.message)
       // 使用默认值
       this.setData({
         redpackCount: 6,
@@ -106,12 +107,17 @@ Page({
   async loadDailyItems() {
     try {
       const res = await api.common.getDailyRecommend()
-      this.setData({
-        dailyItems: res.data || []
-      })
+      if (res.data && res.data.length > 0) {
+        this.setData({
+          dailyItems: res.data
+        })
+      } else {
+        this.setData({
+          dailyItems: this.getDefaultDailyItems()
+        })
+      }
     } catch (error) {
-      console.error('加载精选失败:', error)
-      // 使用默认数据
+      logger.warn('加载精选失败，使用默认数据:', error.message)
       this.setData({
         dailyItems: this.getDefaultDailyItems()
       })
@@ -157,15 +163,8 @@ Page({
    * 跳转到红包攻略
    */
   goToRedpack() {
-    console.log('[Index] goToRedpack called')
     wx.switchTab({
-      url: '/pages/redpack/list/index',
-      success: () => {
-        console.log('[Index] switchTab redpack success')
-      },
-      fail: (err) => {
-        console.error('[Index] switchTab redpack failed:', err)
-      }
+      url: '/pages/redpack/list/index'
     })
   },
 
@@ -173,15 +172,8 @@ Page({
    * 跳转到春晚节目单
    */
   goToGala() {
-    console.log('[Index] goToGala called')
     wx.switchTab({
-      url: '/pages/gala/platforms/index',
-      success: () => {
-        console.log('[Index] switchTab gala success')
-      },
-      fail: (err) => {
-        console.error('[Index] switchTab gala failed:', err)
-      }
+      url: '/pages/gala/platforms/index'
     })
   },
 
@@ -189,15 +181,8 @@ Page({
    * 跳转到百宝箱
    */
   goToToolbox() {
-    console.log('[Index] goToToolbox called')
     wx.switchTab({
-      url: '/pages/toolbox/index/index',
-      success: () => {
-        console.log('[Index] switchTab toolbox success')
-      },
-      fail: (err) => {
-        console.error('[Index] switchTab toolbox failed:', err)
-      }
+      url: '/pages/toolbox/index/index'
     })
   },
 
@@ -206,7 +191,7 @@ Page({
    */
   goToSimulator() {
     wx.navigateTo({
-      url: '/pages/toolbox/simulator/index'
+      url: '/pages-toolbox-sub/pages/toolbox/simulator/index'
     })
   },
 

@@ -1,0 +1,9 @@
+<!--components/error-state/error-state.wxml-->
+<view class="error-state">
+  <view class="error-state__icon">{{icon}}</view>
+  <text class="error-state__title">{{title || '加载失败'}}</text>
+  <text class="error-state__desc" wx:if="{{description}}">{{description}}</text>
+  <view class="error-state__action">
+    <view class="error-state__btn" bindtap="onRetry">{{buttonText || '重新加载'}}</view>
+  </view>
+</view>

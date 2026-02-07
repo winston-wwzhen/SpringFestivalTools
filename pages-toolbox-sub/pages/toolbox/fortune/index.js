@@ -1,6 +1,6 @@
 // pages/toolbox/fortune/index.js
-const api = require('../../../api/index')
-const logger = require('../../../utils/logger')
+const api = require('../../../../api/index')
+const logger = require('../../../../utils/logger')
 
 Page({
   data: {

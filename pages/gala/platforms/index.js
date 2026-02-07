@@ -1,5 +1,9 @@
 // pages/gala/platforms/index.js
 const api = require('../../../api/index')
+const logger = require('../../../utils/logger')
+
+// Mock 数据缓存
+let MOCK_DATA_CACHE = null
 
 Page({
   data: {
@@ -8,24 +12,7 @@ Page({
   },
 
   onLoad(options) {
-    console.log('[GalaPlatforms] onLoad triggered')
     this.loadData()
-  },
-
-  onShow() {
-    console.log('[GalaPlatforms] onShow triggered')
-  },
-
-  onReady() {
-    console.log('[GalaPlatforms] onReady triggered')
-  },
-
-  onHide() {
-    console.log('[GalaPlatforms] onHide triggered')
-  },
-
-  onUnload() {
-    console.log('[GalaPlatforms] onUnload triggered')
   },
 
   /**
@@ -46,19 +33,28 @@ Page({
     this.setData({ loading: true })
 
     try {
-      console.log('[GalaPlatforms] Loading platforms')
       const res = await api.gala.getPlatforms()
-      console.log('[GalaPlatforms] Data loaded:', res)
+      
+      let list = []
+      if (res.data && res.data.length > 0) {
+        list = res.data
+      }
+
+      // 如果API返回空数据，使用 Mock 数据
+      if (list.length === 0) {
+        list = this.getMockData()
+      }
 
       this.setData({
-        list: res.data || [],
+        list,
         loading: false
       })
     } catch (error) {
-      console.error('[GalaPlatforms] Load data failed:', error)
-      // 使用模拟数据
+      logger.warn('加载春晚平台失败，使用 Mock 数据:', error.message)
+      // API 失败时使用 Mock 数据
+      const list = this.getMockData()
       this.setData({
-        list: this.getMockData(),
+        list,
         loading: false
       })
     }
@@ -69,7 +65,6 @@ Page({
    */
   goToPrograms(e) {
     const id = e.currentTarget.dataset.id
-    console.log('[GalaPlatforms] Go to programs, platformId:', id)
     wx.navigateTo({
       url: `/pages/gala/programs/index?platformId=${id}`
     })
@@ -89,7 +84,11 @@ Page({
    * 模拟数据
    */
   getMockData() {
-    return [
+    if (MOCK_DATA_CACHE) {
+      return MOCK_DATA_CACHE
+    }
+
+    MOCK_DATA_CACHE = [
       {
         id: 1,
         name: '中央广播电视总台',
@@ -261,5 +260,7 @@ Page({
         tags: ['卫视', '科技', '创新']
       }
     ]
+
+    return MOCK_DATA_CACHE
   }
 })

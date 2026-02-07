@@ -1,5 +1,5 @@
 // pages/kinship/index/index.js
-const api = require('../../../api/index')
+const api = require('../../../../api/index')
 const app = getApp()
 
 Page({

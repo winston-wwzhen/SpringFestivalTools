@@ -1,5 +1,6 @@
-<!--pages-gala/platforms/index.wxml-->
+<!--pages/gala/platforms/index.wxml-->
 <view class="container">
+  <!-- 自定义导航栏 -->
   <nav-bar title="春晚节目单" bgColor="#D32F2F"></nav-bar>
 
   <!-- 装饰灯笼 -->
@@ -8,37 +9,40 @@
 
   <!-- 平台列表 -->
   <view class="platform-list">
-    <block wx:if="{{list.length > 0}}">
-      <view class="platform-card" wx:for="{{list}}" wx:key="id" bindtap="goToPrograms" data-id="{{item.id}}">
-        <view class="card-badge">{{item.short_name}}</view>
-        <view class="card-body">
-          <view class="platform-header">
-            <view class="platform-logo">{{item.emoji || '📺'}}</view>
-            <view class="platform-info">
-              <view class="platform-name">
-                {{item.name}}
-                <text class="live-badge" wx:if="{{item.is_live}}">直播中</text>
-              </view>
-              <view class="platform-time">{{item.broadcast_time}}</view>
+    <view class="platform-card" wx:for="{{list}}" wx:key="id" bindtap="goToPrograms" data-id="{{item.id}}">
+      <!-- 省份印章 -->
+      <view class="card-badge">{{item.short_name}}</view>
+      
+      <!-- 卡片内容 -->
+      <view class="card-body">
+        <view class="platform-header">
+          <view class="platform-logo">{{item.emoji}}</view>
+          <view class="platform-info">
+            <view class="platform-name">
+              {{item.name}}
+              <view class="live-badge" wx:if="{{item.is_live}}">直播中</view>
             </view>
-          </view>
-
-          <view class="program-count">
-            <text wx:if="{{item.program_count > 0}}" class="count-num">{{item.program_count}}</text>
-            <text class="count-text">{{item.program_count > 0 ? '个节目' : '节目单未公布'}}</text>
-          </view>
-
-          <view class="platform-tags" wx:if="{{item.tags && item.tags.length > 0}}">
-            <view class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</view>
+            <view class="platform-time">{{item.broadcast_time}}</view>
           </view>
         </view>
+        
+        <!-- 节目数量 -->
+        <view class="program-count">
+          <text class="count-num">{{item.program_count}}</text>
+          <text class="count-text">个精彩节目</text>
+        </view>
+        
+        <!-- 标签 -->
+        <view class="platform-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+          <view class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</view>
+        </view>
       </view>
-    </block>
+    </view>
 
     <!-- 空状态 -->
     <view class="empty-state" wx:if="{{list.length === 0 && !loading}}">
       <image class="empty-icon" src="/images/empty.png" mode="aspectFit"></image>
-      <text class="empty-text">暂无春晚信息</text>
+      <text class="empty-text">暂无春晚数据</text>
     </view>
 
     <!-- 加载中 -->
