@@ -2,129 +2,129 @@
 const scripts = {
   career: {
     id: 'career',
-    name: '事业精英',
+    name: '职场风云',
     icon: '💼',
-    desc: '专注职场发展，冲刺事业高峰',
+    desc: '职场如戏，全靠演技！',
     baseStats: { wealth: 50, career: 70, love: 40, health: 60, happiness: 50 },
     events: [
       {
         month: 1,
-        title: '新年新机遇',
-        content: '年初，公司宣布启动一个重要项目，正在招募核心成员。这是一个展现能力的绝佳机会，但工作压力会很大。',
+        title: '老板的疯狂想法',
+        content: '年初老板宣布要"All in 元宇宙"，整个公司都要转型！你被任命为项目负责人，但这明显是个坑...',
         options: [
-          { text: '主动请缨加入', stats: { career: 15, health: -5, happiness: 5 } },
-          { text: '观望一下再说', stats: { career: 5, happiness: -5 } },
-          { text: '推荐同事参加', stats: { happiness: 10, career: -5 } }
+          { text: '硬着头皮上', stats: { career: 20, health: -15, happiness: -10 } },
+          { text: '装病拖延', stats: { happiness: 5, career: -10 } },
+          { text: '甩锅给同事', stats: { career: 5, happiness: -15 } }
         ]
       },
       {
         month: 2,
-        title: '春节加班',
-        content: '项目进度紧张，春节期间需要加班赶工。家人希望你能回家团聚。',
+        title: '春节惊魂',
+        content: '加班到除夕夜，老板突然在群里@你："项目进展如何？"你发现手机没电了...',
         options: [
-          { text: '留下加班', stats: { career: 20, wealth: 10, happiness: -10, love: -15 } },
-          { text: '回家过年', stats: { happiness: 15, love: 10, career: -10 } },
-          { text: '远程办公', stats: { career: 5, health: -5, happiness: 5 } }
+          { text: '连夜赶工', stats: { career: 25, health: -25, happiness: -20 } },
+          { text: '假装失联', stats: { career: -20, happiness: 10 } },
+          { text: '甩锅给供应商', stats: { career: 10, happiness: -5 } }
         ]
       },
       {
         month: 3,
-        title: '领导赏识',
-        content: '你的工作表现得到了领导的高度认可，暗示有晋升的机会。',
+        title: '办公室恋情',
+        content: '公司新来的HR对你暗送秋波，但听说TA和老板关系不一般...',
         options: [
-          { text: '表达感谢并争取', stats: { career: 15, happiness: 10 } },
-          { text: '谦虚低调', stats: { career: 5, happiness: 5 } },
-          { text: '与同事分享功劳', stats: { happiness: 15, career: 5 } }
+          { text: '接受暧昧', stats: { love: 25, career: -15, happiness: 15 } },
+          { text: '保持距离', stats: { career: 10, love: -5 } },
+          { text: '向老板举报', stats: { career: -10, happiness: -20 } }
         ]
       },
       {
         month: 4,
-        title: '工作冲突',
-        content: '与同事在工作方案上产生分歧，双方各执己见，气氛紧张。',
+        title: '背锅侠',
+        content: '项目出问题了，老板当众点名批评你。其实是你同事的锅，但他已经甩干净了...',
         options: [
-          { text: '坚持己见', stats: { career: 10, happiness: -10 } },
-          { text: '寻求妥协', stats: { happiness: 10, career: 5 } },
-          { text: '向上级汇报', stats: { career: -5, happiness: -5 } }
+          { text: '忍气吞声', stats: { happiness: -20, career: -10 } },
+          { text: '公开撕逼', stats: { career: -20, happiness: 10, love: 15 } },
+          { text: '阴阳怪气回怼', stats: { happiness: 20, career: -5 } }
         ]
       },
       {
         month: 5,
-        title: '跳槽机会',
-        content: '猎头联系你，有一家竞争对手公司开出更高的薪资邀请你加入。',
+        title: '竞争对手挖角',
+        content: '猎头开出double薪资挖你，但那家公司以996著称，而且刚裁员30%...',
         options: [
-          { text: '接受 offer', stats: { wealth: 20, career: 10, happiness: -10 } },
-          { text: '拒绝并留在原公司', stats: { career: 10, happiness: 10 } },
-          { text: '与原公司谈加薪', stats: { wealth: 15, career: 5 } }
+          { text: '跳槽！', stats: { wealth: 30, career: 15, health: -20, happiness: -10 } },
+          { text: '留下来', stats: { career: 10, happiness: 10 } },
+          { text: '用offer谈加薪', stats: { wealth: 25, career: -5, happiness: -10 } }
         ]
       },
       {
         month: 6,
-        title: '年中考核',
-        content: '年中绩效考核到来，这决定了下半年的发展机会。',
+        title: '年中考核惊魂',
+        content: 'HR暗示你的绩效是C，可能被优化。但你知道老板的侄子刚入职，正缺位置...',
         options: [
-          { text: '全力以赴准备', stats: { career: 15, health: -10 } },
-          { text: '正常发挥', stats: { career: 5, happiness: 5 } },
-          { text: '寻求同事帮助', stats: { career: 10, happiness: 10 } }
+          { text: '主动辞职', stats: { happiness: -15, wealth: -20, career: -10 } },
+          { text: '抱老板大腿', stats: { career: 20, happiness: -10 } },
+          { text: '收集证据准备仲裁', stats: { wealth: 15, happiness: 10, career: -15 } }
         ]
       },
       {
         month: 7,
-        title: '团建活动',
-        content: '公司组织团建活动，是增进同事关系的好机会。',
+        title: '团建醉酒事件',
+        content: '团建时你喝多了，当着老板的面跳了段野狼disco，还唱了《我的滑板鞋》...',
         options: [
-          { text: '积极参加', stats: { happiness: 15, career: 5 } },
-          { text: '找借口不参加', stats: { happiness: -5 } },
-          { text: '组织活动', stats: { career: 15, happiness: 10, health: -5 } }
+          { text: '社死到底', stats: { happiness: -25, career: -10 } },
+          { text: '装失忆', stats: { happiness: 5 } },
+          { text: '顺势成为团建之王', stats: { happiness: 30, career: 10 } }
         ]
       },
       {
         month: 8,
-        title: '新技能学习',
-        content: '公司组织新技术培训，学习会让工作更高效，但需要占用休息时间。',
+        title: '公司被收购',
+        content: '公司突然被收购！新老板宣布要"组织优化"，N+1赔偿已经在路上了...',
         options: [
-          { text: '认真学习', stats: { career: 20, health: -10, happiness: -5 } },
-          { text: '简单了解', stats: { career: 5 } },
-          { text: '放弃学习', stats: { happiness: 5, career: -10 } }
+          { text: '主动被裁', stats: { wealth: 35, career: -15, happiness: 20 } },
+          { text: '努力留下来', stats: { career: 20, health: -15, happiness: -10 } },
+          { text: '创业', stats: { wealth: -30, career: 25, happiness: 15 } }
         ]
       },
       {
         month: 9,
-        title: '项目成功',
-        content: '经过大半年的努力，你负责的项目取得了巨大成功，公司准备庆功。',
+        title: '新官上任',
+        content: '你奇迹般地当上了部门经理！但下属都是老油条，没人听你的...',
         options: [
-          { text: '享受荣耀', stats: { career: 20, happiness: 20 } },
-          { text: '低调处理', stats: { career: 10, happiness: 5 } },
-          { text: '感谢团队', stats: { happiness: 25, career: 15 } }
+          { text: '铁腕管理', stats: { career: 25, happiness: -20, love: -15 } },
+          { text: '怀柔政策', stats: { happiness: 20, career: 10 } },
+          { text: '摆烂躺平', stats: { happiness: 15, career: -15 } }
         ]
       },
       {
         month: 10,
-        title: '升职机会',
-        content: '部门经理职位空缺，你被列为候选人之一。',
+        title: '下属的秘密',
+        content: '发现你最有能力的下属在偷偷准备跳槽，还把客户资料带走了...',
         options: [
-          { text: '全力争取', stats: { career: 25, health: -10, happiness: -10 } },
-          { text: '顺其自然', stats: { career: 10, happiness: 5 } },
-          { text: '支持同事', stats: { happiness: 20, career: -5 } }
+          { text: '立即开除', stats: { career: 20, happiness: -10 } },
+          { text: '谈心挽留', stats: { career: 15, happiness: 15 } },
+          { text: '跟着他一起跳槽', stats: { career: -10, wealth: 20, happiness: 10 } }
         ]
       },
       {
         month: 11,
-        title: '年终压力',
-        content: '年底工作压力巨大，多个项目并行，身体开始发出警报。',
+        title: '年终奖风波',
+        content: '老板说今年业绩不好，年终奖取消。但你发现公司刚给老板的老婆买了一辆保时捷...',
         options: [
-          { text: '坚持工作', stats: { career: 20, health: -20, happiness: -10 } },
-          { text: '适当休息', stats: { health: 15, happiness: 10, career: -10 } },
-          { text: '寻求帮助', stats: { career: 5, happiness: 10, health: 10 } }
+          { text: '联合同事抗议', stats: { career: -20, happiness: 25, love: 20 } },
+          { text: '忍气吞声', stats: { happiness: -20 } },
+          { text: '申请劳动仲裁', stats: { wealth: 30, career: -25, happiness: 20 } }
         ]
       },
       {
         month: 12,
-        title: '年终总结',
-        content: '一年的工作即将结束，公司举办年会庆祝，你获得了"优秀员工"奖项！',
+        title: '年终反转',
+        content: '年底你意外获得"年度最佳员工"，奖金10万！但老板暗示你需要"付出点什么"...',
         options: [
-          { text: '发表获奖感言', stats: { career: 20, happiness: 20 } },
-          { text: '谦逊接受', stats: { career: 10, happiness: 10 } },
-          { text: '庆祝一下', stats: { happiness: 25, health: -5, wealth: -10 } }
+          { text: '拿钱跑路', stats: { wealth: 40, happiness: 30, career: -10 } },
+          { text: '拒绝并辞职', stats: { happiness: 20, career: -20, wealth: 10 } },
+          { text: '交易', stats: { wealth: 50, career: 30, happiness: -30 } }
         ]
       }
     ]
@@ -132,129 +132,129 @@ const scripts = {
 
   love: {
     id: 'love',
-    name: '浪漫情缘',
+    name: '桃花劫',
     icon: '💕',
-    desc: '寻找真爱，体验甜蜜恋爱',
+    desc: '桃花运太旺也是烦恼',
     baseStats: { wealth: 50, career: 50, love: 30, health: 60, happiness: 60 },
     events: [
       {
         month: 1,
-        title: '新年邂逅',
-        content: '在朋友的聚会上，你遇到了一个很合眼的人，你们聊得很开心。',
+        title: '新年桃花运爆棚',
+        content: '跨年夜你同时被三个人表白：青梅竹马、上司、还有刚认识的主播...',
         options: [
-          { text: '主动要联系方式', stats: { love: 20, happiness: 10 } },
-          { text: '等待对方主动', stats: { love: 5 } },
-          { text: '保持距离', stats: { love: -5, happiness: -5 } }
+          { text: '全都要！', stats: { love: 40, happiness: 30, health: -20 } },
+          { text: '选择青梅竹马', stats: { love: 25, happiness: 20 } },
+          { text: '统统拒绝', stats: { love: -10, happiness: -5 } }
         ]
       },
       {
         month: 2,
-        title: '情人节',
-        content: '情人节快到了，你和TA刚开始接触，不知道要不要送礼物。',
+        title: '情人节修罗场',
+        content: '情人节收到三份礼物！但不小心在朋友圈晒图时，被三个送礼人同时看到了...',
         options: [
-          { text: '精心准备礼物', stats: { love: 20, wealth: -10, happiness: 15 } },
-          { text: '简单表示', stats: { love: 10, wealth: -5 } },
-          { text: '保持朋友关系', stats: { love: -10, happiness: -5 } }
+          { text: '装被盗号', stats: { happiness: 10, love: -5 } },
+          { text: '坦白从宽', stats: { love: -30, happiness: -20 } },
+          { text: '说都是好朋友送的', stats: { love: 15, happiness: 5 } }
         ]
       },
       {
         month: 3,
-        title: '初次约会',
-        content: 'TA约你周末一起看电影，这是第一次正式约会！',
+        title: '前任回来了',
+        content: '前任突然出现，说要复合。现任还不知道这件事...',
         options: [
-          { text: '精心打扮前往', stats: { love: 15, happiness: 15, wealth: -10 } },
-          { text: '自然前往', stats: { love: 10, happiness: 10 } },
-          { text: '委婉拒绝', stats: { love: -20, happiness: -10 } }
+          { text: '偷偷见前任', stats: { love: 20, happiness: -15, health: -10 } },
+          { text: '拉黑前任', stats: { love: 15, happiness: 10 } },
+          { text: '和现任坦白', stats: { love: -10, happiness: 20 } }
         ]
       },
       {
         month: 4,
-        title: '确定关系',
-        content: '经过几个月的相处，TA暗示想要确定关系。你内心也有好感。',
+        title: '意外发现',
+        content: '你在现任的手机里发现，TA居然同时在和另外5个人聊天，而且叫你"宝贝6号"...',
         options: [
-          { text: '欣然同意', stats: { love: 30, happiness: 25 } },
-          { text: '需要时间考虑', stats: { love: 5, happiness: -5 } },
-          { text: '婉转拒绝', stats: { love: -25, happiness: -15 } }
+          { text: '当场暴走', stats: { love: -40, happiness: -30, health: -10 } },
+          { text: '默默忍受', stats: { love: -20, happiness: -20 } },
+          { text: '以其人之道还治其身', stats: { love: 10, happiness: 15, health: -10 } }
         ]
       },
       {
         month: 5,
-        title: '见家长',
-        content: '恋爱稳定后，TA提出想带你回家见父母。',
+        title: '父母突袭',
+        content: '你爸妈突然出现，说要见见你的对象。但你同时应付着三段关系...',
         options: [
-          { text: '愉快答应', stats: { love: 20, happiness: 15 } },
-          { text: '有些紧张但同意', stats: { love: 10, happiness: 5 } },
-          { text: '觉得太快了', stats: { love: -10, happiness: -5 } }
+          { text: '雇人冒充', stats: { wealth: -20, love: -15, happiness: 5 } },
+          { text: '坦白是单身', stats: { love: -25, happiness: -10 } },
+          { text: '介绍最好的朋友', stats: { love: -10, happiness: 20 } }
         ]
       },
       {
         month: 6,
-        title: '小矛盾',
-        content: '因为一件小事，你和TA发生了争吵，气氛有些尴尬。',
+        title: '意外怀孕',
+        content: '其中一位对象告诉你怀孕了！但你根本不记得发生过什么...',
         options: [
-          { text: '主动道歉', stats: { love: 15, happiness: 10 } },
-          { text: '等待对方道歉', stats: { love: -10, happiness: -10 } },
-          { text: '冷静沟通', stats: { love: 20, happiness: 15 } }
+          { text: '负责到底', stats: { love: 30, wealth: -25, career: -20 } },
+          { text: '要求DNA检测', stats: { love: -20, happiness: 10 } },
+          { text: '玩失踪', stats: { love: -30, happiness: -20, wealth: -15 } }
         ]
       },
       {
         month: 7,
-        title: '甜蜜时光',
-        content: '你们的关系越来越好，开始计划一起旅行。',
+        title: '修罗场升级',
+        content: '你的三个对象在同一个火锅店偶遇了！他们正在核对你的聊天记录...',
         options: [
-          { text: '精心策划旅行', stats: { love: 25, happiness: 25, wealth: -20 } },
-          { text: '简单安排', stats: { love: 15, happiness: 15, wealth: -10 } },
-          { text: '暂时取消', stats: { love: -15, happiness: -10 } }
+          { text: '现场表演晕倒', stats: { health: -10, happiness: 20 } },
+          { text: '当场跑路', stats: { love: -35, happiness: -15 } },
+          { text: '坦诚我错了', stats: { love: -40, happiness: -25 } }
         ]
       },
       {
         month: 8,
-        title: '未来规划',
-        content: '聊起未来，TA问你对这段感情的规划。',
+        title: '神秘富豪',
+        content: '一个神秘富豪说要包养你，每月给你20万零花钱，只需要偶尔陪陪TA...',
         options: [
-          { text: '表达长远想法', stats: { love: 25, happiness: 20 } },
-          { text: '顺其自然', stats: { love: 5, happiness: 5 } },
-          { text: '转移话题', stats: { love: -15, happiness: -10 } }
+          { text: '接受！', stats: { wealth: 50, love: -30, happiness: 10 } },
+          { text: '拒绝', stats: { love: 20, happiness: 15 } },
+          { text: '要价50万', stats: { wealth: 30, love: -20, happiness: 5 } }
         ]
       },
       {
         month: 9,
-        title: '同居话题',
-        content: 'TA提出想要同居，这标志着关系的进一步发展。',
+        title: '网络爆红',
+        content: '你的"海王事迹"被发到网上，火了！有人找你拍真人秀...',
         options: [
-          { text: '欣然同意', stats: { love: 30, happiness: 25, wealth: -10 } },
-          { text: '需要考虑', stats: { love: 10, happiness: 5 } },
-          { text: '暂时不想', stats: { love: -15, happiness: -5 } }
+          { text: '参加真人秀', stats: { wealth: 30, love: -20, happiness: 25 } },
+          { text: '起诉造谣', stats: { wealth: -20, love: 10 } },
+          { text: '享受流量', stats: { wealth: 20, happiness: 20, love: -10 } }
         ]
       },
       {
         month: 10,
-        title: '意外惊喜',
-        content: 'TA为你准备了一个惊喜生日派对，邀请了所有好朋友。',
+        title: '真爱出现',
+        content: '在你玩累了之后，遇到了一个真心对你好的人。但TA知道你的过去...',
         options: [
-          { text: '感动接受', stats: { love: 25, happiness: 30 } },
-          { text: '有些害羞', stats: { love: 15, happiness: 20 } },
-          { text: '觉得太隆重', stats: { love: 5, happiness: 10 } }
+          { text: '坦白过去', stats: { love: 30, happiness: 25 } },
+          { text: '隐瞒过去', stats: { love: 20, happiness: -10 } },
+          { text: '因为自卑拒绝', stats: { love: -20, happiness: -15 } }
         ]
       },
       {
         month: 11,
-        title: '求婚准备',
-        content: '你开始策划求婚，想要给TA一个难忘的回忆。',
+        title: '前任们联盟',
+        content: '你的前任们组建了一个"反你联盟"，在各个平台上曝光你的黑历史...',
         options: [
-          { text: '精心准备惊喜', stats: { love: 30, happiness: 30, wealth: -20 } },
-          { text: '简单浪漫', stats: { love: 20, happiness: 20, wealth: -10 } },
-          { text: '暂时不求婚', stats: { love: 5, happiness: 5 } }
+          { text: '公开道歉', stats: { love: 10, happiness: -15 } },
+          { text: '反击爆料', stats: { love: -20, happiness: 20 } },
+          { text: '注销账号跑路', stats: { love: -30, happiness: -20 } }
         ]
       },
       {
         month: 12,
-        title: '幸福终点',
-        content: '在跨年夜的烟花下，你成功求婚！TA含泪答应了。2026是幸福的一年！',
+        title: '年终抉择',
+        content: '年底了，你终于决定收心。但就在这时，真爱的人向你求婚了，而你的富豪金主也向你求婚了...',
         options: [
-          { text: '拥抱庆祝', stats: { love: 40, happiness: 40 } },
-          { text: '感动落泪', stats: { love: 35, happiness: 35 } },
-          { text: '默默珍惜', stats: { love: 30, happiness: 30 } }
+          { text: '选择真爱', stats: { love: 50, happiness: 40, wealth: -20 } },
+          { text: '选择富豪', stats: { wealth: 60, love: -20, happiness: 20 } },
+          { text: '两个都吊着', stats: { love: 10, wealth: 30, happiness: -10 } }
         ]
       }
     ]
@@ -262,129 +262,129 @@ const scripts = {
 
   wealth: {
     id: 'wealth',
-    name: '财富梦想',
+    name: '暴富之路',
     icon: '💰',
-    desc: '创业投资，追求财务自由',
+    desc: '要么暴富，要么破产',
     baseStats: { wealth: 40, career: 50, love: 40, health: 60, happiness: 50 },
     events: [
       {
         month: 1,
-        title: '创业想法',
-        content: '新年伊始，你有了一个创业的想法，但需要投入大量积蓄。',
+        title: '一夜暴富的机会',
+        content: '一个神秘网友告诉你内幕消息，某只股票下周要涨10倍！但他要你先转5万块给他...',
         options: [
-          { text: '果断启动', stats: { wealth: -30, career: 20, happiness: 15 } },
-          { text: '先做市场调研', stats: { career: 10, wealth: -5 } },
-          { text: '暂时放弃', stats: { happiness: -10 } }
+          { text: '梭哈！', stats: { wealth: -50, happiness: -20 } },
+          { text: '谨慎投资', stats: { wealth: -10, happiness: 5 } },
+          { text: '拉黑骗子', stats: { happiness: 10 } }
         ]
       },
       {
         month: 2,
-        title: '寻找合伙人',
-        content: '创业需要团队，你开始寻找合适的合伙人。',
+        title: '币圈神话',
+        content: '你买的一个山寨币突然暴涨100倍！现在是千万富翁了！',
         options: [
-          { text: '邀请朋友加入', stats: { career: 15, happiness: 15, wealth: -10 } },
-          { text: '独自创业', stats: { career: 10, happiness: 5 } },
-          { text: '寻找投资人', stats: { wealth: 20, career: 10 } }
+          { text: '立即套现', stats: { wealth: 60, happiness: 40 } },
+          { text: '继续持有', stats: { wealth: 80, health: -20 } },
+          { text: 'all in买入更多', stats: { wealth: -40, happiness: -30 } }
         ]
       },
       {
         month: 3,
-        title: '产品开发',
-        content: '产品进入开发阶段，需要在质量和速度间做选择。',
+        title: '真假投资',
+        content: '一个"成功学大师"说带你项目投资，月收益30%。但需要先交10万学费...',
         options: [
-          { text: '追求完美', stats: { career: 15, wealth: -15, health: -10 } },
-          { text: '快速迭代', stats: { career: 10, wealth: -10 } },
-          { text: '平衡发展', stats: { career: 10, happiness: 10 } }
+          { text: '交学费', stats: { wealth: -40, happiness: -20 } },
+          { text: '举报传销', stats: { wealth: 20, happiness: 25 } },
+          { text: '假装加入套取信息', stats: { wealth: 10, happiness: 10 } }
         ]
       },
       {
         month: 4,
-        title: '资金紧张',
-        content: '创业初期资金紧张，需要想办法渡过难关。',
+        title: '一夜返贫',
+        content: '你发现那个山寨币是个骗局！平台跑路了，你的千万资产归零...',
         options: [
-          { text: '追加投资', stats: { wealth: -25, career: 15 } },
-          { text: '寻找贷款', stats: { wealth: 15, career: 10, happiness: -10 } },
-          { text: '精打细算', stats: { happiness: -5, health: -5 } }
+          { text: '报警', stats: { wealth: 5, happiness: -30 } },
+          { text: '跳楼', stats: { health: -50, happiness: -40 } },
+          { text: '从头再来', stats: { happiness: 20, career: 10 } }
         ]
       },
       {
         month: 5,
-        title: '产品发布',
-        content: '产品终于发布，市场反应如何还未知晓。',
+        title: '新机会',
+        content: '穷困潦倒时，你发现了一个真正的商机：AI写作工具！但需要借钱开发...',
         options: [
-          { text: '大力宣传', stats: { wealth: -20, career: 20 } },
-          { text: '自然增长', stats: { career: 10 } },
-          { text: '收集反馈', stats: { career: 15, happiness: 10 } }
+          { text: '借高利贷', stats: { wealth: 30, health: -20, happiness: -10 } },
+          { text: '找朋友投资', stats: { wealth: 20, love: -10 } },
+          { text: '放弃创业', stats: { happiness: -10 } }
         ]
       },
       {
         month: 6,
-        title: '首批客户',
-        content: '终于迎来了第一批付费客户，虽然不多，但意义重大！',
+        title: '产品爆火',
+        content: '你的AI写作工具火了！一个月用户破百万！投资人排着队给你送钱...',
         options: [
-          { text: '用心服务', stats: { wealth: 15, career: 20, happiness: 20 } },
-          { text: '扩大宣传', stats: { wealth: 20, career: 15, health: -10 } },
-          { text: '改进产品', stats: { career: 20, wealth: -10 } }
+          { text: '接受所有投资', stats: { wealth: 50, career: 30 } },
+          { text: '精挑细选', stats: { wealth: 35, career: 20, happiness: 10 } },
+          { text: '拒绝融资', stats: { wealth: 20, happiness: 20 } }
         ]
       },
       {
         month: 7,
-        title: '竞争压力',
-        content: '竞争对手出现，他们有更多资源和经验。',
+        title: '被挖墙脚',
+        content: '大厂想收购你的公司，出价5个亿！但条件是你必须离开公司...',
         options: [
-          { text: '正面竞争', stats: { career: 20, wealth: -15, health: -10 } },
-          { text: '差异化定位', stats: { career: 15, happiness: 10 } },
-          { text: '寻求合作', stats: { career: 10, happiness: 15 } }
+          { text: '卖掉套现', stats: { wealth: 80, career: -30, happiness: 50 } },
+          { text: '拒绝收购', stats: { wealth: 20, career: 30 } },
+          { text: '讨价还价', stats: { wealth: 60, career: 10 } }
         ]
       },
       {
         month: 8,
-        title: '投资机会',
-        content: '有人看好你的项目，提出投资意向。',
+        title: '合伙人背叛',
+        content: '你发现合伙人偷偷把公司股权转到了自己名下！还挪用了公款...',
         options: [
-          { text: '接受投资', stats: { wealth: 40, career: 25, happiness: 20 } },
-          { text: '犹豫观望', stats: { wealth: 10, career: 10 } },
-          { text: '拒绝投资', stats: { happiness: 10, career: -10 } }
+          { text: '立即报警', stats: { wealth: -30, career: -20, happiness: -20 } },
+          { text: '私下解决', stats: { wealth: 20, health: -20 } },
+          { text: '装不知道', stats: { happiness: -10, wealth: -20 } }
         ]
       },
       {
         month: 9,
-        title: '团队扩张',
-        content: '业务发展顺利，需要扩大团队规模。',
+        title: '绝地反击',
+        content: '你找到了合伙人挪用公款的证据！准备起诉他，但需要支付巨额律师费...',
         options: [
-          { text: '快速招人', stats: { career: 20, wealth: -20 } },
-          { text: '谨慎扩张', stats: { career: 15, wealth: -10 } },
-          { text: '保持现状', stats: { career: 5, happiness: -5 } }
+          { text: '卖房打官司', stats: { wealth: -40, career: 20, happiness: 20 } },
+          { text: '私下和解', stats: { wealth: 15, happiness: -10 } },
+          { text: '曝光媒体', stats: { wealth: 25, happiness: 30 } }
         ]
       },
       {
         month: 10,
-        title: '盈利突破',
-        content: '经过大半年努力，公司终于实现盈利！',
+        title: '东山再起',
+        content: '官司赢了！你拿回了公司，还获得了巨额赔偿！',
         options: [
-          { text: '庆祝一番', stats: { happiness: 25, wealth: -10, health: 5 } },
-          { text: '再接再厉', stats: { career: 20, wealth: 20 } },
-          { text: '分享利润', stats: { happiness: 30, career: 15 } }
+          { text: '卖掉退休', stats: { wealth: 70, happiness: 40 } },
+          { text: '继续经营', stats: { career: 30, wealth: 50 } },
+          { text: '做天使投资', stats: { wealth: 40, happiness: 35 } }
         ]
       },
       {
         month: 11,
-        title: '新的挑战',
-        content: '成功引来新的挑战，需要应对更复杂的市场环境。',
+        title: '新的危机',
+        content: '公司被爆出数据泄露问题！用户集体起诉，赔偿金额可能让你再次破产...',
         options: [
-          { text: '勇敢面对', stats: { career: 25, wealth: 15, health: -15 } },
-          { text: '稳中求进', stats: { career: 15, wealth: 10 } },
-          { text: '寻求帮助', stats: { career: 10, happiness: 15 } }
+          { text: '申请破产', stats: { wealth: -60, career: -30 } },
+          { text: '变卖资产赔偿', stats: { wealth: -50, happiness: 10 } },
+          { text: '强硬对抗', stats: { wealth: -20, happiness: -20, career: 10 } }
         ]
       },
       {
         month: 12,
-        title: '年终盘点',
-        content: '一年创业结束，你实现了财务自由的初步目标！2026是丰收的一年！',
+        title: '年终意外',
+        content: '年底你中了彩票！500万！但发现彩票被你的前合伙人偷走了...',
         options: [
-          { text: '规划未来', stats: { wealth: 30, career: 25, happiness: 25 } },
-          { text: '享受成果', stats: { happiness: 35, health: 10 } },
-          { text: '回馈社会', stats: { happiness: 40, wealth: -20 } }
+          { text: '起诉追回', stats: { wealth: 60, happiness: -10 } },
+          { text: '放弃', stats: { happiness: -30 } },
+          { text: '找人帮忙', stats: { wealth: 50, happiness: 10 } }
         ]
       }
     ]
@@ -392,129 +392,129 @@ const scripts = {
 
   health: {
     id: 'health',
-    name: '健康达人',
+    name: '绝地求生',
     icon: '🏃',
-    desc: '关注健康，养成良好习惯',
+    desc: '从亚健康到人生巅峰',
     baseStats: { wealth: 50, career: 50, love: 50, health: 40, happiness: 60 },
     events: [
       {
         month: 1,
-        title: '健康计划',
-        content: '新年新开始，你决定制定一个健康计划，改善身体状况。',
+        title: '体检惊魂',
+        content: '年度体检报告出来了，医生说你：三高、脂肪肝、腰椎间盘突出...还问你有没有买保险...',
         options: [
-          { text: '严格计划', stats: { health: 25, happiness: 10 } },
-          { text: '适度计划', stats: { health: 15, happiness: 15 } },
-          { text: '随性而为', stats: { health: 5, happiness: 10 } }
+          { text: '当场崩溃', stats: { health: -20, happiness: -30 } },
+          { text: '痛改前非', stats: { health: 25, happiness: 10 } },
+          { text: '换家医院检查', stats: { happiness: 5, wealth: -5 } }
         ]
       },
       {
         month: 2,
-        title: '春节饮食',
-        content: '春节期间美食诱惑很多，需要控制饮食。',
+        title: '减肥大作战',
+        content: '你决定减肥，办了健身卡买了私教课。但教练是个魔鬼，每节课都让你想死...',
         options: [
-          { text: '严格控制', stats: { health: 20, happiness: -10 } },
-          { text: '适度享受', stats: { health: 10, happiness: 15 } },
-          { text: '尽情享受', stats: { health: -15, happiness: 25 } }
+          { text: '坚持到底', stats: { health: 30, wealth: -20, happiness: -15 } },
+          { text: '半途而废', stats: { wealth: -10, happiness: 5 } },
+          { text: '起诉教练暴力', stats: { health: -10, wealth: 20, happiness: 10 } }
         ]
       },
       {
         month: 3,
-        title: '运动习惯',
-        content: '开始养成运动习惯，每天坚持锻炼。',
+        title: '健身房的桃花',
+        content: '健身时一个身材超棒的小姐姐/小哥哥主动加你微信，说可以"一起锻炼"...',
         options: [
-          { text: '高强度训练', stats: { health: 25, happiness: 5 } },
-          { text: '适中运动', stats: { health: 20, happiness: 15 } },
-          { text: '轻松运动', stats: { health: 10, happiness: 20 } }
+          { text: '欣然同意', stats: { love: 30, health: 15, happiness: 25 } },
+          { text: '保持距离', stats: { health: 10, happiness: -5 } },
+          { text: '怀疑是骗局', stats: { happiness: 5, health: -5 } }
         ]
       },
       {
         month: 4,
-        title: '体检报告',
-        content: '年度体检结果显示健康状况有所改善，但仍有提升空间。',
+        title: '健康餐挑战',
+        content: '你开始吃健康餐，连续一个月只能吃水煮菜和鸡胸肉。朋友们聚餐都叫你了...',
         options: [
-          { text: '制定改善计划', stats: { health: 25, happiness: 10 } },
-          { text: '保持现状', stats: { health: 10, happiness: 15 } },
-          { text: '不太在意', stats: { health: -10, happiness: 5 } }
+          { text: '坚持吃', stats: { health: 25, happiness: -20, love: -10 } },
+          { text: '偷偷作弊', stats: { health: 10, happiness: 10 } },
+          { text: '放弃健康餐', stats: { health: -15, happiness: 20, love: 15 } }
         ]
       },
       {
         month: 5,
-        title: '户外活动',
-        content: '天气转暖，适合户外运动，朋友邀请你一起去爬山。',
+        title: '运动损伤',
+        content: '你举铁时受伤了！医生说需要休养一个月，你的健身计划被打断...',
         options: [
-          { text: '欣然前往', stats: { health: 20, happiness: 20 } },
-          { text: '犹豫后同意', stats: { health: 15, happiness: 15 } },
-          { text: '委婉拒绝', stats: { happiness: -10 } }
+          { text: '强行继续', stats: { health: -30, happiness: -15 } },
+          { text: '乖乖休养', stats: { health: 15, happiness: -5 } },
+          { text: '改做瑜伽', stats: { health: 20, happiness: 10 } }
         ]
       },
       {
         month: 6,
-        title: '睡眠问题',
-        content: '工作压力导致睡眠质量下降，需要调整作息。',
+        title: '身材变化',
+        content: '坚持半年后，你瘦了30斤！前任看到你的变化后突然联系你了...',
         options: [
-          { text: '严格调整', stats: { health: 20, career: -10 } },
-          { text: '逐步改善', stats: { health: 15, happiness: 10 } },
-          { text: '顺其自然', stats: { health: -5 } }
+          { text: '复合', stats: { love: 30, health: -10, happiness: 20 } },
+          { text: '炫耀后拉黑', stats: { happiness: 25, love: -10 } },
+          { text: '冷漠拒绝', stats: { happiness: 10, health: 5 } }
         ]
       },
       {
         month: 7,
-        title: '饮食调整',
-        content: '夏天到了，开始注意饮食健康，多吃蔬菜水果。',
+        title: '网红之路',
+        content: '你的减肥历程火了！有人找你做健身博主，月入过万...',
         options: [
-          { text: '坚持健康饮食', stats: { health: 25, wealth: -10 } },
-          { text: '适度调整', stats: { health: 15, happiness: 10 } },
-          { text: '偶尔放纵', stats: { health: 5, happiness: 20 } }
+          { text: '签约MCN', stats: { wealth: 30, career: 20, happiness: 20 } },
+          { text: '自己做', stats: { wealth: 15, career: 25 } },
+          { text: '拒绝', stats: { health: 10, happiness: -5 } }
         ]
       },
       {
         month: 8,
-        title: '运动瓶颈',
-        content: '进入运动瓶颈期，效果不如之前明显，有些灰心。',
+        title: '黑粉攻击',
+        content: '网友说你的减肥经历是假的，还扒出你以前胖的照片...',
         options: [
-          { text: '调整训练计划', stats: { health: 20, happiness: 15 } },
-          { text: '降低强度', stats: { health: 10, happiness: 10 } },
-          { text: '暂时休息', stats: { health: -5, happiness: 5 } }
+          { text: '公开对线', stats: { happiness: -20, love: 10 } },
+          { text: '晒证据', stats: { happiness: 20, wealth: 15 } },
+          { text: '装死', stats: { happiness: -10 } }
         ]
       },
       {
         month: 9,
-        title: '健康知识',
-        content: '参加健康讲座，学到了很多养生知识。',
+        title: '健身教练的秘密',
+        content: '你的教练暗示可以给你"特殊服务"，只要你额外付费...',
         options: [
-          { text: '认真实践', stats: { health: 25, happiness: 15 } },
-          { text: '选择性采纳', stats: { health: 15, happiness: 10 } },
-          { text: '听听而已', stats: { health: 5 } }
+          { text: '接受', stats: { health: 15, love: 25, wealth: -20 } },
+          { text: '拒绝', stats: { health: 5, happiness: -5 } },
+          { text: '举报', stats: { wealth: 10, happiness: 20, career: -10 } }
         ]
       },
       {
         month: 10,
-        title: '身体状况',
-        content: '坚持大半年后，身体状况明显改善，精力充沛。',
+        title: '比赛机会',
+        content: '有人邀请你参加健美比赛！但需要准备3个月，还要穿很暴露的衣服...',
         options: [
-          { text: '继续保持', stats: { health: 25, happiness: 20 } },
-          { text: '稍微放松', stats: { health: 10, happiness: 25 } },
-          { text: '庆祝进步', stats: { happiness: 30, wealth: -10, health: -5 } }
+          { text: '参加', stats: { health: 25, career: 20, wealth: -15 } },
+          { text: '犹豫后拒绝', stats: { happiness: -5 } },
+          { text: '只做观众', stats: { happiness: 10 } }
         ]
       },
       {
         month: 11,
-        title: '冬季锻炼',
-        content: '天气转冷，户外运动变得困难，需要寻找替代方案。',
+        title: '意外发现',
+        content: '你发现健身房用的器材都是三无产品！很多人受伤了，要集体起诉...',
         options: [
-          { text: '室内健身', stats: { health: 20, wealth: -10 } },
-          { text: '减少运动', stats: { health: 5, happiness: 10 } },
-          { text: '坚持户外', stats: { health: 25, happiness: 15 } }
+          { text: '参与起诉', stats: { wealth: 25, health: 10, happiness: 15 } },
+          { text: '观望', stats: { happiness: -5 } },
+          { text: '换健身房', stats: { wealth: -10, health: 15 } }
         ]
       },
       {
         month: 12,
-        title: '年度总结',
-        content: '一年的健康计划圆满完成，你感觉前所未有的好！2026是健康的一年！',
+        title: '年终逆袭',
+        content: '年底你参加了健美比赛！虽然没拿奖，但你的故事被媒体报道了！有人要拍你的电影...',
         options: [
-          { text: '制定明年计划', stats: { health: 30, happiness: 25 } },
-          { text: '享受成就感', stats: { happiness: 35, health: 20 } },
-          { text: '分享经验', stats: { happiness: 40, health: 15 } }
+          { text: '卖版权', stats: { wealth: 50, happiness: 40, health: 10 } },
+          { text: '自己演', stats: { career: 30, happiness: 35, wealth: 20 } },
+          { text: '拒绝', stats: { health: 20, happiness: 20 } }
         ]
       }
     ]
@@ -522,129 +522,129 @@ const scripts = {
 
   balance: {
     id: 'balance',
-    name: '精彩人生',
+    name: '荒诞人生',
     icon: '🌟',
-    desc: '平衡发展，体验多彩人生',
+    desc: '人生如戏，全靠运气',
     baseStats: { wealth: 50, career: 50, love: 50, health: 50, happiness: 50 },
     events: [
       {
         month: 1,
-        title: '新年规划',
-        content: '2026年到来了，你决定在新的一年里平衡发展各个方面。',
+        title: '外星人绑架',
+        content: '你被外星人绑架了！他们说要带你去火星参加银河系选美大赛...',
         options: [
-          { text: '制定详细计划', stats: { happiness: 20, health: 10, career: 10 } },
-          { text: '设定大致方向', stats: { happiness: 15, health: 5 } },
-          { text: '顺其自然', stats: { happiness: 10 } }
+          { text: '激动地去', stats: { happiness: 40, health: -30, career: -20 } },
+          { text: '拒绝', stats: { happiness: -20, health: 10 } },
+          { text: '装疯卖傻', stats: { health: 5, happiness: 10 } }
         ]
       },
       {
         month: 2,
-        title: '春节回家',
-        content: '春节回家过年，陪伴父母，享受家庭时光。',
+        title: '春节奇遇',
+        content: '过年回家，你发现村口的老槐树下埋着宝藏！但需要先和看门的恶狗打一架...',
         options: [
-          { text: '精心准备礼物', stats: { love: 25, happiness: 25, wealth: -15 } },
-          { text: '简单回家', stats: { love: 15, happiness: 15, wealth: -5 } },
-          { text: '工作优先', stats: { career: 20, love: -15, happiness: -10 } }
+          { text: '勇斗恶狗', stats: { health: -25, wealth: 50, happiness: 30 } },
+          { text: '放弃宝藏', stats: { happiness: -10 } },
+          { text: '偷走宝藏', stats: { wealth: 40, happiness: -15 } }
         ]
       },
       {
         month: 3,
-        title: '学习计划',
-        content: '报名参加一个兴趣班，丰富生活的同时学习新技能。',
+        title: '身份错乱',
+        content: '有人把你看成了明星，疯狂求合影！你顺势承认了，结果被邀请上综艺...',
         options: [
-          { text: '积极学习', stats: { career: 15, happiness: 20, wealth: -10 } },
-          { text: '轻松参与', stats: { happiness: 15, wealth: -5 } },
-          { text: '太忙放弃', stats: { happiness: -10 } }
+          { text: '上节目', stats: { wealth: 30, happiness: 35, career: 25 } },
+          { text: '澄清真相', stats: { happiness: 10, love: 15 } },
+          { text: '享受装明星', stats: { happiness: 25, love: -10 } }
         ]
       },
       {
         month: 4,
-        title: '社交活动',
-        content: '朋友邀请参加各种社交活动，扩展人脉。',
+        title: '神秘快递',
+        content: '收到一个神秘快递，里面是一张纸条："你知道得太多了"，还有一颗子弹...',
         options: [
-          { text: '积极参加', stats: { career: 15, happiness: 20, love: 10 } },
-          { text: '选择性参加', stats: { happiness: 10, career: 10 } },
-          { text: '婉拒大部分', stats: { happiness: -5 } }
+          { text: '报警', stats: { health: -10, happiness: -20 } },
+          { text: '逃亡', stats: { wealth: -30, health: -15, happiness: -25 } },
+          { text: '当恶作剧', stats: { happiness: 10, health: -5 } }
         ]
       },
       {
         month: 5,
-        title: '健康检查',
-        content: '定期体检，关注身体状况，及时发现潜在问题。',
+        title: '中奖风波',
+        content: '你中了1000万！但领奖时发现彩票被人掉了包，而且对方还长着你的脸...',
         options: [
-          { text: '全面检查', stats: { health: 25, wealth: -10 } },
-          { text: '基础检查', stats: { health: 15, wealth: -5 } },
-          { text: '暂不检查', stats: { health: -5 } }
+          { text: '报警', stats: { wealth: 20, happiness: -20 } },
+          { text: '跟踪对方', stats: { health: -20, happiness: 10 } },
+          { text: '相信科学', stats: { happiness: 15, health: 10 } }
         ]
       },
       {
         month: 6,
-        title: '年中调整',
-        content: '半年过去，回顾上半年的表现，调整下半年的计划。',
+        title: '平行时空',
+        content: '你穿越到了平行世界！那里的你是亿万富翁，但正在坐牢...',
         options: [
-          { text: '认真复盘调整', stats: { happiness: 20, career: 15, health: 10 } },
-          { text: '简单回顾', stats: { happiness: 10, career: 5 } },
-          { text: '继续现状', stats: { happiness: 5 } }
+          { text: '替他坐牢', stats: { wealth: 50, happiness: -30, health: -20 } },
+          { text: '花他的钱', stats: { wealth: 40, happiness: 30 } },
+          { text: '想办法回来', stats: { happiness: 20, health: 10 } }
         ]
       },
       {
         month: 7,
-        title: '旅行计划',
-        content: '利用年假出去旅行，放松身心，开阔眼界。',
+        title: '超能力觉醒',
+        content: '你发现自己有读心术！能听到别人的想法。但发现所有人都在骂你...',
         options: [
-          { text: '精心规划长途游', stats: { happiness: 30, health: 15, wealth: -25 } },
-          { text: '短途轻松游', stats: { happiness: 20, health: 10, wealth: -10 } },
-          { text: '宅家休息', stats: { happiness: 10, health: 5 } }
+          { text: '用超能力赚钱', stats: { wealth: 40, happiness: -25, love: -20 } },
+          { text: '封闭超能力', stats: { happiness: 15, health: 10 } },
+          { text: '报复看不起你的人', stats: { happiness: 20, love: -30 } }
         ]
       },
       {
         month: 8,
-        title: '感情发展',
-        content: '在旅行中结识了有趣的人，开始了一段暧昧关系。',
+        title: '武林高手',
+        content: '你被一个神秘老头看中，说你是百年一遇的武学奇才，要收你为徒...',
         options: [
-          { text: '积极发展', stats: { love: 25, happiness: 25 } },
-          { text: '慢慢了解', stats: { love: 15, happiness: 15 } },
-          { text: '保持距离', stats: { love: 5, happiness: 5 } }
+          { text: '拜师学艺', stats: { health: 30, career: -20, wealth: -10 } },
+          { text: '拒绝', stats: { career: 10, happiness: 5 } },
+          { text: '把老头送派出所', stats: { happiness: 10, love: -10 } }
         ]
       },
       {
         month: 9,
-        title: '工作挑战',
-        content: '工作中遇到挑战，需要在工作和生活间找到平衡。',
+        title: '世界末日',
+        content: '新闻说小行星要撞击地球！你有24小时时间，想做什么就做什么...',
         options: [
-          { text: '努力克服', stats: { career: 25, health: -10, happiness: -5 } },
-          { text: '寻求帮助', stats: { career: 15, happiness: 10, love: 5 } },
-          { text: '降低预期', stats: { career: 10, happiness: 15 } }
+          { text: '表白', stats: { love: 40, happiness: 35 } },
+          { text: '花钱', stats: { wealth: -50, happiness: 40 } },
+          { text: '在家等待', stats: { happiness: -20, health: -10 } }
         ]
       },
       {
         month: 10,
-        title: '家庭时间',
-        content: '父母来看望你，享受温馨的家庭时光。',
+        title: '虚惊一场',
+        content: '小行星擦肩而过！你花的钱刷爆的卡都要还了，表白的人也把你拉黑了...',
         options: [
-          { text: '精心安排', stats: { love: 30, happiness: 30, wealth: -15 } },
-          { text: '简单陪伴', stats: { love: 20, happiness: 20, wealth: -5 } },
-          { text: '工作繁忙', stats: { career: 20, love: -20, happiness: -10 } }
+          { text: '努力还债', stats: { wealth: 30, career: 20, happiness: -25 } },
+          { text: '申请破产', stats: { wealth: -40, career: -20 } },
+          { text: '跑路', stats: { wealth: 20, happiness: -30, health: -15 } }
         ]
       },
       {
         month: 11,
-        title: '感恩节',
-        content: '感恩节到了，回顾一年的收获，感恩身边的人和事。',
+        title: '外星人回来了',
+        content: '外星人又来了！这次他们说你是地球的救世主，要带领人类对抗黑暗势力...',
         options: [
-          { text: '表达感谢', stats: { happiness: 35, love: 25 } },
-          { text: '默默感恩', stats: { happiness: 25, love: 15 } },
-          { text: '平常对待', stats: { happiness: 10 } }
+          { text: '接受使命', stats: { happiness: 50, health: -30, career: -25 } },
+          { text: '拒绝', stats: { happiness: -15 } },
+          { text: '要报酬', stats: { wealth: 50, happiness: 10 } }
         ]
       },
       {
         month: 12,
-        title: '年终总结',
-        content: '2026年即将结束，回顾这一年，你在各方面都有所收获！2026是精彩的一年！',
+        title: '真相大白',
+        content: '原来这一切都是一场真人秀！你是主角，全世界都在看你的表演...',
         options: [
-          { text: '庆祝丰收', stats: { happiness: 40, health: 10, wealth: -15 } },
-          { text: '规划明年', stats: { career: 20, happiness: 25 } },
-          { text: '感恩生活', stats: { happiness: 45, love: 20 } }
+          { text: '享受成名', stats: { wealth: 60, happiness: 50, career: 40 } },
+          { text: '愤怒起诉', stats: { wealth: 30, happiness: -30 } },
+          { text: '坦然接受', stats: { happiness: 40, love: 30 } }
         ]
       }
     ]
