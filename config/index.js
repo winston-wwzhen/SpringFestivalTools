@@ -15,7 +15,7 @@ const ENV = {
   },
   // 生产环境
   production: {
-    serverUrl: 'https://api.spring-festival.com/api',
+    serverUrl: 'http://49.234.120.81/api',
     isDev: false,
     apiKey: 'prod_af7c5df138a2f77990b17268b73f7ae1289707b266f9d013b1bca6f277e5e9dd'
   }
