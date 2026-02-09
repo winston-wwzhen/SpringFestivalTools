@@ -22,6 +22,9 @@ const adminGalaRoutes = require('./routes/admin-gala')
 // 爬虫调度器
 const crawlerService = require('./services/crawler')
 
+// API 认证中间件
+const { apiAuthMiddleware } = require('./middleware/apiAuth')
+
 const app = express()
 const PORT = process.env.PORT || 3000
 
@@ -58,12 +61,12 @@ app.use((req, res, next) => {
 })
 
 // ============================================================
-// 小程序端 API (公开访问)
+// 小程序端 API (需要 API 密钥认证)
 // ============================================================
-app.use('/api/redpack', redpackRoutes)
-app.use('/api/gala', galaRoutes)
-app.use('/api/kinship', kinshipRoutes)
-app.use('/api/common', commonRoutes)
+app.use('/api/redpack', apiAuthMiddleware, redpackRoutes)
+app.use('/api/gala', apiAuthMiddleware, galaRoutes)
+app.use('/api/kinship', apiAuthMiddleware, kinshipRoutes)
+app.use('/api/common', apiAuthMiddleware, commonRoutes)
 
 // ============================================================
 // 管理端 API (需要认证)

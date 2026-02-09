@@ -129,6 +129,8 @@ function request(options) {
 
     // 获取token
     const token = wx.getStorageSync('token') || ''
+    // 获取 API 密钥
+    const apiKey = config.apiKey || ''
 
     const requestTask = wx.request({
       url: app.globalData.serverUrl + url,
@@ -138,6 +140,7 @@ function request(options) {
       header: {
         'content-type': 'application/json',
         'Authorization': token ? `Bearer ${token}` : '',
+        'X-API-Key': apiKey,
         ...header
       },
       success: (res) => {

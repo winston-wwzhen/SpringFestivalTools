@@ -4,17 +4,20 @@ const ENV = {
   // 开发环境
   development: {
     serverUrl: 'http://localhost:3000/api',
-    isDev: true
+    isDev: true,
+    apiKey: 'dev_f5b9b723bd0ae0c52070dc04c5bc067097a96519e517e6e7cbc4fa20d86d2b0f'
   },
   // 测试环境
   test: {
     serverUrl: 'http://49.234.120.81/api',
-    isDev: false
+    isDev: false,
+    apiKey: 'test_bdd6cdd098946e472fa293a58a38d6e8f12da8b850cea42e9abc958f535e61d6'
   },
   // 生产环境
   production: {
     serverUrl: 'https://api.spring-festival.com/api',
-    isDev: false
+    isDev: false,
+    apiKey: 'prod_027c149836e3f8bb2b81b165fdb0e0d3daf8d9d1a8bede47f8f125dca908e402'
   }
 }
 
