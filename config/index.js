@@ -22,7 +22,7 @@ const ENV = {
 }
 
 // 当前环境（可通过修改此处切换）
-const CURRENT_ENV = 'test' // development | test | production
+const CURRENT_ENV = 'production' // development | test | production
 
 module.exports = {
   // 当前环境配置
