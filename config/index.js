@@ -17,7 +17,7 @@ const ENV = {
   production: {
     serverUrl: 'https://api.spring-festival.com/api',
     isDev: false,
-    apiKey: 'prod_027c149836e3f8bb2b81b165fdb0e0d3daf8d9d1a8bede47f8f125dca908e402'
+    apiKey: 'prod_af7c5df138a2f77990b17268b73f7ae1289707b266f9d013b1bca6f277e5e9dd'
   }
 }
 
